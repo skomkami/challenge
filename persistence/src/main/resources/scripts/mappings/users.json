@@ -1,0 +1,11 @@
+{
+  "mappings": {
+    "properties": {
+      "id": { "type":  "keyword"  },
+      "name":   { "type": "keyword"  },
+      "email":  { "type": "keyword"  },
+      "password":    { "type": "keyword" },
+      "createdAt": { "type":  "keyword" }
+    }
+  }
+}

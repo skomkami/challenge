@@ -1,0 +1,40 @@
+package agh.edu.pl.graphql
+
+import agh.edu.pl.GraphQLSchema.{
+  gqlOffsetDateTime,
+  IdentifiableType,
+  LinkType,
+  UserType
+}
+import agh.edu.pl.context.Context
+import agh.edu.pl.models.{ Link, User, Vote }
+import agh.edu.pl.mutations.CreateVote
+import sangria.macros.derive._
+import sangria.schema.{ Field, ObjectType }
+
+case class GraphqlVote() extends GraphqlType[Vote] {
+
+  override def createEntitySettings: CreateVote.type = CreateVote
+
+  override def GraphQLOutputType: ObjectType[Context, Vote] =
+    deriveObjectType[Context, Vote](
+      Interfaces(IdentifiableType),
+      ReplaceField(
+        "createdAt",
+        Field("createdAt", gqlOffsetDateTime, resolve = _.value.createdAt)
+      ),
+      ExcludeFields("userId", "linkId"),
+      AddFields(
+        Field(
+          "user",
+          UserType,
+          resolve = c => c.ctx.repository.getById[User](c.value.userId)
+        ),
+        Field(
+          "link",
+          LinkType,
+          resolve = c => c.ctx.repository.getById[Link](c.value.linkId)
+        )
+      )
+    )
+}

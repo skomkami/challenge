@@ -1,0 +1,8 @@
+{"index":{"_index":"votes","_id":"1"}}
+{"id":"1","createdAt":"2020-10-04T20:23:59.069+02:00","userId":"1","linkId":"1"}
+{"index":{"_index":"votes","_id":"2"}}
+{"id":"2","createdAt":"2020-10-04T21:23:59.069+02:00","userId":"2","linkId":"2"}
+{"index":{"_index":"votes","_id":"3"}}
+{"id":"3","createdAt":"2020-10-05T12:13:59.069+02:00","userId":"2","linkId":"3"}
+{"index":{"_index":"votes","_id":"4"}}
+{"id":"4","createdAt":"2020-10-05T12:13:59.069+02:00","userId":"1","linkId":"2"}

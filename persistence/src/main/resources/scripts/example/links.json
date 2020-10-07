@@ -1,0 +1,6 @@
+{"index":{"_index":"links","_id":"1"}}
+{"id":"1","url":"http://howtographql.com","description":"Awesome community driven GraphQL tutorial","postedBy":"2","createdAt":"2020-10-05T22:23:59.059+02:00"}
+{"index":{"_index":"links","_id":"2"}}
+{"id":"2","url":"http://graphql.org","description":"Official GraphQL web page","postedBy":"1","createdAt":"2020-10-05T22:23:59.059+02:00"}
+{"index":{"_index":"links","_id":"3"}}
+{"id":"3","url":"https://facebook.github.io/graphql/","description":"GraphQL specification","postedBy":"2","createdAt":"2020-10-05T22:23:59.059+02:00"}

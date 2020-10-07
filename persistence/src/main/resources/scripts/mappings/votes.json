@@ -1,0 +1,10 @@
+{
+  "mappings": {
+    "properties": {
+      "id": { "type":  "keyword"  },
+      "createdAt": { "type":  "keyword" },
+      "userId":  { "type": "keyword"  },
+      "linkId":    { "type": "keyword" }
+    }
+  }
+}
