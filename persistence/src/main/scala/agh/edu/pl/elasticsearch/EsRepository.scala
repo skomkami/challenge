@@ -1,8 +1,9 @@
 package agh.edu.pl.elasticsearch
 
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.UUID
 
 import agh.edu.pl.commands.CreateEntity
+import agh.edu.pl.error.DomainError
 import agh.edu.pl.models.models.Identifiable
 import agh.edu.pl.repository.{ Filter, Repository }
 import com.sksamuel.elastic4s.ElasticClient
@@ -60,29 +61,28 @@ case class EsRepository(
       tag: ClassTag[E],
       encoder: Encoder[E]
     ): Future[E] = {
-//    val newId: String = UUID.randomUUID().toString
-    val newId: Int = EsRepository.idGenerator.getAndIncrement()
+    val newId: String = UUID.randomUUID().toString
+//    val newId: Int = EsRepository.idGenerator.getAndIncrement()
     val newEntity = createEntityInput.toEntity.withId(newId)
 
     elasticClient
       .execute {
         indexInto(INDEX_NAME)
-          .id(newId.toString)
+          .id(newId)
           .source(newEntity.asJson.noSpaces)
       }
       .map(_ => newEntity)
   }
 
-//  https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl-ids-query.html
   override def getByIds[E](
-      ids: Seq[Int]
+      ids: Seq[String]
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]
     ): Future[Seq[E]] =
     elasticClient
       .execute {
-        search(INDEX_NAME).query(idsQuery(ids.map(_.toString)))
+        search(INDEX_NAME).query(idsQuery(ids))
       }
       .map(resp => resp.result.hits.hits)
       .map { hits =>
@@ -90,16 +90,22 @@ case class EsRepository(
       }
 
   override def getById[E](
-      id: Int
+      id: String
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]
     ): Future[E] =
     elasticClient
       .execute {
-        get(INDEX_NAME, id.toString)
+        get(INDEX_NAME, id)
       }
-      .map(resp => resp.result.sourceAsString)
+      .map { resp =>
+        if (!resp.result.found)
+          throw DomainError(s"""Not found entity ${tag
+            .runtimeClass
+            .getSimpleName} with id: "$id" """)
+        resp.result.sourceAsString
+      }
       .map(decodeSource(_)(decoder))
 
   private def decodeSource[E](
@@ -112,8 +118,4 @@ case class EsRepository(
         throw new Exception(parsingError.getMessage)
       case Right(value) => value
     }
-}
-
-object EsRepository {
-  val idGenerator: AtomicInteger = new AtomicInteger()
 }

@@ -8,10 +8,10 @@ import shapeless.Lazy
 
 package object models {
 
-  abstract class Identifiable[Self](val id: Int)
+  abstract class Identifiable[Self](val id: String)
       extends Product
          with Serializable {
-    def withId(newId: Int): Self
+    def withId(newId: String): Self
   }
 
   abstract class EntitySettings[E] {

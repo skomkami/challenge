@@ -16,29 +16,29 @@ object GraphQLSchema {
     InterfaceType(
       "Identifiable",
       fields[Context, Identifiable[_]](
-        Field("id", IntType, resolve = _.value.id)
+        Field("id", StringType, resolve = _.value.id)
       )
     )
 
-  val linkByUserRel: Relation[Link, Link, Int] =
-    Relation[Link, Int]("postedByUser", l => Seq(l.postedBy))
-  val voteByUserRel: Relation[Vote, Vote, Int] =
-    Relation[Vote, Int]("votedByUser", v => Seq(v.userId))
-  val voteByLinkRel: Relation[Vote, Vote, Int] =
-    Relation[Vote, Int]("votesForLink", v => Seq(v.linkId))
+  val linkByUserRel: Relation[Link, Link, String] =
+    Relation[Link, String]("postedByUser", l => Seq(l.postedBy))
+  val voteByUserRel: Relation[Vote, Vote, String] =
+    Relation[Vote, String]("votedByUser", v => Seq(v.userId))
+  val voteByLinkRel: Relation[Vote, Vote, String] =
+    Relation[Vote, String]("votesForLink", v => Seq(v.linkId))
 //
-//  val linksFetcher: Fetcher[MyContext, Link, Link, Int] = Fetcher.rel(
-//    (ctx: MyContext, ids: Seq[Int]) => ctx.esRepository.getByIds[Link](ids),
+//  val linksFetcher: Fetcher[MyContext, Link, Link, String] = Fetcher.rel(
+//    (ctx: MyContext, ids: Seq[String]) => ctx.esRepository.getByIds[Link](ids),
 //    (ctx: MyContext, ids: RelationIds[Link]) =>
 //      ctx.esRepository.getByIds[Link](ids(linkByUserRel)),
 //  )
 //
-//  val usersFetcher: Fetcher[MyContext, User, User, Int] = Fetcher(
-//    (ctx: MyContext, ids: Seq[Int]) => ctx.esRepository.getByIds[User](ids)
+//  val usersFetcher: Fetcher[MyContext, User, User, String] = Fetcher(
+//    (ctx: MyContext, ids: Seq[String]) => ctx.esRepository.getByIds[User](ids)
 //  )
 //
-//  val votesFetcher: Fetcher[MyContext, Vote, Vote, Int] = Fetcher.rel(
-//    (ctx: MyContext, ids: Seq[Int]) => ctx.esRepository.getByIds[Vote](ids),
+//  val votesFetcher: Fetcher[MyContext, Vote, Vote, String] = Fetcher.rel(
+//    (ctx: MyContext, ids: Seq[String]) => ctx.esRepository.getByIds[Vote](ids),
 //    (ctx: MyContext, ids: RelationIds[Vote]) =>
 //      ctx.dao.getVotesByRelationIds(ids)
 //  )

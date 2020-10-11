@@ -7,7 +7,7 @@ import agh.edu.pl.models.User
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
-case class CreateUser( //id: Option[Int] = None,
+case class CreateUser( //id: Option[String] = None,
     name: String,
     email: String,
     password: String,
@@ -16,7 +16,7 @@ case class CreateUser( //id: Option[Int] = None,
 
   def toEntity: User =
     User(
-      id = 0,
+      id = "",
       name = name,
       email = email,
       password = password,

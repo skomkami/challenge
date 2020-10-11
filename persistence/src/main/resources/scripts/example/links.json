@@ -1,6 +1,6 @@
-{"index":{"_index":"links","_id":"1"}}
-{"id":"1","url":"http://howtographql.com","description":"Awesome community driven GraphQL tutorial","postedBy":"2","createdAt":"2020-10-05T22:23:59.059+02:00"}
-{"index":{"_index":"links","_id":"2"}}
-{"id":"2","url":"http://graphql.org","description":"Official GraphQL web page","postedBy":"1","createdAt":"2020-10-05T22:23:59.059+02:00"}
-{"index":{"_index":"links","_id":"3"}}
-{"id":"3","url":"https://facebook.github.io/graphql/","description":"GraphQL specification","postedBy":"2","createdAt":"2020-10-05T22:23:59.059+02:00"}
+{"index":{"_index":"links","_id":"b82acba9-6f2f-4369-acd4-87c6491c4c7d"}}
+{"id":"b82acba9-6f2f-4369-acd4-87c6491c4c7d","url":"http://howtographql.com","description":"Awesome community driven GraphQL tutorial","postedBy":"3251300d-51dd-4150-ba19-77f320f05b87","createdAt":"2020-10-05T22:23:59.059+02:00"}
+{"index":{"_index":"links","_id":"4ff306f8-e9ba-4b6e-b9b4-bf772793090e"}}
+{"id":"4ff306f8-e9ba-4b6e-b9b4-bf772793090e","url":"http://graphql.org","description":"Official GraphQL web page","postedBy":"6be44c9d-6957-4483-9037-749631f195e2","createdAt":"2020-10-05T22:23:59.059+02:00"}
+{"index":{"_index":"links","_id":"e4668185-b43f-45f4-8354-0557b48a134c"}}
+{"id":"e4668185-b43f-45f4-8354-0557b48a134c","url":"https://facebook.github.io/graphql/","description":"GraphQL specification","postedBy":"add7d004-8649-4dc5-a84a-b9d9ff81a347","createdAt":"2020-10-05T22:23:59.059+02:00"}

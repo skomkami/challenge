@@ -8,10 +8,10 @@ import io.circe.{ Decoder, Encoder }
 import sangria.schema.{
   Argument,
   Field,
-  IntType,
   ListType,
   ObjectType,
-  OptionType
+  OptionType,
+  StringType
 }
 
 import scala.reflect.ClassTag
@@ -40,13 +40,11 @@ abstract class GraphqlType[T <: Identifiable[T]: Encoder: Decoder: ClassTag] {
     name = s"create$typeName",
     fieldType = GraphQLOutputType,
     arguments = createEntitySettings.CreateEntityInput :: Nil,
-    resolve = c =>
-      c.ctx
-        .repository
-        .create[T](c.arg(createEntitySettings.CreateEntityInput))
+    resolve =
+      c => c.arg(createEntitySettings.CreateEntityInput).newEntity(c.ctx)
   )
 
-  val Id = Argument("id", IntType)
+  val Id = Argument("id", StringType)
 
   protected def getAllQuery: Field[Context, Unit] = Field(
     name = s"all${typeName}s",

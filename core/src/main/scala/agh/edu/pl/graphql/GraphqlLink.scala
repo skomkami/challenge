@@ -43,7 +43,7 @@ case class GraphqlLink() extends GraphqlType[Link] {
           resolve = c =>
             c.ctx
               .repository
-              .getAll[Vote](Some(Filter("linkId", c.value.id.toString)))
+              .getAll[Vote](Some(Filter("linkId", c.value.id)))
         )
       )
     )

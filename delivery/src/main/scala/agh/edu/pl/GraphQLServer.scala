@@ -1,6 +1,7 @@
 package agh.edu.pl
 
 import agh.edu.pl.context.Context
+import agh.edu.pl.exception.Handler
 import agh.edu.pl.repository.Repository
 import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.model.StatusCodes._
@@ -57,11 +58,12 @@ case class GraphQLServer(repository: Repository) {
     ): Future[(StatusCode, Json)] =
     Executor
       .execute(
-        GraphQLSchema.SchemaDefinition,
-        query,
-        Context(repository),
+        schema = GraphQLSchema.SchemaDefinition,
+        queryAst = query,
+        userContext = Context(repository, ec),
         variables = vars,
-        operationName = operation
+        operationName = operation,
+        exceptionHandler = Handler.exceptionHandler
       )
       .map(OK -> _)
       .recover {

@@ -23,14 +23,14 @@ trait Repository {
     ): Future[E]
 
   def getByIds[E](
-      ids: Seq[Int]
+      ids: Seq[String]
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]
     ): Future[Seq[E]]
 
   def getById[E](
-      id: Int
+      id: String
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]
