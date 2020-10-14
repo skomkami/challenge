@@ -2,7 +2,7 @@ package agh.edu.pl.graphql
 
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
-import agh.edu.pl.models.models.Identifiable
+import agh.edu.pl.models.models.{ Entity, EntityId }
 import agh.edu.pl.mutations.CreateEntitySettings
 import io.circe.{ Decoder, Encoder }
 import sangria.schema.{
@@ -16,23 +16,14 @@ import sangria.schema.{
 
 import scala.reflect.ClassTag
 
-abstract class GraphqlType[T <: Identifiable[T]: Encoder: Decoder: ClassTag] {
+abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
+    implicit
+    tag: ClassTag[T]
+  ) {
 
-//  protected def customSettings: Seq[DeriveObjectSetting[Unit, T]] = Nil
-//
-//  val IdentifiableType: InterfaceType[Unit, Identifiable[T]] = InterfaceType(
-//    "Identifiable",
-//    fields[Unit, Identifiable[T]](Field("id", IntType, resolve = _.value.id))
-//  )
+  protected val typeName: String = tag.runtimeClass.getSimpleName
 
-//  def GraphQLOutputType: ObjectType[Unit, T] = deriveObjectType[Unit, T](
-//    customSettings.+:(Interfaces(PossibleInterface.convert(IdentifiableType)))
-//  ) // TODO can I do it using macros or something
-
-  protected val typeName: String =
-    getClass.getSimpleName.replaceFirst("Graphql", "")
-
-  def createEntitySettings: CreateEntitySettings[_ <: CreateEntity[T]]
+  def createEntitySettings: CreateEntitySettings[T, _ <: CreateEntity[T]]
 
   def GraphQLOutputType: ObjectType[Context, T]
 
@@ -41,7 +32,7 @@ abstract class GraphqlType[T <: Identifiable[T]: Encoder: Decoder: ClassTag] {
     fieldType = GraphQLOutputType,
     arguments = createEntitySettings.CreateEntityInput :: Nil,
     resolve =
-      c => c.arg(createEntitySettings.CreateEntityInput).newEntity(c.ctx)
+      c => c.arg(createEntitySettings.CreateEntityInput).createEntity(c.ctx)
   )
 
   val Id = Argument("id", StringType)
@@ -56,7 +47,10 @@ abstract class GraphqlType[T <: Identifiable[T]: Encoder: Decoder: ClassTag] {
     name = s"${getClass.getSimpleName.toLowerCase}",
     fieldType = OptionType(GraphQLOutputType),
     arguments = Id :: Nil,
-    resolve = c => c.ctx.repository.getById(c.arg(Id))
+    resolve = c =>
+      c.ctx
+        .repository
+        .getById[T](createEntitySettings.idCodec.fromString(c.arg(Id)))
   )
 
   def queries: Seq[Field[Context, Unit]] =

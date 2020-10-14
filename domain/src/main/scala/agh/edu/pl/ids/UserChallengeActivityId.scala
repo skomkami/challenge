@@ -1,9 +1,5 @@
 package agh.edu.pl.ids
 
-import java.util.UUID
+import agh.edu.pl.models.models.EntityId
 
-import agh.edu.pl.EntityId
-
-case class UserChallengeActivityId(value: UUID) extends EntityId {
-  override def stringValue: String = value.toString
-}
+case class UserChallengeActivityId(override val value: String) extends EntityId

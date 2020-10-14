@@ -2,28 +2,28 @@ package agh.edu.pl.graphql
 
 import agh.edu.pl.GraphQLSchema.{
   gqlOffsetDateTime,
-  IdentifiableType,
+//  EntityType,
   UserType,
   VoteType
 }
 import agh.edu.pl.context.Context
+import agh.edu.pl.ids.LinkId
 import agh.edu.pl.models.{ Link, User, Vote }
 import agh.edu.pl.mutations.CreateLink
 import agh.edu.pl.repository.Filter
 import sangria.macros.derive.{
   deriveObjectType,
   AddFields,
-  Interfaces,
+//  Interfaces,
   ReplaceField
 }
 import sangria.schema.{ Field, ListType, ObjectType }
 
-case class GraphqlLink() extends GraphqlType[Link] {
+case class GraphqlLink() extends GraphqlEntity[LinkId, Link] {
   override def createEntitySettings: CreateLink.type = CreateLink
 
   override def GraphQLOutputType: ObjectType[Context, Link] =
     deriveObjectType[Context, Link](
-      Interfaces(IdentifiableType),
       ReplaceField(
         "createdAt",
         Field("createdAt", gqlOffsetDateTime, resolve = _.value.createdAt)
@@ -43,7 +43,7 @@ case class GraphqlLink() extends GraphqlType[Link] {
           resolve = c =>
             c.ctx
               .repository
-              .getAll[Vote](Some(Filter("linkId", c.value.id)))
+              .getAll[Vote](Some(Filter("linkId", c.value.id.value)))
         )
       )
     )

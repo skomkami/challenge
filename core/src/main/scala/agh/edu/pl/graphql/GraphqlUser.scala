@@ -2,28 +2,29 @@ package agh.edu.pl.graphql
 
 import agh.edu.pl.GraphQLSchema.{
   gqlOffsetDateTime,
-  IdentifiableType,
+//  EntityType,
   LinkType,
   VoteType
 }
 import agh.edu.pl.context.Context
+import agh.edu.pl.ids.UserId
 import agh.edu.pl.models.{ Link, User, Vote }
 import agh.edu.pl.mutations.CreateUser
 import agh.edu.pl.repository.Filter
 import sangria.macros.derive.{
   deriveObjectType,
   AddFields,
-  Interfaces,
+//  Interfaces,
   ReplaceField
 }
 import sangria.schema.{ Field, ListType, ObjectType }
 
-case class GraphqlUser() extends GraphqlType[User] {
+case class GraphqlUser() extends GraphqlEntity[UserId, User] {
   override def createEntitySettings: CreateUser.type = CreateUser
 
   override def GraphQLOutputType: ObjectType[Context, User] =
     deriveObjectType[Context, User](
-      Interfaces(IdentifiableType),
+//      Interfaces(EntityType),
       ReplaceField(
         "createdAt",
         Field("createdAt", gqlOffsetDateTime, resolve = _.value.createdAt)
@@ -36,7 +37,7 @@ case class GraphqlUser() extends GraphqlType[User] {
             c.ctx
               .repository
               .getAll[Link](
-                Some(Filter("postedBy", c.value.id.toString))
+                Some(Filter("postedBy", c.value.id.value))
               )
         ),
         Field(
@@ -45,9 +46,8 @@ case class GraphqlUser() extends GraphqlType[User] {
           resolve = c =>
             c.ctx
               .repository
-              .getAll[Vote](Some(Filter("userId", c.value.id.toString)))
+              .getAll[Vote](Some(Filter("userId", c.value.id.value)))
         )
       )
     )
-
 }

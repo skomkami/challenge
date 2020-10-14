@@ -31,6 +31,12 @@ lazy val domain =
   project
     .in(file("domain"))
     .settings(commonSettings: _*)
+    .settings(
+      libraryDependencies ++= Seq(
+        org.`sangria-graphql`.sangria,
+        org.`sangria-graphql`.`sangria-circe`
+      )
+    )
 
 lazy val core =
   project

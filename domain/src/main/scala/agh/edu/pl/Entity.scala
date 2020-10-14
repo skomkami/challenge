@@ -1,8 +1,10 @@
 package agh.edu.pl
 
-abstract class Entity[+EntityId](val id: EntityId)
-    extends Product
-       with Serializable {
-  protected type SelfType <: Entity[EntityId]
-  protected type Id <: EntityId
-}
+//import agh.edu.pl.models.models.EntityId
+//
+//abstract class Entity[Id <: EntityId](val id: Id)
+//    extends Product
+//       with Serializable {
+//  protected type SelfType <: Entity[EntityId]
+//  protected type Id <: EntityId
+//}
