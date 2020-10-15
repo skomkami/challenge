@@ -1,10 +1,7 @@
 package agh.edu.pl.elasticsearch
 
-import java.util.UUID
-
-import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.error.DomainError
-import agh.edu.pl.models.models.Identifiable
+import agh.edu.pl.models.models.{ Entity, EntityId }
 import agh.edu.pl.repository.{ Filter, Repository }
 import com.sksamuel.elastic4s.ElasticClient
 import com.sksamuel.elastic4s.ElasticDsl._
@@ -43,7 +40,7 @@ case class EsRepository(
         hits.toIndexedSeq.map(_.sourceAsString).map(decodeSource(_)(decoder))
       }
 
-  def buildQuery(queryFilter: Option[Filter]): BoolQuery = {
+  private def buildQuery(queryFilter: Option[Filter]): BoolQuery = {
     val qMusts = mutable.ListBuffer[Query]()
     val qFilters = mutable.ListBuffer[Query]()
 
@@ -55,58 +52,54 @@ case class EsRepository(
     must(qMusts.toSeq).filter(qFilters)
   }
 
-  override def create[E <: Identifiable[E]](
-      createEntityInput: CreateEntity[E]
+  override def create[E <: Entity[_ <: EntityId]](
+      entity: E
     )(implicit
       tag: ClassTag[E],
       encoder: Encoder[E]
-    ): Future[E] = {
-    val newId: String = UUID.randomUUID().toString
-//    val newId: Int = EsRepository.idGenerator.getAndIncrement()
-    val newEntity = createEntityInput.toEntity.withId(newId)
-
+    ): Future[E] =
     elasticClient
       .execute {
         indexInto(INDEX_NAME)
-          .id(newId)
-          .source(newEntity.asJson.noSpaces)
+          .id(entity.id.value)
+          .source(entity.asJson.noSpaces)
       }
-      .map(_ => newEntity)
-  }
+      .map(_ => entity)
 
-  override def getByIds[E](
-      ids: Seq[String]
-    )(implicit
-      tag: ClassTag[E],
-      decoder: Decoder[E]
-    ): Future[Seq[E]] =
-    elasticClient
-      .execute {
-        search(INDEX_NAME).query(idsQuery(ids))
-      }
-      .map(resp => resp.result.hits.hits)
-      .map { hits =>
-        hits.toIndexedSeq.map(_.sourceAsString).map(decodeSource(_)(decoder))
-      }
-
-  override def getById[E](
-      id: String
+  def getById[E <: Entity[_]](
+      id: E#IdType
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]
     ): Future[E] =
+    getByIdOpt(id).map { entityOpt =>
+      entityOpt.getOrElse {
+        val className = tag.runtimeClass.getSimpleName
+        throw NotFoundEntity(className, id.value)
+      }
+    }
+
+  def getByIdOpt[E <: Entity[_]](
+      id: E#IdType
+    )(implicit
+      tag: ClassTag[E],
+      decoder: Decoder[E]
+    ): Future[Option[E]] =
     elasticClient
       .execute {
-        get(INDEX_NAME, id)
+        get(INDEX_NAME, id.value)
       }
       .map { resp =>
         if (!resp.result.found)
-          throw DomainError(s"""Not found entity ${tag
-            .runtimeClass
-            .getSimpleName} with id: "$id" """)
-        resp.result.sourceAsString
+          None
+        else
+          Some(
+            resp
+              .result
+              .sourceAsString
+              .pipe(decodeSource(_)(decoder))
+          )
       }
-      .map(decodeSource(_)(decoder))
 
   private def decodeSource[E](
       source: String
@@ -118,4 +111,19 @@ case class EsRepository(
         throw new Exception(parsingError.getMessage)
       case Right(value) => value
     }
+
+  case class NotFoundEntity(entityType: String, id: String)
+      extends DomainError(s"""Not found entity $entityType with id: "$id" """)
+
+  override def update[E <: Entity[_ <: EntityId]](
+      entity: E
+    )(implicit
+      tag: ClassTag[E],
+      encoder: Encoder[E]
+    ): Future[E] = elasticClient
+    .execute {
+      updateById(INDEX_NAME, entity.id.value)
+        .docAsUpsert(entity.asJson.noSpaces)
+    }
+    .map(_ => entity)
 }

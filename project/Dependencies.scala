@@ -18,6 +18,12 @@ object Dependencies {
   }
 
   case object com {
+
+    case object beachape {
+      val `enumeratum-circe` = "com.beachape" %% "enumeratum-circe" % "1.6.1"
+
+    }
+
     case object github {
       case object alexarchambault {
         val `scalacheck-shapeless_1.14` =

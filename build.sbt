@@ -31,6 +31,12 @@ lazy val domain =
   project
     .in(file("domain"))
     .settings(commonSettings: _*)
+    .settings(
+      libraryDependencies ++= Seq(
+        org.`sangria-graphql`.sangria,
+        org.`sangria-graphql`.`sangria-circe`
+      )
+    )
 
 lazy val core =
   project
@@ -93,6 +99,7 @@ lazy val main =
     )
 
 lazy val baseLibraries = Seq(
+  com.beachape.`enumeratum-circe`,
   com.github.alexarchambault.`scalacheck-shapeless_1.14`,
   com.softwaremill.quicklens,
   io.circe.`circe-generic`,

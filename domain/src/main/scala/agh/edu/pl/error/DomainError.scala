@@ -1,3 +1,3 @@
 package agh.edu.pl.error
 
-case class DomainError(msg: String) extends Throwable(msg)
+class DomainError(val msg: String) extends Throwable(msg)

@@ -2,16 +2,17 @@ package agh.edu.pl.models
 
 import java.time.OffsetDateTime
 
-import agh.edu.pl.models.models.{ EntitySettings, Identifiable }
+import agh.edu.pl.ids.{ LinkId, UserId }
+import agh.edu.pl.models.models.{ Entity, JsonSerializable }
 
 case class Link(
-    override val id: String,
+    override val id: LinkId,
     url: String,
     description: String,
-    postedBy: String,
+    postedBy: UserId,
     createdAt: OffsetDateTime = OffsetDateTime.now
-  ) extends Identifiable[Link](id) {
-  override def withId(newId: String): Link = this.copy(id = newId)
+  ) extends Entity[LinkId](id) {
+  override type IdType = LinkId
 }
 
-case object Link extends EntitySettings[Link]
+case object Link extends JsonSerializable[Link]

@@ -2,16 +2,17 @@ package agh.edu.pl.models
 
 import java.time.OffsetDateTime
 
-import agh.edu.pl.models.models.{ EntitySettings, Identifiable }
+import agh.edu.pl.ids.UserId
+import agh.edu.pl.models.models._
 
 case class User(
-    override val id: String,
+    override val id: UserId,
     name: String,
     email: String,
-    password: String,
+    sex: Sex,
     createdAt: OffsetDateTime = OffsetDateTime.now
-  ) extends Identifiable[User](id) {
-  override def withId(newId: String): User = this.copy(id = newId)
+  ) extends Entity[UserId](id) {
+  override type IdType = UserId
 }
 
-case object User extends EntitySettings[User]
+case object User extends JsonSerializable[User]

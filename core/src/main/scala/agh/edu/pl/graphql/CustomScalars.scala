@@ -34,5 +34,4 @@ case object CustomScalars {
       case Success(value) => Right(value)
       case Failure(_)     => Left(DateTimeCoerceViolation)
     }
-
 }

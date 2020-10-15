@@ -1,9 +1,11 @@
 package agh.edu.pl.ids
 
-import java.util.UUID
+import agh.edu.pl.models.models.{ EntityId, EntityIdCodec }
+//import sangria.macros.derive.{ deriveInputObjectType, InputObjectTypeName }
+//import sangria.schema.InputObjectType
 
-import agh.edu.pl.EntityId
+case class UserId(override val value: String) extends EntityId
 
-case class UserId(value: UUID) extends EntityId {
-  override def stringValue: String = value.toString
+object UserId extends EntityIdCodec[UserId] {
+  override implicit def fromString(value: String): UserId = UserId(value)
 }
