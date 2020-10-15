@@ -9,10 +9,10 @@ case class User(
     override val id: UserId,
     name: String,
     email: String,
-    password: String,
+    sex: Sex,
     createdAt: OffsetDateTime = OffsetDateTime.now
   ) extends Entity[UserId](id) {
   override type IdType = UserId
 }
 
-case object User extends EntitySettings[User]
+case object User extends JsonSerializable[User]

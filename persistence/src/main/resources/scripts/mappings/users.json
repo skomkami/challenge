@@ -4,7 +4,7 @@
       "id": { "type":  "keyword"  },
       "name":   { "type": "keyword"  },
       "email":  { "type": "keyword"  },
-      "password":    { "type": "keyword" },
+      "sex":    { "type": "keyword" },
       "createdAt": { "type":  "keyword" }
     }
   }

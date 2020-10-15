@@ -3,7 +3,7 @@ package agh.edu.pl.models
 import java.time.OffsetDateTime
 
 import agh.edu.pl.ids.{ LinkId, UserId }
-import agh.edu.pl.models.models.{ Entity, EntitySettings }
+import agh.edu.pl.models.models.{ Entity, JsonSerializable }
 
 case class Link(
     override val id: LinkId,
@@ -15,4 +15,4 @@ case class Link(
   override type IdType = LinkId
 }
 
-case object Link extends EntitySettings[Link]
+case object Link extends JsonSerializable[Link]

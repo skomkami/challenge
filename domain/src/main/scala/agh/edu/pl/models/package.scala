@@ -25,7 +25,7 @@ package object models {
     type IdType <: EntityId
   }
 
-  abstract class EntitySettings[E <: Entity[_]] {
+  abstract class JsonSerializable[E] {
     implicit def jsonDecoder(implicit d: Lazy[DerivedDecoder[E]]): Decoder[E] =
       deriveDecoder[E]
 
@@ -48,7 +48,7 @@ package object models {
 
     def generateId: Id = fromString(UUID.randomUUID.toString)
 
-//    implicit lazy val scalarAlias: ScalarAlias[Id, String] =
+//    implicit val scalarAlias: ScalarAlias[Id, String] =
 //      ScalarAlias[Id, String](
 //        sangria.schema.StringType,
 //        _.value,

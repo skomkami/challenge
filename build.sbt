@@ -99,6 +99,7 @@ lazy val main =
     )
 
 lazy val baseLibraries = Seq(
+  com.beachape.`enumeratum-circe`,
   com.github.alexarchambault.`scalacheck-shapeless_1.14`,
   com.softwaremill.quicklens,
   io.circe.`circe-generic`,

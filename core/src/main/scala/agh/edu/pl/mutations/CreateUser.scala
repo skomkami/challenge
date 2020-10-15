@@ -5,7 +5,7 @@ import java.time.OffsetDateTime
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.ids.UserId
-import agh.edu.pl.models.{ models, User }
+import agh.edu.pl.models.{ models, Sex, User }
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
@@ -15,7 +15,7 @@ case class CreateUser(
     id: Option[UserId] = None,
     name: String,
     email: String,
-    password: String,
+    sex: Sex,
     createdAt: OffsetDateTime = OffsetDateTime.now
   ) extends CreateEntity[User] {
 
@@ -24,7 +24,7 @@ case class CreateUser(
       id = newId,
       name = name,
       email = email,
-      password = password,
+      sex = sex,
       createdAt = createdAt
     )
 
