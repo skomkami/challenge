@@ -5,11 +5,11 @@ import java.time.OffsetDateTime
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.ids.{ LinkId, UserId, VoteId }
-import agh.edu.pl.models.{ models, Link, User, Vote }
+import agh.edu.pl.models.{ EntityIdSettings, Link, User, Vote }
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 
 case class CreateVote(
     id: Option[VoteId] = None,
@@ -27,7 +27,7 @@ case class CreateVote(
     )
 
   override def newEntity(ctx: Context, newId: VoteId): Future[Vote] = {
-    implicit val ec = ctx.ec
+    implicit val ec: ExecutionContext = ctx.ec
     for {
       _ <- ctx.repository.getById[User](userId)
       _ <- ctx.repository.getById[Link](linkId)
@@ -35,7 +35,8 @@ case class CreateVote(
     } yield newVote
   }
 
-  override def generateId: VoteId = VoteId.generateId
+  override def generateId: VoteId =
+    VoteId.generateId(VoteId.DeterministicID(userId, linkId))
 }
 
 case object CreateVote extends CreateEntitySettings[Vote, CreateVote] {
@@ -47,5 +48,5 @@ case object CreateVote extends CreateEntitySettings[Vote, CreateVote] {
   lazy val CreateEntityInput: Argument[CreateVote] =
     Argument("input", CreateVoteInputType)
 
-  override def idCodec: models.EntityIdCodec[VoteId] = VoteId
+  override def idCodec: EntityIdSettings[VoteId] = VoteId
 }

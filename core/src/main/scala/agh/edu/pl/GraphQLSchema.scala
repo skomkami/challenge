@@ -3,7 +3,7 @@ package agh.edu.pl
 import agh.edu.pl.context.Context
 import agh.edu.pl.graphql.{ GraphqlLink, _ }
 import agh.edu.pl.models._
-import agh.edu.pl.models.models.{ Entity, EntityId }
+import agh.edu.pl.models.{ Entity, EntityId }
 import sangria.schema.{ Field, ObjectType, _ }
 
 object GraphQLSchema {

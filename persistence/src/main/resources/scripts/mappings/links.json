@@ -5,7 +5,7 @@
       "url":   { "type": "keyword"  },
       "description":  { "type": "keyword"  },
       "postedBy":    { "type": "keyword" },
-      "createdAt": { "type":  "keyword" }
+      "createdAt": { "type":  "date" }
     }
   }
 }

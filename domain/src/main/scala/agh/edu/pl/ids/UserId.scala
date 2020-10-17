@@ -1,11 +1,12 @@
 package agh.edu.pl.ids
 
-import agh.edu.pl.models.models.{ EntityId, EntityIdCodec }
-//import sangria.macros.derive.{ deriveInputObjectType, InputObjectTypeName }
-//import sangria.schema.InputObjectType
+import agh.edu.pl.models.{ EntityId, EntityIdSettings }
 
 case class UserId(override val value: String) extends EntityId
 
-object UserId extends EntityIdCodec[UserId] {
+object UserId extends EntityIdSettings[UserId] {
   override implicit def fromString(value: String): UserId = UserId(value)
+
+  override type PK = DeterministicId
+  case class DeterministicId(email: String)
 }

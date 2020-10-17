@@ -14,18 +14,19 @@ case object CustomScalars {
     override def errorMessage: String = "Error during parsing DateTime"
   }
 
-  val GraphQLOffsetDateTime = ScalarType[OffsetDateTime](
-    "OffsetDateTime",
-    coerceOutput = (odt, _) => odt.toString,
-    coerceInput = {
-      case StringValue(odt, _, _, _, _) => offsetDateTimeFromStr(odt)
-      case _                            => Left(DateTimeCoerceViolation)
-    },
-    coerceUserInput = { //5
-      case s: String => offsetDateTimeFromStr(s)
-      case _         => Left(DateTimeCoerceViolation)
-    }
-  )
+  implicit val GraphQLOffsetDateTime: ScalarType[OffsetDateTime] =
+    ScalarType[OffsetDateTime](
+      "OffsetDateTime",
+      coerceOutput = (odt, _) => odt.toString,
+      coerceInput = {
+        case StringValue(odt, _, _, _, _) => offsetDateTimeFromStr(odt)
+        case _                            => Left(DateTimeCoerceViolation)
+      },
+      coerceUserInput = { //5
+        case s: String => offsetDateTimeFromStr(s)
+        case _         => Left(DateTimeCoerceViolation)
+      }
+    )
 
   private def offsetDateTimeFromStr(
       stringValue: String

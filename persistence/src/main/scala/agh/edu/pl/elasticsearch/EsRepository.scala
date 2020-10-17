@@ -1,8 +1,9 @@
 package agh.edu.pl.elasticsearch
 
 import agh.edu.pl.error.DomainError
-import agh.edu.pl.models.models.{ Entity, EntityId }
-import agh.edu.pl.repository.{ Filter, Repository }
+import agh.edu.pl.filters.{ Filter, FilterEq }
+import agh.edu.pl.models.{ Entity, EntityId }
+import agh.edu.pl.repository.Repository
 import com.sksamuel.elastic4s.ElasticClient
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.requests.searches.queries.matches.MatchQuery
@@ -26,27 +27,26 @@ case class EsRepository(
     s"${tag.runtimeClass.getSimpleName.toLowerCase}s"
 
   override def getAll[E](
-      filter: Option[Filter]
+      filters: Option[List[Filter]] = None
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]
     ): Future[Seq[E]] =
     elasticClient
       .execute {
-        search(INDEX_NAME).bool(buildQuery(filter))
+        search(INDEX_NAME).bool(buildQuery(filters))
       }
       .map(resp => resp.result.hits.hits)
       .map { hits =>
         hits.toIndexedSeq.map(_.sourceAsString).map(decodeSource(_)(decoder))
       }
 
-  private def buildQuery(queryFilter: Option[Filter]): BoolQuery = {
+  private def buildQuery(queryFilter: Option[List[Filter]]): BoolQuery = {
     val qMusts = mutable.ListBuffer[Query]()
-    val qFilters = mutable.ListBuffer[Query]()
-
     qMusts += matchAllQuery()
-    queryFilter.foreach {
-      case Filter(field, value) => qFilters += MatchQuery(field, value)
+
+    val qFilters = queryFilter.getOrElse(Nil).map {
+      case FilterEq(field, value) => MatchQuery(field, value)
     }
 
     must(qMusts.toSeq).filter(qFilters)

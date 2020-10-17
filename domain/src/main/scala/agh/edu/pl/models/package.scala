@@ -1,14 +1,11 @@
-package agh.edu.pl.models
+package agh.edu.pl
 
-import java.util.UUID
-
+import agh.edu.pl.hash.MD5Hash
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.encoding.DerivedAsObjectEncoder
 import io.circe.generic.semiauto.{ deriveDecoder, deriveEncoder }
 import io.circe.{ Decoder, Encoder }
-import sangria.ast.StringValue
-import sangria.schema.ScalarType
-import sangria.validation.Violation
+import sangria.schema.ScalarAlias
 import shapeless.Lazy
 
 import scala.reflect.ClassTag
@@ -40,37 +37,24 @@ package object models {
     def value: String
   }
 
-  abstract class EntityIdCodec[Id <: EntityId](implicit tag: ClassTag[Id]) {
+  abstract class EntityIdSettings[Id <: EntityId](implicit tag: ClassTag[Id]) {
+    type PK
+
     implicit def fromString(value: String): Id
+
     implicit val decoder: Decoder[Id] =
       Decoder[String].map(fromString)
     implicit val encoder: Encoder[Id] = Encoder[String].contramap(_.value)
 
-    def generateId: Id = fromString(UUID.randomUUID.toString)
+    def generateId(arg: PK): Id = fromString(MD5Hash.generateHash(arg))
 
-//    implicit val scalarAlias: ScalarAlias[Id, String] =
-//      ScalarAlias[Id, String](
-//        sangria.schema.StringType,
-//        _.value,
-//        id => Right(fromString(id))
-//      ).rename(tag.runtimeClass.getSimpleName)
-    protected val idTypeName = tag.runtimeClass.getSimpleName
+    implicit val scalarAlias: ScalarAlias[Id, String] =
+      ScalarAlias[Id, String](
+        sangria.schema.StringType,
+        _.value,
+        id => Right(fromString(id))
+      ).rename(tag.runtimeClass.getSimpleName)
 
-    implicit val GraphQLIdType = ScalarType[Id](
-      name = idTypeName,
-      coerceOutput = (id, _) => id.value,
-      coerceInput = {
-        case StringValue(odt, _, _, _, _) => Right(fromString(odt))
-        case _                            => Left(IdCoerceViolation)
-      },
-      coerceUserInput = { //5
-        case s: String => Right(fromString(s))
-        case _         => Left(IdCoerceViolation)
-      }
-    )
-
-    case object IdCoerceViolation extends Violation {
-      override def errorMessage: String = "Error during parsing Id"
-    }
+    protected val idTypeName: String = tag.runtimeClass.getSimpleName
   }
 }

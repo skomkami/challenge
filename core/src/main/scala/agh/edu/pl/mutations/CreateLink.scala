@@ -5,11 +5,11 @@ import java.time.OffsetDateTime
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.ids.{ LinkId, UserId }
-import agh.edu.pl.models.{ models, Link, User }
+import agh.edu.pl.models.{ EntityIdSettings, Link, User }
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 
 case class CreateLink(
     id: Option[LinkId] = None,
@@ -29,14 +29,15 @@ case class CreateLink(
     )
 
   override def newEntity(ctx: Context, newId: LinkId): Future[Link] = {
-    implicit val ec = ctx.ec
+    implicit val ec: ExecutionContext = ctx.ec
     for {
       _ <- ctx.repository.getById[User](postedBy)
       created <- ctx.repository.create[Link](toEntity(newId))
     } yield created
   }
 
-  override def generateId: LinkId = LinkId.generateId
+  override def generateId: LinkId =
+    LinkId.generateId(LinkId.DataToGenerateId(postedBy, url))
 
 }
 
@@ -46,7 +47,8 @@ case object CreateLink extends CreateEntitySettings[Link, CreateLink] {
   lazy val CreateLinkInputType: InputObjectType[CreateLink] =
     deriveInputObjectType[CreateLink]()
 
-  lazy val CreateEntityInput = Argument("input", CreateLinkInputType)
+  lazy val CreateEntityInput: Argument[CreateLink] =
+    Argument("input", CreateLinkInputType)
 
-  override def idCodec: models.EntityIdCodec[LinkId] = LinkId
+  override def idCodec: EntityIdSettings[LinkId] = LinkId
 }

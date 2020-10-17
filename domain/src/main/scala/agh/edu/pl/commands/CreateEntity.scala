@@ -1,7 +1,7 @@
 package agh.edu.pl.commands
 
 import agh.edu.pl.context.Context
-import agh.edu.pl.models.models.{ Entity, EntityId }
+import agh.edu.pl.models.{ Entity, EntityId }
 import io.circe.{ Decoder, Encoder }
 
 import scala.concurrent.Future

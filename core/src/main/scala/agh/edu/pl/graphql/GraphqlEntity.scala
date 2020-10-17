@@ -2,7 +2,8 @@ package agh.edu.pl.graphql
 
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
-import agh.edu.pl.models.models.{ Entity, EntityId }
+import agh.edu.pl.filters.{ EntityFilter, EntityFilterSettings }
+import agh.edu.pl.models.{ Entity, EntityId }
 import agh.edu.pl.mutations.CreateEntitySettings
 import io.circe.{ Decoder, Encoder }
 import sangria.schema.{
@@ -20,12 +21,13 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
     implicit
     tag: ClassTag[T]
   ) {
-
   protected val typeName: String = tag.runtimeClass.getSimpleName
 
   def createEntitySettings: CreateEntitySettings[T, _ <: CreateEntity[T]]
 
   def GraphQLOutputType: ObjectType[Context, T]
+
+  def filterSettings: EntityFilterSettings[_ <: EntityFilter[T]]
 
   def createMutation: Field[Context, Unit] = Field(
     name = s"create$typeName",
@@ -35,12 +37,18 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
       c => c.arg(createEntitySettings.CreateEntityInput).createEntity(c.ctx)
   )
 
-  val Id = Argument("id", StringType)
+  private val Id = Argument("id", StringType)
 
   protected def getAllQuery: Field[Context, Unit] = Field(
     name = s"all${typeName}s",
     fieldType = ListType(GraphQLOutputType),
-    resolve = c => c.ctx.repository.getAll[T]()
+    arguments = filterSettings.FilterArgument :: Nil,
+    resolve = c =>
+      c.ctx
+        .repository
+        .getAll[T](
+          c.arg(filterSettings.FilterArgument).map(_.filters.toList)
+        )
   )
 
   protected def getByIdQuery: Field[Context, Unit] = Field(

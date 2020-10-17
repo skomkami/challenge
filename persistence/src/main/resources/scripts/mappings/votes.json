@@ -2,7 +2,7 @@
   "mappings": {
     "properties": {
       "id": { "type":  "keyword"  },
-      "createdAt": { "type":  "keyword" },
+      "createdAt": { "type":  "date" },
       "userId":  { "type": "keyword"  },
       "linkId":    { "type": "keyword" }
     }

@@ -1,6 +1,7 @@
 package agh.edu.pl.repository
 
-import agh.edu.pl.models.models.{ Entity, EntityId }
+import agh.edu.pl.filters.Filter
+import agh.edu.pl.models.{ Entity, EntityId }
 import io.circe.{ Decoder, Encoder }
 
 import scala.concurrent.Future
@@ -8,7 +9,7 @@ import scala.reflect.ClassTag
 
 trait Repository {
   def getAll[E](
-      filter: Option[Filter] = None
+      filter: Option[List[Filter]] = None
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]

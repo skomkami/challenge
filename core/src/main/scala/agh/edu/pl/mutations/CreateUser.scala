@@ -5,7 +5,7 @@ import java.time.OffsetDateTime
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.ids.UserId
-import agh.edu.pl.models.{ models, Sex, User }
+import agh.edu.pl.models.{ EntityIdSettings, Sex, User }
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
@@ -31,7 +31,8 @@ case class CreateUser(
   override def updateEntity(ctx: Context, entity: User): Future[User] =
     ctx.repository.update(toEntity(finalId))
 
-  override def generateId: UserId = UserId.generateId
+  override def generateId: UserId =
+    UserId.generateId(UserId.DeterministicId(email))
 }
 
 case object CreateUser extends CreateEntitySettings[User, CreateUser] {
@@ -43,5 +44,5 @@ case object CreateUser extends CreateEntitySettings[User, CreateUser] {
   lazy val CreateEntityInput: Argument[CreateUser] =
     Argument("input", CreateUserInputType)
 
-  override def idCodec: models.EntityIdCodec[UserId] = UserId
+  override def idCodec: EntityIdSettings[UserId] = UserId
 }

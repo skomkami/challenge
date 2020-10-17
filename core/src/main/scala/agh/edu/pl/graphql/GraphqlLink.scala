@@ -1,26 +1,18 @@
 package agh.edu.pl.graphql
 
-import agh.edu.pl.GraphQLSchema.{
-  gqlOffsetDateTime,
-//  EntityType,
-  UserType,
-  VoteType
-}
+import agh.edu.pl.GraphQLSchema.{ gqlOffsetDateTime, UserType, VoteType }
 import agh.edu.pl.context.Context
+import agh.edu.pl.filters.{ FilterEq, LinksFilter }
 import agh.edu.pl.ids.LinkId
 import agh.edu.pl.models.{ Link, User, Vote }
 import agh.edu.pl.mutations.CreateLink
-import agh.edu.pl.repository.Filter
-import sangria.macros.derive.{
-  deriveObjectType,
-  AddFields,
-//  Interfaces,
-  ReplaceField
-}
+import sangria.macros.derive.{ deriveObjectType, AddFields, ReplaceField }
 import sangria.schema.{ Field, ListType, ObjectType }
 
 case class GraphqlLink() extends GraphqlEntity[LinkId, Link] {
   override def createEntitySettings: CreateLink.type = CreateLink
+
+  override lazy val filterSettings: LinksFilter.type = LinksFilter
 
   override def GraphQLOutputType: ObjectType[Context, Link] =
     deriveObjectType[Context, Link](
@@ -43,7 +35,7 @@ case class GraphqlLink() extends GraphqlEntity[LinkId, Link] {
           resolve = c =>
             c.ctx
               .repository
-              .getAll[Vote](Some(Filter("linkId", c.value.id.value)))
+              .getAll[Vote](Some(FilterEq("linkId", c.value.id.value) :: Nil))
         )
       )
     )

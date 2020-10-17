@@ -5,7 +5,7 @@
       "name":   { "type": "keyword"  },
       "email":  { "type": "keyword"  },
       "sex":    { "type": "keyword" },
-      "createdAt": { "type":  "keyword" }
+      "createdAt": { "type":  "date" }
     }
   }
 }
