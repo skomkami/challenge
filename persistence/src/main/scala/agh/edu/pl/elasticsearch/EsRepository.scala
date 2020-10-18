@@ -23,8 +23,15 @@ case class EsRepository(
     ec: ExecutionContext
   ) extends Repository {
 
-  private def INDEX_NAME[E](implicit tag: ClassTag[E]): String =
-    s"${tag.runtimeClass.getSimpleName.toLowerCase}s"
+  private def INDEX_NAME[E](implicit tag: ClassTag[E]): String = {
+    val className = tag.runtimeClass.getSimpleName.toLowerCase
+    if (className.last == 'y') {
+      s"${className.dropRight(1)}ies"
+    }
+    else {
+      s"${className}s"
+    }
+  }
 
   override def getAll[E](
       filters: Option[List[Filter]] = None,

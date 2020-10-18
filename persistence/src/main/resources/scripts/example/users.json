@@ -1,6 +1,6 @@
-{"index":{"_index":"users","_id":"add7d004-8649-4dc5-a84a-b9d9ff81a347"}}
-{"id":"add7d004-8649-4dc5-a84a-b9d9ff81a347","name":"Duane","email":"duane@example.com","sex":"Male","createdAt":"2020-10-08T22:09:02.451+02:00"}
-{"index":{"_index":"users","_id":"6be44c9d-6957-4483-9037-749631f195e2"}}
-{"id":"6be44c9d-6957-4483-9037-749631f195e2","name":"Matt","email":"matt@example.com","sex":"Male","createdAt":"2020-10-02T10:25:59+02:00"}
-{"index":{"_index":"users","_id":"3251300d-51dd-4150-ba19-77f320f05b87"}}
-{"id": "3251300d-51dd-4150-ba19-77f320f05b87", "name": "Ricky","email": "ricky@example.com", "sex": "Male", "createdAt":"2020-10-03T20:25:59+02:00"}
+{"index":{"_index":"users","_id":"1926ed003d85e207fb173cb082de9668"}}
+{"id":"1926ed003d85e207fb173cb082de9668","name":"Duane","email":"duane@example.com","sex":"Male","createdAt":"2020-10-08T22:09:02.451+02:00"}
+{"index":{"_index":"users","_id":"c1369f548c8bedecb49808e23ecebaf7"}}
+{"id":"c1369f548c8bedecb49808e23ecebaf7","name":"Matt","email":"matt@example.com","sex":"Male","createdAt":"2020-10-02T10:25:59+02:00"}
+{"index":{"_index":"users","_id":"aa04d4005905a8e893d755c146461c6e"}}
+{"id": "aa04d4005905a8e893d755c146461c6e", "name": "Ricky","email": "ricky@example.com", "sex": "Male", "createdAt":"2020-10-03T20:25:59+02:00"}

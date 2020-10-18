@@ -6,7 +6,7 @@ import agh.edu.pl.filters.{ FilterEq, UsersFilter }
 import agh.edu.pl.ids.UserId
 import agh.edu.pl.models.{ Link, User, Vote }
 import agh.edu.pl.mutations.CreateUser
-import sangria.macros.derive.{ deriveObjectType, AddFields, ReplaceField }
+import sangria.macros.derive.{ deriveObjectType, AddFields }
 import sangria.schema.{ Field, ListType, ObjectType }
 
 case class GraphqlUser() extends GraphqlEntity[UserId, User] {
@@ -17,10 +17,6 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
   override def GraphQLOutputType: ObjectType[Context, User] =
     deriveObjectType[Context, User](
 //      Interfaces(EntityType),
-      ReplaceField(
-        "createdAt",
-        Field("createdAt", gqlOffsetDateTime, resolve = _.value.createdAt)
-      ),
       AddFields(
         Field(
           "links",

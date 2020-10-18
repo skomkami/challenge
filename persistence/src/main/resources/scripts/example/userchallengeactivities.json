@@ -1,0 +1,4 @@
+{"index":{"_index":"userchallengeactivities","_id":"1ef95cd4c199877ccb9c08729e56fdfe"}}
+{"id" : "1ef95cd4c199877ccb9c08729e56fdfe", "userId" : "aa04d4005905a8e893d755c146461c6e", "challengeId" : "2d131f693b3381bf93238b59149cd4ad", "value" : 3.5, "date" : "2020-10-18T18:40:29.453+02:00" }
+{"index":{"_index":"userchallengeactivities","_id":"08333067733377958df6104d7ae3c34a"}}
+{"id" : "08333067733377958df6104d7ae3c34a","userId" : "aa04d4005905a8e893d755c146461c6e","challengeId" : "2d131f693b3381bf93238b59149cd4ad","value" : 2.5,"date" : "2020-10-18T18:48:03.576+02:00"}

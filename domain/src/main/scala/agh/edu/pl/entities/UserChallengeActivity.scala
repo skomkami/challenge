@@ -1,14 +1,18 @@
-//package agh.edu.pl.entities
-//
-//import java.time.OffsetDateTime
-//
-//import agh.edu.pl.Entity
-//import agh.edu.pl.measures.Measure
-//
-//case class UserChallengeActivity[UserActivityId, UserId, ChallengeId, U](
-//    override val id: UserActivityId,
-//    userId: UserId,
-//    challengeId: ChallengeId,
-//    value: Measure[U],
-//    date: OffsetDateTime
-//  ) extends Entity[UserActivityId](id) {}
+package agh.edu.pl.entities
+
+import java.time.OffsetDateTime
+
+import agh.edu.pl.ids.{ ChallengeId, UserChallengeActivityId, UserId }
+import agh.edu.pl.models.{ Entity, JsonSerializable }
+
+final case class UserChallengeActivity(
+    override val id: UserChallengeActivityId,
+    userId: UserId,
+    challengeId: ChallengeId,
+    value: Double,
+    date: OffsetDateTime
+  ) extends Entity[UserChallengeActivityId](id) {
+  override type IdType = UserChallengeActivityId
+}
+case object UserChallengeActivity
+    extends JsonSerializable[UserChallengeActivity]
