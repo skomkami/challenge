@@ -9,7 +9,9 @@ import scala.reflect.ClassTag
 
 trait Repository {
   def getAll[E](
-      filter: Option[List[Filter]] = None
+      filter: Option[List[Filter]] = None,
+      size: Option[Int] = None,
+      from: Option[Int] = None
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]

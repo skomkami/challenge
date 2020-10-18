@@ -27,14 +27,19 @@ case class EsRepository(
     s"${tag.runtimeClass.getSimpleName.toLowerCase}s"
 
   override def getAll[E](
-      filters: Option[List[Filter]] = None
+      filters: Option[List[Filter]] = None,
+      size: Option[Int] = None,
+      offset: Option[Int] = None
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]
     ): Future[Seq[E]] =
     elasticClient
       .execute {
-        search(INDEX_NAME).bool(buildQuery(filters))
+        search(INDEX_NAME)
+          .bool(buildQuery(filters))
+          .size(size.getOrElse(10))
+          .from(offset.getOrElse(0))
       }
       .map(resp => resp.result.hits.hits)
       .map { hits =>

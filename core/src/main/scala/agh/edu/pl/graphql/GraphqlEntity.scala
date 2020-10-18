@@ -6,14 +6,7 @@ import agh.edu.pl.filters.{ EntityFilter, EntityFilterSettings }
 import agh.edu.pl.models.{ Entity, EntityId }
 import agh.edu.pl.mutations.CreateEntitySettings
 import io.circe.{ Decoder, Encoder }
-import sangria.schema.{
-  Argument,
-  Field,
-  ListType,
-  ObjectType,
-  OptionType,
-  StringType
-}
+import sangria.schema._
 
 import scala.reflect.ClassTag
 
@@ -38,16 +31,20 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
   )
 
   private val Id = Argument("id", StringType)
+  private val Size = Argument("size", OptionInputType(IntType))
+  private val Offset = Argument("offset", OptionInputType(IntType))
 
   protected def getAllQuery: Field[Context, Unit] = Field(
     name = s"all${typeName}s",
     fieldType = ListType(GraphQLOutputType),
-    arguments = filterSettings.FilterArgument :: Nil,
+    arguments = Size :: Offset :: filterSettings.FilterArgument :: Nil,
     resolve = c =>
       c.ctx
         .repository
         .getAll[T](
-          c.arg(filterSettings.FilterArgument).map(_.filters.toList)
+          filter = c.arg(filterSettings.FilterArgument).map(_.filters.toList),
+          size = c.arg(Size),
+          from = c.arg(Offset)
         )
   )
 
