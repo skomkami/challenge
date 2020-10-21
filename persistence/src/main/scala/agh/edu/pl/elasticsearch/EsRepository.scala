@@ -2,7 +2,7 @@ package agh.edu.pl.elasticsearch
 
 import agh.edu.pl.error.DomainError
 import agh.edu.pl.filters.{ Filter, FilterEq }
-import agh.edu.pl.models.{ Entity, EntityId }
+import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.repository.Repository
 import com.sksamuel.elastic4s.ElasticClient
 import com.sksamuel.elastic4s.ElasticDsl._
@@ -23,15 +23,8 @@ case class EsRepository(
     ec: ExecutionContext
   ) extends Repository {
 
-  private def INDEX_NAME[E](implicit tag: ClassTag[E]): String = {
-    val className = tag.runtimeClass.getSimpleName.toLowerCase
-    if (className.last == 'y') {
-      s"${className.dropRight(1)}ies"
-    }
-    else {
-      s"${className}s"
-    }
-  }
+  private def INDEX_NAME[E](implicit tag: ClassTag[E]): String =
+    tag.runtimeClass.getSimpleName.toLowerCase.pipe(plural)
 
   override def getAll[E](
       filters: Option[List[Filter]] = None,

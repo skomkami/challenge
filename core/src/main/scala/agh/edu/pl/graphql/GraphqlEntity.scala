@@ -3,7 +3,7 @@ package agh.edu.pl.graphql
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.filters.{ EntityFilter, EntityFilterSettings }
-import agh.edu.pl.models.{ Entity, EntityId }
+import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.mutations.CreateEntitySettings
 import io.circe.{ Decoder, Encoder }
 import sangria.schema._
@@ -35,7 +35,7 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
   private val Offset = Argument("offset", OptionInputType(IntType))
 
   protected def getAllQuery: Field[Context, Unit] = Field(
-    name = s"all${typeName}s",
+    name = s"all${plural(typeName)}",
     fieldType = ListType(GraphQLOutputType),
     arguments = Size :: Offset :: filterSettings.FilterArgument :: Nil,
     resolve = c =>

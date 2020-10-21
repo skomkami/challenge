@@ -1,7 +1,8 @@
 package agh.edu.pl.filters
 
+import agh.edu.pl.entities.User
 import agh.edu.pl.ids.UserId
-import agh.edu.pl.models.{ Sex, User }
+import agh.edu.pl.models.Sex
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType, OptionInputType }
 

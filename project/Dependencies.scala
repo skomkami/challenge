@@ -13,6 +13,7 @@ object Dependencies {
     val elastic4s = "7.9.1"
     val elastic4sCirce = "6.7.8"
     val pureconfig = "0.14.0"
+    val refined = "0.9.17"
     val scalaTest = "3.2.2"
     val slf4j = "1.7.30"
   }
@@ -84,11 +85,18 @@ object Dependencies {
     }
   }
 
+  case object eu {
+    case object timepit {
+      val refined = "eu.timepit" %% "refined" % Versions.refined
+    }
+  }
+
   case object io {
     case object circe {
       val `circe-generic` = dependency("generic")
       val `circe-parser` = dependency("parser")
       val `circe-optics` = dependency("optics")
+      val `circe-refined` = dependency("refined")
 
       private def dependency(artifact: String): ModuleID =
         "io.circe" %% s"circe-$artifact" % Versions.circe

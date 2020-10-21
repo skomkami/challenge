@@ -4,8 +4,10 @@ import java.time.OffsetDateTime
 
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
+import agh.edu.pl.entities
+import agh.edu.pl.entities.User
 import agh.edu.pl.ids.UserId
-import agh.edu.pl.models.{ EntityIdSettings, Sex, User }
+import agh.edu.pl.models.{ Email, EntityIdSettings, Sex }
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
@@ -14,13 +16,13 @@ import scala.concurrent.Future
 case class CreateUser(
     id: Option[UserId] = None,
     name: String,
-    email: String,
+    email: Email,
     sex: Sex,
     createdAt: OffsetDateTime = OffsetDateTime.now
   ) extends CreateEntity[User] {
 
   override def toEntity(newId: UserId): User =
-    User(
+    entities.User(
       id = newId,
       name = name,
       email = email,

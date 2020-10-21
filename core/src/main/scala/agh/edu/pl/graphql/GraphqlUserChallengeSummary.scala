@@ -2,10 +2,9 @@ package agh.edu.pl.graphql
 
 import agh.edu.pl.GraphQLSchema.{ gqlOffsetDateTime, ChallengeType, UserType }
 import agh.edu.pl.context.Context
-import agh.edu.pl.entities.{ Challenge, UserChallengeSummary }
+import agh.edu.pl.entities.{ Challenge, User, UserChallengeSummary }
 import agh.edu.pl.filters.UserChallengeSummariesFilter
 import agh.edu.pl.ids.UserChallengeSummaryId
-import agh.edu.pl.models.User
 import agh.edu.pl.mutations.JoinChallenge
 import sangria.macros.derive.{ deriveObjectType, ReplaceField }
 import sangria.schema.{ Field, ObjectType }

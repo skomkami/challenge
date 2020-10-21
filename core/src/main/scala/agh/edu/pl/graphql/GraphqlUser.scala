@@ -1,10 +1,14 @@
 package agh.edu.pl.graphql
 
-import agh.edu.pl.GraphQLSchema.{ gqlOffsetDateTime, LinkType, VoteType }
+import agh.edu.pl.GraphQLSchema.{
+  gqlOffsetDateTime,
+  UserChallengeActivityType,
+  UserChallengeSummaryType
+}
 import agh.edu.pl.context.Context
+import agh.edu.pl.entities.{ User, UserChallengeActivity, UserChallengeSummary }
 import agh.edu.pl.filters.{ FilterEq, UsersFilter }
 import agh.edu.pl.ids.UserId
-import agh.edu.pl.models.{ Link, User, Vote }
 import agh.edu.pl.mutations.CreateUser
 import sangria.macros.derive.{ deriveObjectType, AddFields }
 import sangria.schema.{ Field, ListType, ObjectType }
@@ -19,22 +23,24 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
 //      Interfaces(EntityType),
       AddFields(
         Field(
-          "links",
-          ListType(LinkType),
+          "activities",
+          ListType(UserChallengeActivityType),
           resolve = c =>
             c.ctx
               .repository
-              .getAll[Link](
-                Some(FilterEq("postedBy", c.value.id.value) :: Nil)
+              .getAll[UserChallengeActivity](
+                Some(FilterEq("userId", c.value.id.value) :: Nil)
               )
         ),
         Field(
           "votes",
-          ListType(VoteType),
+          ListType(UserChallengeSummaryType),
           resolve = c =>
             c.ctx
               .repository
-              .getAll[Vote](Some(FilterEq("userId", c.value.id.value) :: Nil))
+              .getAll[UserChallengeSummary](
+                Some(FilterEq("challengeId", c.value.id.value) :: Nil)
+              )
         )
       )
     )

@@ -57,4 +57,12 @@ package object models {
 
     protected val idTypeName: String = tag.runtimeClass.getSimpleName
   }
+
+  def plural(entityName: String): String =
+    if (entityName.last == 'y') {
+      s"${entityName.dropRight(1)}ies"
+    }
+    else {
+      s"${entityName}s"
+    }
 }

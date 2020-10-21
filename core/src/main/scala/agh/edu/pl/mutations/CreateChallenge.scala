@@ -4,9 +4,9 @@ import java.time.OffsetDateTime
 
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
-import agh.edu.pl.entities.Challenge
+import agh.edu.pl.entities.{ Challenge, User }
 import agh.edu.pl.ids.{ ChallengeId, UserId }
-import agh.edu.pl.models.{ EntityIdSettings, User }
+import agh.edu.pl.models.EntityIdSettings
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 

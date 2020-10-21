@@ -33,8 +33,10 @@ lazy val domain =
     .settings(commonSettings: _*)
     .settings(
       libraryDependencies ++= Seq(
+        eu.timepit.refined,
         org.`sangria-graphql`.sangria,
-        org.`sangria-graphql`.`sangria-circe`
+        org.`sangria-graphql`.`sangria-circe`,
+        io.circe.`circe-refined`
       )
     )
 

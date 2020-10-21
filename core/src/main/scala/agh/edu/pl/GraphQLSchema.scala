@@ -3,11 +3,11 @@ package agh.edu.pl
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{
   Challenge,
+  User,
   UserChallengeActivity,
   UserChallengeSummary
 }
-import agh.edu.pl.graphql.{ GraphqlLink, _ }
-import agh.edu.pl.models._
+import agh.edu.pl.graphql._
 import agh.edu.pl.models.{ Entity, EntityId }
 import sangria.schema.{ Field, ObjectType, _ }
 
@@ -28,23 +28,12 @@ object GraphQLSchema {
       )
     )
 
-//  val linkByUserRel: Relation[Link, Link, String] =
-//    Relation[Link, String]("postedByUser", l => Seq(l.postedBy.value))
-//  val voteByUserRel: Relation[Vote, Vote, String] =
-//    Relation[Vote, String]("votedByUser", v => Seq(v.userId.value))
-//  val voteByLinkRel: Relation[Vote, Vote, String] =
-//    Relation[Vote, String]("votesForLink", v => Seq(v.linkId.value))
+  private val GraphQLUser = GraphqlUser()
+  private val GraphQLChallenge = GraphqlChallenge()
+  private val GraphQLUserChallengeSummary = GraphqlUserChallengeSummary()
+  private val GraphQLUserChallengeActivity = GraphqlUserChallengeActivity()
 
-  val GraphQLLink = GraphqlLink()
-  val GraphQLUser = GraphqlUser()
-  val GraphQLVote = GraphqlVote()
-  val GraphQLChallenge = GraphqlChallenge()
-  val GraphQLUserChallengeSummary = GraphqlUserChallengeSummary()
-  val GraphQLUserChallengeActivity = GraphqlUserChallengeActivity()
-
-  lazy val LinkType: ObjectType[Context, Link] = GraphQLLink.GraphQLOutputType
   lazy val UserType: ObjectType[Context, User] = GraphQLUser.GraphQLOutputType
-  lazy val VoteType: ObjectType[Context, Vote] = GraphQLVote.GraphQLOutputType
   lazy val ChallengeType: ObjectType[Context, Challenge] =
     GraphQLChallenge.GraphQLOutputType
   lazy val UserChallengeSummaryType: ObjectType[Context, UserChallengeSummary] =
@@ -55,24 +44,24 @@ object GraphQLSchema {
 
   val schemaProviders: List[GraphqlEntity[_, _]] =
     List(
-      GraphQLLink,
       GraphQLUser,
-      GraphQLVote,
       GraphQLChallenge,
       GraphQLUserChallengeSummary,
       GraphQLUserChallengeActivity
     )
 
-  lazy val Mutation: ObjectType[Context, Unit] = ObjectType(
+  private lazy val Mutation: ObjectType[Context, Unit] = ObjectType(
     "Mutation",
     fields[Context, Unit](
       schemaProviders.map(_.createMutation): _*
     )
   )
 
-  val QueryType: ObjectType[Context, Unit] = ObjectType(
+  private val QueryType: ObjectType[Context, Unit] = ObjectType(
     "Query",
     fields[Context, Unit](schemaProviders.flatMap(_.queries): _*)
   )
-  val SchemaDefinition = Schema(QueryType, Some(Mutation))
+
+  val SchemaDefinition: Schema[Context, Unit] =
+    Schema(QueryType, Some(Mutation))
 }
