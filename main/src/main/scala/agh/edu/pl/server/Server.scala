@@ -1,6 +1,6 @@
 package agh.edu.pl.server
 
-import agh.edu.pl.GraphQLServer
+import agh.edu.pl.graphqlserver.GraphQLServer
 import agh.edu.pl.config.ServiceConfig
 import agh.edu.pl.elasticsearch.EsRepository
 import akka.actor.ActorSystem
@@ -17,7 +17,7 @@ import pureconfig.generic.auto._
 
 import scala.concurrent.ExecutionContextExecutor
 
-object Server extends App {
+object Server extends App with CorsSupport {
 
   val config: ServiceConfig = ConfigSource.default.load[ServiceConfig] match {
     case Right(value)   => value
@@ -48,7 +48,7 @@ object Server extends App {
   val bindingFuture =
     Http()
       .newServerAt(config.server.bindHost, config.server.bindPort)
-      .bind(route)
+      .bind(corsHandler(route))
   println(
     s"open a browser with URL: http://${config.server.bindHost}:${config.server.bindPort}/graphiql"
   )
