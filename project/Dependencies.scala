@@ -3,6 +3,7 @@ import sbt._
 object Dependencies {
 
   case object Versions {
+    val apacheHttpComponent = "4.5.13"
     val circe = "0.13.0"
     val sangria = "2.0.0"
     val sangriaCirce = "1.3.0"
@@ -12,6 +13,8 @@ object Dependencies {
     val akkaStream = "2.6.9"
     val elastic4s = "7.9.1"
     val elastic4sCirce = "6.7.8"
+    val jboss = "3.4.1.Final"
+    val keycloak = "11.0.2"
     val pureconfig = "0.14.0"
     val refined = "0.9.17"
     val scalaTest = "3.2.2"
@@ -109,6 +112,12 @@ object Dependencies {
   }
 
   case object org {
+    case object apache {
+      case object httpcomponents {
+        val httpclient =
+          "org.apache.httpcomponents" % "httpclient" % Versions.apacheHttpComponent
+      }
+    }
     case object augustjune {
       val `context-applied` =
         "org.augustjune" %% "context-applied" % "0.1.4"
@@ -126,6 +135,19 @@ object Dependencies {
 
       private def dependency(artifact: String): ModuleID =
         "org.http4s" %% s"http4s-$artifact" % "0.21.7"
+    }
+
+    case object jboss {
+      case object logging {
+        val `jboss-logging` =
+          "org.jboss.logging" % "jboss-logging" % Versions.jboss
+      }
+    }
+
+    case object keycloak {
+      val `keycloak-core` = "org.keycloak" % "keycloak-core" % Versions.keycloak
+      val `keycloak-adapter-core` =
+        "org.keycloak" % "keycloak-adapter-core" % Versions.keycloak
     }
 
     case object scalacheck {

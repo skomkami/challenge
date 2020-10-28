@@ -10,6 +10,7 @@ import agh.edu.pl.entities.{
 import agh.edu.pl.graphql._
 import agh.edu.pl.models.{ Entity, EntityId }
 import sangria.schema.{ Field, ObjectType, _ }
+import com.softwaremill.quicklens._
 
 object GraphQLSchema {
 
@@ -64,4 +65,11 @@ object GraphQLSchema {
 
   val SchemaDefinition: Schema[Context, Unit] =
     Schema(QueryType, Some(Mutation))
+
+  val PublicSchemaDefinition: Schema[Context, Unit] =
+    SchemaDefinition
+      .modify(_.query.fieldsFn)
+      .setTo(() => GraphQLUser.queries.toList)
+      .modify(_.mutation.each.fieldsFn)
+      .setTo(() => GraphQLUser.createMutation :: Nil)
 }

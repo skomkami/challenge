@@ -69,7 +69,11 @@ lazy val delivery =
       libraryDependencies ++= Seq(
         com.typesafe.akka.`akka-http`,
         com.typesafe.akka.`akka-stream`,
-        de.heikoseeberger.`akka-http-circe`
+        de.heikoseeberger.`akka-http-circe`,
+        org.apache.httpcomponents.httpclient,
+        org.keycloak.`keycloak-core`,
+        org.keycloak.`keycloak-adapter-core`,
+        org.jboss.logging.`jboss-logging`
       )
     )
 

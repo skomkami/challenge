@@ -1,0 +1,10 @@
+{
+  "realm": "challenge",
+  "auth-server-url": "http://0.0.0.0:8088/auth/",
+  "ssl-required": "external",
+  "resource": "challenge-backend",
+  "credentials": {
+    "secret": "7c44d544-adf6-4123-bcdf-c8fc39bb1fff"
+  },
+  "confidential-port": 0
+}

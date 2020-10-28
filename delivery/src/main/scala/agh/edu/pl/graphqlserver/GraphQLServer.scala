@@ -12,6 +12,7 @@ import akka.http.scaladsl.server.Route
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.circe.optics.JsonPath._
 import io.circe.{ Json, JsonObject }
+import org.keycloak.representations.AccessToken
 import sangria.ast.Document
 import sangria.execution.{ ErrorWithResolver, Executor, QueryAnalysisError }
 import sangria.marshalling.circe.{
@@ -24,7 +25,12 @@ import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.{ Failure, Success }
 
 case class GraphQLServer(repository: Repository) {
-  def endpoint(requestJson: Json)(implicit ec: ExecutionContext): Route = {
+  def endpoint(
+      requestJson: Json,
+      token: Option[AccessToken]
+    )(implicit
+      ec: ExecutionContext
+    ): Route = {
 
     val query = root.query.string.getOption(requestJson).getOrElse("")
     val variables = root.variables.obj.getOption(requestJson)
@@ -40,7 +46,8 @@ case class GraphQLServer(repository: Repository) {
           executeGraphQLQuery(
             queryAst,
             operationName,
-            vars
+            vars,
+            token
           )
         )
 
@@ -56,13 +63,21 @@ case class GraphQLServer(repository: Repository) {
   private def executeGraphQLQuery(
       query: Document,
       operation: Option[String],
-      vars: Json
+      vars: Json,
+      token: Option[AccessToken]
     )(implicit
       ec: ExecutionContext
-    ): Future[(StatusCode, Json)] =
+    ): Future[(StatusCode, Json)] = {
+
+    val schema = token match {
+      case Some(_) =>
+        GraphQLSchema.SchemaDefinition
+      case None => GraphQLSchema.PublicSchemaDefinition
+    }
+
     Executor
       .execute(
-        schema = GraphQLSchema.SchemaDefinition,
+        schema = schema,
         queryAst = query,
         userContext = Context(repository, ec),
         variables = vars,
@@ -77,5 +92,5 @@ case class GraphQLServer(repository: Repository) {
         case error: ErrorWithResolver =>
           InternalServerError -> error.resolveError
       }
-
+  }
 }

@@ -1,12 +1,18 @@
 package agh.edu.pl.server
 
-import agh.edu.pl.graphqlserver.GraphQLServer
+import agh.edu.pl.authorization.AuthorizationHandler
 import agh.edu.pl.config.ServiceConfig
 import agh.edu.pl.elasticsearch.EsRepository
+import agh.edu.pl.graphqlserver.GraphQLServer
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.Route
+import akka.http.scaladsl.server.{
+  AuthorizationFailedRejection,
+  RejectionHandler,
+  Route
+}
 import akka.stream.Materializer
 import com.sksamuel.elastic4s.http.JavaClient
 import com.sksamuel.elastic4s.{ ElasticClient, ElasticProperties }
@@ -17,7 +23,7 @@ import pureconfig.generic.auto._
 
 import scala.concurrent.ExecutionContextExecutor
 
-object Server extends App with CorsSupport {
+object Server extends App with CorsSupport with AuthorizationHandler {
 
   val config: ServiceConfig = ConfigSource.default.load[ServiceConfig] match {
     case Right(value)   => value
@@ -34,12 +40,24 @@ object Server extends App with CorsSupport {
   implicit val system: ActorSystem = ActorSystem()
   implicit val materializer: Materializer = Materializer(system)
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+
+  implicit def rejectionHandler: RejectionHandler = RejectionHandler
+    .newBuilder()
+    .handle {
+      case AuthorizationFailedRejection =>
+        complete(StatusCodes.Unauthorized -> None)
+    }
+    .result()
+    .mapRejectionResponse(addCORSHeaders)
+
   val server = GraphQLServer(esRepository)
 
   val route: Route =
     (post & path("graphql")) {
       entity(as[Json]) { requestJson =>
-        server.endpoint(requestJson)
+        authorize { token =>
+          server.endpoint(requestJson, token)
+        }
       }
     } ~ (get & path("graphiql")) {
       getFromResource("index.html")
