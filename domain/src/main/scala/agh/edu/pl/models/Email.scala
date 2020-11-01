@@ -3,11 +3,13 @@ package agh.edu.pl.models
 import eu.timepit.refined._
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.string.MatchesRegex
-import io.circe.{ Decoder, Encoder }
 import io.circe.refined._
+import io.circe.{ Decoder, Encoder }
 import sangria.schema.ScalarAlias
 
-class Email(val address: String)
+class Email(val address: String) {
+  override def toString: String = address
+}
 
 object Email extends JsonSerializable[Email] {
   implicit val scalarAlias: ScalarAlias[Email, String] =

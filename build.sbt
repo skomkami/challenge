@@ -52,7 +52,6 @@ lazy val core =
         org.`sangria-graphql`.`sangria-circe`
       ),
       libraryDependencies ++= Seq(
-        com.github.alexarchambault.`scalacheck-shapeless_1.14`,
         org.scalacheck.scalacheck,
         org.scalatest.scalatest,
         org.scalatestplus.`scalacheck-1-14`,
@@ -67,6 +66,11 @@ lazy val delivery =
     .settings(commonSettings: _*)
     .settings(
       libraryDependencies ++= Seq(
+        com.fullfacing.`keycloak4s-core`,
+        com.fullfacing.`keycloak4s-admin`,
+        com.fullfacing.`keycloak4s-admin-monix`,
+        com.fullfacing.`keycloak4s-auth-akka-http`,
+        com.softwaremill.sttp.`akka-http-backend`,
         com.typesafe.akka.`akka-http`,
         com.typesafe.akka.`akka-stream`,
         de.heikoseeberger.`akka-http-circe`,
@@ -99,14 +103,12 @@ lazy val main =
     .settings(commonSettings)
     .settings(
       libraryDependencies ++= Seq(
-        com.github.pureconfig.pureconfig,
-        org.slf4j.`slf4j-simple`
+        com.github.pureconfig.pureconfig
       )
     )
 
 lazy val baseLibraries = Seq(
   com.beachape.`enumeratum-circe`,
-  com.github.alexarchambault.`scalacheck-shapeless_1.14`,
   com.softwaremill.quicklens,
   io.circe.`circe-generic`,
   io.circe.`circe-parser`,
@@ -118,8 +120,6 @@ lazy val baseLibraries = Seq(
 )
 
 lazy val commonSettings = Seq(
-  addCompilerPlugin(com.olegpy.`better-monadic-for`),
-  addCompilerPlugin(org.augustjune.`context-applied`),
   addCompilerPlugin(org.typelevel.`kind-projector`),
   update / evictionWarningOptions := EvictionWarningOptions.empty,
   libraryDependencies ++= baseLibraries,
@@ -133,8 +133,5 @@ lazy val commonSettings = Seq(
 )
 
 lazy val effects = Seq(
-  dev.zio.`zio-interop-cats`,
-  dev.zio.zio,
-  io.monix.`monix-eval`,
   org.typelevel.`cats-effect`
 )

@@ -131,4 +131,20 @@ case class EsRepository(
         .docAsUpsert(entity.asJson.noSpaces)
     }
     .map(_ => entity)
+
+  override def delete[E <: Entity[_]](
+      entityId: E#IdType
+    )(implicit
+      tag: ClassTag[E]
+    ): Future[E#IdType] = elasticClient
+    .execute {
+      deleteById(INDEX_NAME, entityId.value)
+    }
+    .map { resp =>
+      if (resp.result.result == "not_found") {
+        val className = tag.runtimeClass.getSimpleName
+        throw NotFoundEntity(className, entityId.value)
+      }
+      else entityId
+    }
 }

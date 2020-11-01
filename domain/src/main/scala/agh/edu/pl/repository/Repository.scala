@@ -44,4 +44,10 @@ trait Repository {
       tag: ClassTag[E],
       encoder: Encoder[E]
     ): Future[E]
+
+  def delete[E <: Entity[_]](
+      id: E#IdType
+    )(implicit
+      tag: ClassTag[E]
+    ): Future[E#IdType]
 }

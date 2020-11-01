@@ -4,7 +4,7 @@
   "ssl-required": "external",
   "resource": "challenge-backend",
   "credentials": {
-    "secret": "7c44d544-adf6-4123-bcdf-c8fc39bb1fff"
+    "secret": "3c2e0240-d98e-4bdc-8c3f-f381a56cc776"
   },
   "confidential-port": 0
 }

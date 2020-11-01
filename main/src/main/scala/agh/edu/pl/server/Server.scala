@@ -1,9 +1,11 @@
 package agh.edu.pl.server
 
 import agh.edu.pl.authorization.AuthorizationHandler
+import agh.edu.pl.backends.AkkaHttpBackendL
 import agh.edu.pl.config.ServiceConfig
 import agh.edu.pl.elasticsearch.EsRepository
 import agh.edu.pl.graphqlserver.GraphQLServer
+import agh.edu.pl.security.KeycloakService
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.StatusCodes
@@ -14,12 +16,17 @@ import akka.http.scaladsl.server.{
   Route
 }
 import akka.stream.Materializer
+import akka.stream.scaladsl.Source
+import akka.util.ByteString
+import com.fullfacing.keycloak4s.admin.client.KeycloakClient
 import com.sksamuel.elastic4s.http.JavaClient
 import com.sksamuel.elastic4s.{ ElasticClient, ElasticProperties }
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.circe.Json
+import monix.eval.Task
 import pureconfig.ConfigSource
 import pureconfig.generic.auto._
+import sttp.client.akkahttp.AkkaHttpBackend
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -30,6 +37,10 @@ object Server extends App with CorsSupport with AuthorizationHandler {
     case Left(failures) => throw new Exception(failures.toString)
   }
 
+  implicit val system: ActorSystem = ActorSystem()
+  implicit val materializer: Materializer = Materializer(system)
+  implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+
   private val elasticProps: ElasticProperties = ElasticProperties(
     s"http://${config.es.host}:${config.es.port}"
   )
@@ -37,9 +48,17 @@ object Server extends App with CorsSupport with AuthorizationHandler {
   private val esRepository =
     EsRepository(esClient)(scala.concurrent.ExecutionContext.global)
 
-  implicit val system: ActorSystem = ActorSystem()
-  implicit val materializer: Materializer = Materializer(system)
-  implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+  val kcClient: KeycloakClient[Task, Source[ByteString, Any]] = {
+    implicit val backend: AkkaHttpBackendL =
+      new AkkaHttpBackendL(
+        AkkaHttpBackend()
+      )
+    new KeycloakClient[Task, Source[ByteString, Any]](
+      config.keycloak.toConfingWithAuth
+    )
+  }
+
+  private val kcService = KeycloakService()(kcClient)
 
   implicit def rejectionHandler: RejectionHandler = RejectionHandler
     .newBuilder()
@@ -50,7 +69,7 @@ object Server extends App with CorsSupport with AuthorizationHandler {
     .result()
     .mapRejectionResponse(addCORSHeaders)
 
-  val server = GraphQLServer(esRepository)
+  val server = GraphQLServer(esRepository, kcService)
 
   val route: Route =
     (post & path("graphql")) {

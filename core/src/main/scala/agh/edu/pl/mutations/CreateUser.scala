@@ -2,6 +2,7 @@ package agh.edu.pl.mutations
 
 import java.time.OffsetDateTime
 
+import agh.edu.pl.auth.AuthServiceError
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities
@@ -11,7 +12,7 @@ import agh.edu.pl.models.{ Email, EntityIdSettings, Sex }
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 
 case class CreateUser(
     id: Option[UserId] = None,
@@ -30,8 +31,23 @@ case class CreateUser(
       createdAt = createdAt
     )
 
+  override def newEntity(ctx: Context, newId: UserId): Future[User] = {
+    implicit val ec: ExecutionContext = ctx.ec
+    val entity = toEntity(newId)
+
+    ctx
+      .authService
+      .pushUser(entity)
+      .flatMap {
+        case Right(_)    => ctx.repository.create(entity)
+        case Left(error) => throw AuthServiceError(error)
+      }
+  }
+
   override def updateEntity(ctx: Context, entity: User): Future[User] =
-    ctx.repository.update(toEntity(finalId))
+    throw EntityAlreadyExists(
+      s"User: ${entity.id} already exists"
+    )
 
   override def generateId: UserId =
     UserId.generateId(UserId.DeterministicId(email))
