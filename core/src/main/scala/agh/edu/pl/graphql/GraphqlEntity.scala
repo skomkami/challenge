@@ -49,7 +49,7 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
   )
 
   protected def getByIdQuery: Field[Context, Unit] = Field(
-    name = s"${getClass.getSimpleName.toLowerCase}",
+    name = s"${typeName.toLowerCase}",
     fieldType = OptionType(GraphQLOutputType),
     arguments = Id :: Nil,
     resolve = c =>

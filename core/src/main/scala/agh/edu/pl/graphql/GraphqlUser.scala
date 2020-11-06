@@ -9,9 +9,10 @@ import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ User, UserChallengeActivity, UserChallengeSummary }
 import agh.edu.pl.filters.{ FilterEq, UsersFilter }
 import agh.edu.pl.ids.UserId
+import agh.edu.pl.models.Email.{ scalarAlias => emailType }
 import agh.edu.pl.mutations.CreateUser
 import sangria.macros.derive.{ deriveObjectType, AddFields }
-import sangria.schema.{ Field, ListType, ObjectType }
+import sangria.schema.{ Argument, Field, ListType, ObjectType, OptionType }
 
 case class GraphqlUser() extends GraphqlEntity[UserId, User] {
   override def createEntitySettings: CreateUser.type = CreateUser
@@ -44,4 +45,23 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
         )
       )
     )
+
+  private val EmailArg = Argument("email", emailType)
+
+  protected def getByEmailQuery: Field[Context, Unit] = Field(
+    name = s"getUserByEmail",
+    fieldType = OptionType(GraphQLOutputType),
+    arguments = EmailArg :: Nil,
+    resolve = c => {
+      val email = c.arg(EmailArg)
+      val id = UserId.generateId(UserId.DeterministicId(email))
+      c.ctx
+        .repository
+        .getById[User](id)
+    }
+  )
+
+  override def queries: Seq[Field[Context, Unit]] =
+    super.queries :+ getByEmailQuery
+
 }

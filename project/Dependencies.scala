@@ -3,6 +3,7 @@ import sbt._
 object Dependencies {
 
   case object Versions {
+    val apacheHttpComponent = "4.5.13"
     val circe = "0.13.0"
     val sangria = "2.0.0"
     val sangriaCirce = "1.3.0"
@@ -12,34 +13,38 @@ object Dependencies {
     val akkaStream = "2.6.9"
     val elastic4s = "7.9.1"
     val elastic4sCirce = "6.7.8"
+    val jboss = "3.4.1.Final"
+    val keycloak = "11.0.2"
+    val keycloak4s = "2.2.8"
     val pureconfig = "0.14.0"
     val refined = "0.9.17"
     val scalaTest = "3.2.2"
-    val slf4j = "1.7.30"
+    val sttp = "2.2.8"
   }
 
   case object com {
 
     case object beachape {
       val `enumeratum-circe` = "com.beachape" %% "enumeratum-circe" % "1.6.1"
+    }
 
+    case object fullfacing {
+      val `keycloak4s-core` =
+        "com.fullfacing" %% "keycloak4s-core" % Versions.keycloak4s
+      val `keycloak4s-admin` =
+        "com.fullfacing" %% "keycloak4s-admin" % Versions.keycloak4s
+      val `keycloak4s-admin-monix` =
+        "com.fullfacing" %% "keycloak4s-admin-monix" % Versions.keycloak4s
+      val `keycloak4s-auth-akka-http` =
+        "com.fullfacing" %% "keycloak4s-auth-akka-http" % Versions.keycloak4s
     }
 
     case object github {
-      case object alexarchambault {
-        val `scalacheck-shapeless_1.14` =
-          "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.5"
-      }
 
       case object pureconfig {
         val pureconfig =
           "com.github.pureconfig" %% "pureconfig" % Versions.pureconfig
       }
-    }
-
-    case object olegpy {
-      val `better-monadic-for` =
-        "com.olegpy" %% "better-monadic-for" % "0.3.1"
     }
 
     case object sksamuel {
@@ -56,6 +61,10 @@ object Dependencies {
     case object softwaremill {
       val quicklens =
         "com.softwaremill.quicklens" %% "quicklens" % Versions.quicklens
+      case object sttp {
+        val `akka-http-backend` =
+          "com.softwaremill.sttp.client" %% "akka-http-backend" % Versions.sttp
+      }
     }
 
     case object typesafe {
@@ -75,16 +84,6 @@ object Dependencies {
     }
   }
 
-  case object dev {
-    case object zio {
-      val zio =
-        "dev.zio" %% "zio" % "1.0.1"
-
-      val `zio-interop-cats` =
-        "dev.zio" %% "zio-interop-cats" % "2.1.4.0"
-    }
-  }
-
   case object eu {
     case object timepit {
       val refined = "eu.timepit" %% "refined" % Versions.refined
@@ -101,31 +100,27 @@ object Dependencies {
       private def dependency(artifact: String): ModuleID =
         "io.circe" %% s"circe-$artifact" % Versions.circe
     }
-
-    case object monix {
-      val `monix-eval` =
-        "io.monix" %% "monix-eval" % "3.2.2"
-    }
   }
 
   case object org {
-    case object augustjune {
-      val `context-applied` =
-        "org.augustjune" %% "context-applied" % "0.1.4"
+    case object apache {
+      case object httpcomponents {
+        val httpclient =
+          "org.apache.httpcomponents" % "httpclient" % Versions.apacheHttpComponent
+      }
     }
 
-    case object http4s {
-      val `http4s-blaze-server` =
-        dependency("blaze-server")
+    case object jboss {
+      case object logging {
+        val `jboss-logging` =
+          "org.jboss.logging" % "jboss-logging" % Versions.jboss
+      }
+    }
 
-      val `http4s-circe` =
-        dependency("circe")
-
-      val `http4s-dsl` =
-        dependency("dsl")
-
-      private def dependency(artifact: String): ModuleID =
-        "org.http4s" %% s"http4s-$artifact" % "0.21.7"
+    case object keycloak {
+      val `keycloak-core` = "org.keycloak" % "keycloak-core" % Versions.keycloak
+      val `keycloak-adapter-core` =
+        "org.keycloak" % "keycloak-adapter-core" % Versions.keycloak
     }
 
     case object scalacheck {
@@ -147,16 +142,6 @@ object Dependencies {
       val sangria = "org.sangria-graphql" %% "sangria" % Versions.sangria
       val `sangria-circe` =
         "org.sangria-graphql" %% "sangria-circe" % Versions.sangriaCirce
-    }
-
-    case object slf4j {
-      val `slf4j-simple` = "org.slf4j" % "slf4j-simple" % Versions.slf4j
-      val `slf4j-nop` = "org.slf4j" % "slf4j-nop" % Versions.slf4j
-    }
-
-    case object tpolecat {
-      val `skunk-core` =
-        "org.tpolecat" %% "skunk-core" % "0.0.21"
     }
 
     case object typelevel {
