@@ -26,7 +26,7 @@ case class GraphqlUserChallengeSummary()
       ReplaceField(
         "userId",
         Field(
-          "userId",
+          "user",
           UserType,
           resolve = c => c.ctx.repository.getById[User](c.value.userId)
         )
@@ -34,7 +34,7 @@ case class GraphqlUserChallengeSummary()
       ReplaceField(
         "challengeId",
         Field(
-          "challengeId",
+          "challenge",
           ChallengeType,
           resolve =
             c => c.ctx.repository.getById[Challenge](c.value.challengeId)

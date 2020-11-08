@@ -147,4 +147,26 @@ case class EsRepository(
       }
       else entityId
     }
+
+  override def updateMany[E <: Entity[EntityId]](
+      entities: Seq[E]
+    )(implicit
+      tag: ClassTag[E],
+      encoder: Encoder[E]
+    ): Future[Seq[EntityId]] = elasticClient
+    .execute {
+      val operations = entities.map { entity =>
+        updateById(INDEX_NAME, entity.id.value)
+          .docAsUpsert(entity.asJson.noSpaces)
+      }
+      bulk(operations)
+    }
+    .map { resp =>
+      if (resp.result.hasFailures) {
+        throw ???
+      }
+      else {
+        entities.map(_.id)
+      }
+    }
 }

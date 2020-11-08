@@ -1,0 +1,7 @@
+<div *ngIf="!!user" class="ui devided grid">
+  <div class="row">
+    <user-component [user]="user"></user-component>
+    <challenges [user]="user"></challenges>
+  </div>
+</div>
+

@@ -1,0 +1,43 @@
+@import './app/vendor/semantic.min.css';
+body {
+  background-color: #F4F0DC;
+}
+
+.ui.menu .item img.logo {
+    margin-right: 1.5em;
+}
+
+form.ui.segment.form {
+  background-color: #ffffff;
+  margin-top: 2em;
+}
+
+.margin-top {
+  margin-top:2em;
+}
+
+form.form:after {
+  content: '';
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+}
+
+div.ui.main {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+div.ui.main.container.segment {
+  min-height: 500px;
+}
+
+.full-height {
+  height: 100%;
+}

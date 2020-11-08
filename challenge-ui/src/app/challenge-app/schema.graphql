@@ -1,0 +1,91 @@
+type Challenge {
+  id: ChallengeId!
+  name: String!
+  createdOn: OffsetDateTime!
+  finishesOn: OffsetDateTime!
+  createdBy: User!
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar ChallengeId
+
+input CreateUser {
+  id: UserId
+  name: String!
+  email: Email!
+  sex: Sex!
+  createdAt: OffsetDateTime = false
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar Email
+
+type Mutation {
+  createUser(input: CreateUser!): User!
+}
+
+scalar OffsetDateTime
+
+type Query {
+  allUsers(size: Int, offset: Int, filter: UsersFilter): [User!]!
+  user(id: String!): User
+  getUserByEmail(email: Email!): User
+}
+
+enum Sex {
+  Male
+  Female
+}
+
+type User {
+  id: UserId!
+  name: String!
+  email: Email!
+  sex: Sex!
+  createdAt: OffsetDateTime!
+  activities: [UserChallengeActivity!]!
+  votes: [UserChallengeSummary!]!
+}
+
+type UserChallengeActivity {
+  id: UserChallengeActivityId!
+  value: Float!
+  date: OffsetDateTime!
+  user: User!
+  challenge: Challenge!
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar UserChallengeActivityId
+
+type UserChallengeSummary {
+  id: UserChallengeSummaryId!
+  summaryValue: Float!
+  lastActive: OffsetDateTime
+  user: User!
+  challenge: Challenge!
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar UserChallengeSummaryId
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar UserId
+
+input UsersFilter {
+  id: UserId
+  name: String
+  email: String
+  sex: Sex
+}
+
