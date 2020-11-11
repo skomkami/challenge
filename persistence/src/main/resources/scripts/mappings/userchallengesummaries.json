@@ -22,6 +22,9 @@
       "summaryValue" : {
         "type" : "float"
       },
+      "position": {
+        "type" : "integer"
+      },
       "userId" : {
         "type" : "text",
         "fields" : {
@@ -30,7 +33,8 @@
             "ignore_above" : 256
           }
         }
-      }
+      },
+      "lastActive": { "type":  "date" }
     }
   }
 }

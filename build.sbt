@@ -109,6 +109,7 @@ lazy val main =
 
 lazy val baseLibraries = Seq(
   com.beachape.`enumeratum-circe`,
+  com.outr.scribe,
   com.softwaremill.quicklens,
   io.circe.`circe-generic`,
   io.circe.`circe-parser`,

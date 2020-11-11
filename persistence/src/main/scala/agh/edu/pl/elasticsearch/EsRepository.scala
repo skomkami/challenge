@@ -148,7 +148,7 @@ case class EsRepository(
       else entityId
     }
 
-  override def updateMany[E <: Entity[EntityId]](
+  override def updateMany[E <: Entity[_ <: EntityId]](
       entities: Seq[E]
     )(implicit
       tag: ClassTag[E],
@@ -168,5 +168,24 @@ case class EsRepository(
       else {
         entities.map(_.id)
       }
+    }
+
+  case class NotRefreshedIndex(index: String)
+      extends DomainError(
+        s"""Something went wrong while refreshing index: $index """
+      )
+
+  override def forceRefresh[E <: Entity[_]](
+      implicit
+      tag: ClassTag[E]
+    ): Future[Unit] = elasticClient
+    .execute {
+      refreshIndex(INDEX_NAME)
+    }
+    .map { resp =>
+      if (resp.isError) {
+        throw NotRefreshedIndex(INDEX_NAME)
+      }
+      else ()
     }
 }

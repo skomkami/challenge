@@ -51,11 +51,12 @@ trait Repository {
       tag: ClassTag[E]
     ): Future[E#IdType]
 
-  def updateMany[E <: Entity[EntityId]](
+  def updateMany[E <: Entity[_ <: EntityId]](
       entities: Seq[E]
     )(implicit
       tag: ClassTag[E],
       encoder: Encoder[E]
     ): Future[Seq[EntityId]]
 
+  def forceRefresh[E <: Entity[_]](implicit tag: ClassTag[E]): Future[Unit]
 }

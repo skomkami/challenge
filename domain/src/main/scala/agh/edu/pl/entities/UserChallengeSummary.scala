@@ -10,6 +10,8 @@ case class UserChallengeSummary(
     userId: UserId,
     challengeId: ChallengeId,
     summaryValue: Double,
+    // None indicates that no calculation occurred
+    position: Option[Int],
     lastActive: Option[OffsetDateTime] = None
   ) extends Entity[UserChallengeSummaryId](id) {
   override type IdType = UserChallengeSummaryId

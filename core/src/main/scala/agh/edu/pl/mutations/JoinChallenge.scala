@@ -21,6 +21,7 @@ case class JoinChallenge(
       userId = userId,
       challengeId = challengeId,
       summaryValue = 0,
+      position = None,
       lastActive = None
     )
 

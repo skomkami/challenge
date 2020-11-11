@@ -2,6 +2,7 @@ package agh.edu.pl.mutations
 
 import java.time.OffsetDateTime
 
+import agh.edu.pl.calculator.ChallengePositionsCalculator
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ UserChallengeActivity, UserChallengeSummary }
@@ -18,6 +19,7 @@ import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
 import scala.concurrent.{ ExecutionContext, Future }
+import scala.util.{ Failure, Success }
 
 case class LogActivity(
     userId: UserId,
@@ -45,11 +47,28 @@ case class LogActivity(
       UserChallengeSummaryId.DataToGenerateId(challengeId, userId)
     )
 
-    for {
-      summary <- ctx.repository.getById[UserChallengeSummary](summaryId)
-      _ <- updateSummary(summary, ctx.repository)
-      created <- ctx.repository.create[UserChallengeActivity](toEntity(newId))
-    } yield created
+    val createActivity =
+      for {
+        summary <- ctx.repository.getById[UserChallengeSummary](summaryId)
+        _ <- updateSummary(summary, ctx.repository)
+        created <- ctx
+          .repository
+          .create[UserChallengeActivity](toEntity(newId))
+      } yield created
+
+    createActivity.onComplete {
+      case Success(_) =>
+        //force refresh before position calculator
+        //TODO check refresh wait_for in documentation
+        ctx.repository.forceRefresh[UserChallengeSummary].map { _ =>
+          ChallengePositionsCalculator(challengeId).process(ctx)
+        }
+      case Failure(exception) =>
+        scribe.error(
+          s"Sorting skipped because of error: ${exception.getMessage}"
+        )
+    }
+    createActivity
   }
 
   private def updateSummary(
