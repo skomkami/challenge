@@ -24,11 +24,13 @@ export class RegisterComponent implements OnInit {
 
   user: User;
   errorMessage: string;
+  loading: boolean;
 
   keys = Object.keys;
   symbols = Sex;
 
   constructor(private createUser: CreateUserGQL, fb: FormBuilder) {
+    this.loading = false;
     this.resetUser();
     this.registerForm = fb.group({
       'name': [this.user.name, Validators.required],
@@ -54,10 +56,12 @@ export class RegisterComponent implements OnInit {
   onSubmit(form: any): void {
     console.log('you submitted value:', form);
     console.log('user: ', this.user);
+    this.loading = true;
     this.createUser
     .mutate({user: this.user})
     .pipe(
       finalize(() => {
+        this.loading = false;
         this.resetUser();
         this.registerForm.reset();
       })

@@ -30,7 +30,7 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
       c => c.arg(createEntitySettings.CreateEntityInput).createEntity(c.ctx)
   )
 
-  private val Id = Argument("id", StringType)
+  private val Id = Argument("id", createEntitySettings.idSettings.scalarAlias)
   private val Size = Argument("size", OptionInputType(IntType))
   private val Offset = Argument("offset", OptionInputType(IntType))
 
@@ -55,7 +55,7 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
     resolve = c =>
       c.ctx
         .repository
-        .getById[T](createEntitySettings.idCodec.fromString(c.arg(Id)))
+        .getById[T](c.arg(Id))
   )
 
   def queries: Seq[Field[Context, Unit]] =

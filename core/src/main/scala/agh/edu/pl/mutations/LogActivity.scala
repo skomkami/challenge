@@ -19,7 +19,6 @@ import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
 import scala.concurrent.{ ExecutionContext, Future }
-import scala.util.{ Failure, Success }
 
 case class LogActivity(
     userId: UserId,
@@ -56,18 +55,9 @@ case class LogActivity(
           .create[UserChallengeActivity](toEntity(newId))
       } yield created
 
-    createActivity.onComplete {
-      case Success(_) =>
-        //force refresh before position calculator
-        //TODO check refresh wait_for in documentation
-        ctx.repository.forceRefresh[UserChallengeSummary].map { _ =>
-          ChallengePositionsCalculator(challengeId).process(ctx)
-        }
-      case Failure(exception) =>
-        scribe.error(
-          s"Sorting skipped because of error: ${exception.getMessage}"
-        )
-    }
+    createActivity.onComplete(
+      ChallengePositionsCalculator(challengeId).processWhenSuccess(ctx)
+    )
     createActivity
   }
 
@@ -107,6 +97,6 @@ case object LogActivity
   lazy val CreateEntityInput: Argument[LogActivity] =
     Argument("input", LogActivityInputType)
 
-  override def idCodec: EntityIdSettings[UserChallengeActivityId] =
+  override def idSettings: EntityIdSettings[UserChallengeActivityId] =
     UserChallengeActivityId
 }

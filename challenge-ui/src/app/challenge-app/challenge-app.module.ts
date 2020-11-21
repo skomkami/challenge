@@ -7,7 +7,17 @@ import { CommonModule } from '@angular/common';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { UserChallengesComponent } from './user-challenges/user-challenges.component';
 import { ChallengesComponent } from './challenges/challenges.component';
+import { CreateChallengeComponent } from './create-challenge/create-challenge.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule,
+} from '@angular-material-components/datetime-picker';
 
 @NgModule({
   declarations: [
@@ -16,11 +26,20 @@ import { ChallengesComponent } from './challenges/challenges.component';
     UserComponent,
     UserInfoComponent,
     UserChallengesComponent,
-    ChallengesComponent
+    ChallengesComponent,
+    CreateChallengeComponent,
   ],
   imports: [
     CommonModule,
-    ChallengeAppRoutingModule
-  ]
+    ChallengeAppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatInputModule,
+
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
+  ],
 })
-export class ChallengeAppModule { }
+export class ChallengeAppModule {}

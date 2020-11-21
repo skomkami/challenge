@@ -11,6 +11,22 @@ type Challenge {
 # human-readable text.
 scalar ChallengeId
 
+input ChallengesFilter {
+  id: ChallengeId
+  name: String
+  createdBy: UserId
+  createdOn: OffsetDateTime
+  finishesOn: OffsetDateTime
+}
+
+input CreateChallenge {
+  id: ChallengeId
+  name: String!
+  createdBy: UserId!
+  createdOn: OffsetDateTime = false
+  finishesOn: OffsetDateTime!
+}
+
 input CreateUser {
   id: UserId
   name: String!
@@ -24,16 +40,37 @@ input CreateUser {
 # human-readable text.
 scalar Email
 
+input JoinChallenge {
+  userId: UserId!
+  challengeId: ChallengeId!
+}
+
+input LogActivity {
+  userId: UserId!
+  challengeId: ChallengeId!
+  value: Float!
+  date: OffsetDateTime = false
+}
+
 type Mutation {
   createUser(input: CreateUser!): User!
+  createChallenge(input: CreateChallenge!): Challenge!
+  joinChallenge(input: JoinChallenge!): UserChallengeSummary!
+  logActivity(input: LogActivity!): UserChallengeActivity!
 }
 
 scalar OffsetDateTime
 
 type Query {
   allUsers(size: Int, offset: Int, filter: UsersFilter): [User!]!
-  user(id: String!): User
+  user(id: UserId!): User
   getUserByEmail(email: Email!): User
+  allChallenges(size: Int, offset: Int, filter: ChallengesFilter): [Challenge!]!
+  challenge(id: ChallengeId!): Challenge
+  allUserChallengeSummaries(size: Int, offset: Int, filter: UserChallengeSummariesFilter): [UserChallengeSummary!]!
+  userchallengesummary(id: UserChallengeSummaryId!): UserChallengeSummary
+  allUserChallengeActivities(size: Int, offset: Int, filter: UserChallengeActivitiesFilter): [UserChallengeActivity!]!
+  userchallengeactivity(id: UserChallengeActivityId!): UserChallengeActivity
 }
 
 enum Sex {
@@ -48,15 +85,23 @@ type User {
   sex: Sex!
   createdAt: OffsetDateTime!
   activities: [UserChallengeActivity!]!
-  votes: [UserChallengeSummary!]!
+  challenges: [UserChallengeSummary!]!
+}
+
+input UserChallengeActivitiesFilter {
+  id: UserChallengeActivityId
+  userId: UserId
+  challengeId: ChallengeId
+  value: Float
+  date: OffsetDateTime
 }
 
 type UserChallengeActivity {
   id: UserChallengeActivityId!
   value: Float!
   date: OffsetDateTime!
-  userId: User!
-  challengeId: Challenge!
+  user: User!
+  challenge: Challenge!
 }
 
 # The `String` scalar type represents textual data, represented as UTF-8 character
@@ -64,12 +109,21 @@ type UserChallengeActivity {
 # human-readable text.
 scalar UserChallengeActivityId
 
+input UserChallengeSummariesFilter {
+  id: UserChallengeSummaryId
+  userId: UserId
+  challengeId: ChallengeId
+  summaryValue: Float
+  lastActive: OffsetDateTime
+}
+
 type UserChallengeSummary {
   id: UserChallengeSummaryId!
   summaryValue: Float!
+  position: Int
   lastActive: OffsetDateTime
-  userId: User!
-  challengeId: Challenge!
+  user: User!
+  challenge: Challenge!
 }
 
 # The `String` scalar type represents textual data, represented as UTF-8 character

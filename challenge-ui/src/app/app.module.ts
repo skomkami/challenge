@@ -9,6 +9,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GraphQLModule } from './graphql.module';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule,
+} from '@angular-material-components/datetime-picker';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -16,27 +25,30 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: 'http://localhost:8088/auth',
         realm: 'challenge',
-        clientId: 'challenge-ui'
+        clientId: 'challenge-ui',
       },
-      loadUserProfileAtStartUp: true          
+      loadUserProfileAtStartUp: true,
     });
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RegisterComponent,
-    WelcomePageComponent
-  ],
+  declarations: [AppComponent, RegisterComponent, WelcomePageComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     GraphQLModule,
     HttpClientModule,
     ChallengeAppModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    MatDatepickerModule,
+    MatInputModule,
+
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
   providers: [
     {
@@ -44,8 +56,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService],
-    }
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

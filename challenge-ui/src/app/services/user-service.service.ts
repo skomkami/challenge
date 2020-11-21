@@ -1,4 +1,4 @@
-import { UserByEmailQuery, UserByEmailGQL } from './user-by-email.query.graphql-gen';
+import { UserByEmailGQL } from './user-by-email.query.graphql-gen';
 import { User } from '../models/user.model';
 import { KeycloakService } from 'keycloak-angular';
 import { Injectable } from '@angular/core';

@@ -62,5 +62,5 @@ case object CreateUser extends CreateEntitySettings[User, CreateUser] {
   lazy val CreateEntityInput: Argument[CreateUser] =
     Argument("input", CreateUserInputType)
 
-  override def idCodec: EntityIdSettings[UserId] = UserId
+  override def idSettings: EntityIdSettings[UserId] = UserId
 }

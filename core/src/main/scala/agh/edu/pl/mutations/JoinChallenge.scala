@@ -1,5 +1,6 @@
 package agh.edu.pl.mutations
 
+import agh.edu.pl.calculator.ChallengePositionsCalculator
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, User, UserChallengeSummary }
@@ -30,11 +31,16 @@ case class JoinChallenge(
       newId: UserChallengeSummaryId
     ): Future[UserChallengeSummary] = {
     implicit val ec: ExecutionContext = ctx.ec
-    for {
+    val newSummary = for {
       _ <- ctx.repository.getById[User](userId)
       _ <- ctx.repository.getById[Challenge](challengeId)
       created <- ctx.repository.create[UserChallengeSummary](toEntity(newId))
     } yield created
+
+    newSummary.onComplete(
+      ChallengePositionsCalculator(challengeId).processWhenSuccess(ctx)
+    )
+    newSummary
   }
 
   override def updateEntity(
@@ -63,6 +69,6 @@ case object JoinChallenge
   lazy val CreateEntityInput: Argument[JoinChallenge] =
     Argument("input", JoinChallengeInputType)
 
-  override def idCodec: EntityIdSettings[UserChallengeSummaryId] =
+  override def idSettings: EntityIdSettings[UserChallengeSummaryId] =
     UserChallengeSummaryId
 }

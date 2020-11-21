@@ -23,5 +23,5 @@ abstract class CreateEntitySettings[
 
   implicit def CreateEntityInput: Argument[C]
 
-  def idCodec: EntityIdSettings[E#IdType]
+  def idSettings: EntityIdSettings[E#IdType]
 }

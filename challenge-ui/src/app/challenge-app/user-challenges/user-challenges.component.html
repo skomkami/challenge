@@ -1,1 +1,10 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur condimentum semper neque, nec rutrum magna ultricies eget. In quis ligula fringilla
+<div *ngIf="loading" class="ui active loader"></div>
+
+<div *ngFor="let summary of summaries">
+  {{summary.challengeName}}, {{summary.position}}, {{summary.summaryValue}}
+</div>
+
+<div class="ui teal labeled icon bottom button" (click)="redirectToCreateChallenge()">
+  Create New Challenge
+  <i class="add icon"></i>
+</div>

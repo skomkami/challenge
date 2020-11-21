@@ -55,5 +55,5 @@ case object CreateChallenge
   lazy val CreateEntityInput: Argument[CreateChallenge] =
     Argument("input", CreateChallengeInputType)
 
-  override def idCodec: EntityIdSettings[ChallengeId] = ChallengeId
+  override def idSettings: EntityIdSettings[ChallengeId] = ChallengeId
 }

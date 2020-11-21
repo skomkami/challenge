@@ -6,7 +6,7 @@ import { User } from 'src/app/models/user.model';
   templateUrl: './user.component.html'
 })
 export class UserComponent implements OnInit {
-  @HostBinding('attr.class') cssClass = "sixteen wide mobile six wide computer column";
+  @HostBinding('attr.class') cssClass = "sixteen wide mobile six wide computer column full-height";
   @Input() user: User;
 
   constructor() {

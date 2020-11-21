@@ -34,7 +34,7 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
               )
         ),
         Field(
-          "votes",
+          "challenges",
           ListType(UserChallengeSummaryType),
           resolve = c =>
             c.ctx

@@ -1,0 +1,13 @@
+query userChallenges($userId:UserId!) {
+	user(id:$userId){
+    id
+    challenges {
+      challenge {
+        name
+        finishesOn
+      }
+      lastActive
+      summaryValue
+    }
+  }
+}

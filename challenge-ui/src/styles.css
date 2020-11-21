@@ -1,6 +1,8 @@
 @import './app/vendor/semantic.min.css';
 body {
   background-color: #F4F0DC;
+  background-image: radial-gradient(#FFFAEC 2px, transparent 2px);
+  background-size: 15px 15px;
 }
 
 .ui.menu .item img.logo {
@@ -41,3 +43,5 @@ div.ui.main.container.segment {
 .full-height {
   height: 100%;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
