@@ -1,12 +1,12 @@
-@import './app/vendor/semantic.min.css';
+@import "./app/vendor/semantic.min.css";
 body {
-  background-color: #F4F0DC;
-  background-image: radial-gradient(#FFFAEC 2px, transparent 2px);
+  background-color: #f4f0dc;
+  background-image: radial-gradient(#fffaec 2px, transparent 2px);
   background-size: 15px 15px;
 }
 
 .ui.menu .item img.logo {
-    margin-right: 1.5em;
+  margin-right: 1.5em;
 }
 
 form.ui.segment.form {
@@ -15,11 +15,11 @@ form.ui.segment.form {
 }
 
 .margin-top {
-  margin-top:2em;
+  margin-top: 2em;
 }
 
 form.form:after {
-  content: '';
+  content: "";
   display: block;
   height: 0;
   clear: both;
@@ -43,5 +43,15 @@ div.ui.main.container.segment {
 .full-height {
   height: 100%;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.no-padding {
+  padding: 0 !important;
+}

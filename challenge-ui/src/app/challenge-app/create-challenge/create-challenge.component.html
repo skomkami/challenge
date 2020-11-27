@@ -1,0 +1,59 @@
+<div class="ui text container">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit(form.value)"
+    class="ui large form"
+    [class.error]="!form.valid && form.touched"
+  >
+    <h3 class="ui header">Create a challenge</h3>
+    <div class="field">
+      <label for="name">Name:</label>
+      <input name="name" id="name" placeholder="Name" [formControl]="name" />
+      <p *ngIf="!name.valid && name.touched" class="error-span message">
+        Name is invalid
+      </p>
+    </div>
+
+    <div class="field">
+      <label for="finishesOn">Finishes on:</label>
+
+      <div class="ui labeled input">
+        <div class="ui label no-padding">
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+
+          <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>
+        </div>
+        <input
+          matInput
+          name="finishesOn"
+          id="finishesOn"
+          [ngxMatDatetimePicker]="picker"
+          [formControl]="finishesOn"
+        />
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      [ngClass]="{ loading: loading }"
+      class="ui blue button"
+      [disabled]="!form.valid"
+    >
+      Create
+    </button>
+    <div *ngIf="errorMessage">
+      <p class="error-span message">
+        Something went wrong while creating account. Error message:
+      </p>
+      <p class="error-span message">{{ errorMessage }}</p>
+    </div>
+    <br /><br />
+    <a [routerLink]="['/home']">
+      <i class="angle left icon"></i>
+      Back to home
+    </a>
+  </form>
+</div>

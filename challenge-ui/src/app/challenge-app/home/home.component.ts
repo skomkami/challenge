@@ -5,20 +5,18 @@ import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  @HostBinding('attr.class') cssClass = "full-height";
+  @HostBinding('attr.class') cssClass = 'full-height';
 
   user?: User;
 
-  constructor(private userService: UserServiceService){
-  }
+  constructor(private userService: UserServiceService) {}
 
   ngOnInit(): void {
-    this.userService.getCurrentUser().subscribe( user => {
+    this.userService.getCurrentUser().subscribe((user) => {
       this.user = user;
-    })
+    });
   }
-
 }

@@ -1,0 +1,5 @@
+query userParticipatesInChallenge($userId: UserId!, $challengeId: String!) {
+  user(id: $userId) {
+    participatesInChallenge(challengeId: $challengeId)
+  }
+}

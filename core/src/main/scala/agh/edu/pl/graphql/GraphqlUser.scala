@@ -2,6 +2,8 @@ package agh.edu.pl.graphql
 
 import agh.edu.pl.GraphQLSchema.{
   gqlOffsetDateTime,
+  Offset,
+  Size,
   UserChallengeActivityType,
   UserChallengeSummaryType
 }
@@ -21,26 +23,31 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
 
   override def GraphQLOutputType: ObjectType[Context, User] =
     deriveObjectType[Context, User](
-//      Interfaces(EntityType),
       AddFields(
         Field(
-          "activities",
-          ListType(UserChallengeActivityType),
+          name = "activities",
+          fieldType = ListType(UserChallengeActivityType),
+          arguments = List(Size, Offset),
           resolve = c =>
             c.ctx
               .repository
               .getAll[UserChallengeActivity](
-                Some(FilterEq("userId", c.value.id.value) :: Nil)
+                Some(FilterEq("userId", c.value.id.value) :: Nil),
+                size = c.arg(Size),
+                from = c.arg(Offset)
               )
         ),
         Field(
-          "challenges",
-          ListType(UserChallengeSummaryType),
+          name = "challenges",
+          fieldType = ListType(UserChallengeSummaryType),
+          arguments = List(Size, Offset),
           resolve = c =>
             c.ctx
               .repository
               .getAll[UserChallengeSummary](
-                Some(FilterEq("challengeId", c.value.id.value) :: Nil)
+                Some(FilterEq("challengeId", c.value.id.value) :: Nil),
+                size = c.arg(Size),
+                from = c.arg(Offset)
               )
         )
       )

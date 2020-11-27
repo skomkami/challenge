@@ -4,6 +4,7 @@ type Challenge {
   createdOn: OffsetDateTime!
   finishesOn: OffsetDateTime!
   createdBy: User!
+  summaries(size: Int, offset: Int): [UserChallengeSummary!]!
 }
 
 # The `String` scalar type represents textual data, represented as UTF-8 character
@@ -84,8 +85,8 @@ type User {
   email: Email!
   sex: Sex!
   createdAt: OffsetDateTime!
-  activities: [UserChallengeActivity!]!
-  challenges: [UserChallengeSummary!]!
+  activities(size: Int, offset: Int): [UserChallengeActivity!]!
+  challenges(size: Int, offset: Int): [UserChallengeSummary!]!
 }
 
 input UserChallengeActivitiesFilter {

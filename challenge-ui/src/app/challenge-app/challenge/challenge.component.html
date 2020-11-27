@@ -1,0 +1,33 @@
+<div class="ui active laoder" *ngIf="loading == true"></div>
+
+<div *ngIf="loading == false">
+  <p>{{ challenge.name }}</p>
+  <button *ngIf="participatesInChallenge">Log activity</button>
+  <button *ngIf="!participatesInChallenge">Join challenge</button>
+  <div *ngIf="summaries.length == 0">No users participate in the challenge</div>
+
+  <div *ngIf="summaries.length > 0">
+    <table class="ui compact celled definition table margin-top">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Position</th>
+          <th>Points</th>
+          <th>Last active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let summary of summaries">
+          <td>{{ summary.user.name }}</td>
+          <td>{{ summary.position }}</td>
+          <td>{{ summary.summaryValue }}</td>
+          <td>{{ summary.lastActive }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a [routerLink]="['/home']">
+    <i class="angle left icon"></i>
+    Back to home
+  </a>
+</div>

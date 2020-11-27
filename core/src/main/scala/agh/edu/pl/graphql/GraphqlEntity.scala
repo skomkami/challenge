@@ -5,6 +5,7 @@ import agh.edu.pl.context.Context
 import agh.edu.pl.filters.{ EntityFilter, EntityFilterSettings }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.mutations.CreateEntitySettings
+import agh.edu.pl.GraphQLSchema.{ Offset, Size }
 import io.circe.{ Decoder, Encoder }
 import sangria.schema._
 
@@ -31,8 +32,6 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
   )
 
   private val Id = Argument("id", createEntitySettings.idSettings.scalarAlias)
-  private val Size = Argument("size", OptionInputType(IntType))
-  private val Offset = Argument("offset", OptionInputType(IntType))
 
   protected def getAllQuery: Field[Context, Unit] = Field(
     name = s"all${plural(typeName)}",

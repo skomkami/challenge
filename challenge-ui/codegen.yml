@@ -4,7 +4,7 @@ documents: "src/**/*.graphql"
 generates:
   src/generated/types.graphql-gen.ts:
     plugins:
-    - "typescript"
+      - "typescript"
   src/generated:
     preset: near-operation-file
     presetConfig:
