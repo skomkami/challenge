@@ -42,6 +42,6 @@ export class ChallengesComponent extends QueryComponent<
 
   goToChallenge(challengeId: string): void {
     console.log('Going to challenge: ', challengeId);
-    this.router.navigateByUrl('challenge/' + challengeId);
+    this.router.navigateByUrl('home/challenge/' + challengeId);
   }
 }

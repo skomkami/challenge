@@ -87,6 +87,7 @@ type User {
   createdAt: OffsetDateTime!
   activities(size: Int, offset: Int): [UserChallengeActivity!]!
   challenges(size: Int, offset: Int): [UserChallengeSummary!]!
+  participatesInChallenge(challengeId: String!): Boolean!
 }
 
 input UserChallengeActivitiesFilter {

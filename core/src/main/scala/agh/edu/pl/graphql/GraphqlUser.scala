@@ -14,12 +14,23 @@ import agh.edu.pl.ids.UserId
 import agh.edu.pl.models.Email.{ scalarAlias => emailType }
 import agh.edu.pl.mutations.CreateUser
 import sangria.macros.derive.{ deriveObjectType, AddFields }
-import sangria.schema.{ Argument, Field, ListType, ObjectType, OptionType }
+import sangria.schema.{
+  Argument,
+  BooleanType,
+  Field,
+  ListType,
+  ObjectType,
+  OptionType,
+  StringType
+}
 
 case class GraphqlUser() extends GraphqlEntity[UserId, User] {
   override def createEntitySettings: CreateUser.type = CreateUser
 
   override lazy val filterSettings: UsersFilter.type = UsersFilter
+
+  private val ChallengeIdArg: Argument[String] =
+    Argument("challengeId", StringType)
 
   override def GraphQLOutputType: ObjectType[Context, User] =
     deriveObjectType[Context, User](
@@ -45,10 +56,27 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
             c.ctx
               .repository
               .getAll[UserChallengeSummary](
-                Some(FilterEq("challengeId", c.value.id.value) :: Nil),
+                Some(FilterEq("userId", c.value.id.value) :: Nil),
                 size = c.arg(Size),
                 from = c.arg(Offset)
               )
+        ),
+        Field(
+          name = "participatesInChallenge",
+          fieldType = BooleanType,
+          arguments = List(ChallengeIdArg),
+          resolve = c =>
+            c.ctx
+              .repository
+              .getAll[UserChallengeSummary](
+                Some(
+                  List(
+                    FilterEq("userId", c.value.id.value),
+                    FilterEq("challengeId", c.arg(ChallengeIdArg))
+                  )
+                )
+              )
+              .map(_.nonEmpty)(c.ctx.ec)
         )
       )
     )

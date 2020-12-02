@@ -3,7 +3,7 @@ import { CreateChallengeGQL } from './create-challenge.mutation.graphql-gen';
 import { User } from '../../models/user.model';
 import { Challenge } from '../../models/challenge.model';
 import { Component, OnInit } from '@angular/core';
-import { UserServiceService } from 'src/app/services/user-service.service';
+import { UserService } from 'src/app/services/user-service.service';
 import {
   AbstractControl,
   FormBuilder,
@@ -28,7 +28,7 @@ export class CreateChallengeComponent implements OnInit {
   finishesOn: AbstractControl;
 
   constructor(
-    private userService: UserServiceService,
+    private userService: UserService,
     private createChallenge: CreateChallengeGQL,
     private datePipe: DatePipe,
     fb: FormBuilder

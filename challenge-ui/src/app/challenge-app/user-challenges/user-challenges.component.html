@@ -1,10 +1,26 @@
 <div *ngIf="loading" class="ui active loader"></div>
 
-<div *ngFor="let summary of summaries">
-  {{summary.challengeName}}, {{summary.position}}, {{summary.summaryValue}}
-</div>
+<table class="ui compact celled definition table margin-top">
+  <thead>
+    <tr>
+      <th>Challenge</th>
+      <th>Position</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let summary of summaries">
+      <td>{{ summary.challengeName }}</td>
+      <td>{{ summary.position }}</td>
+      <td>{{ summary.summaryValue }}</td>
+    </tr>
+  </tbody>
+</table>
 
-<div class="ui teal labeled icon bottom button" (click)="redirectToCreateChallenge()">
+<div
+  class="ui teal labeled icon bottom button"
+  (click)="redirectToCreateChallenge()"
+>
   Create New Challenge
   <i class="add icon"></i>
 </div>

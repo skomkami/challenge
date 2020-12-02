@@ -12,7 +12,7 @@ export class Summary {
   constructor(obj?: any) {
     this.id = obj && obj.id;
     this.challengeName = obj && obj.challenge && obj.challenge.name;
-    this.lastActive = obj && obj.challenge && obj.challenge.lastActive;
+    this.lastActive = obj && obj.lastActive;
     this.summaryValue = obj && obj.summaryValue;
     this.position = obj && obj.position;
     this.userId = obj && obj.userId;

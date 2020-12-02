@@ -6,8 +6,8 @@ import { CreateChallengeComponent } from './create-challenge/create-challenge.co
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'create-challenge', component: CreateChallengeComponent },
   { path: 'challenge/:id', component: ChallengeComponent },
+  { path: 'create-challenge', component: CreateChallengeComponent },
 ];
 
 @NgModule({

@@ -1,4 +1,3 @@
-import { UserParticipatesInChallengeGQL } from './user-participates-in-challenge.query.graphql-gen';
 import { QueryComponent } from './../../common/QueryComponent';
 import {
   ChallengeGQL,
@@ -10,7 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Challenge } from 'src/app/models/challenge.model';
 import { Summary } from 'src/app/models/summary.model';
 import { User } from 'src/app/models/user.model';
-import { UserServiceService } from 'src/app/services/user-service.service';
+import { UserService } from 'src/app/services/user-service.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-challenge',
@@ -29,9 +29,8 @@ export class ChallengeComponent extends QueryComponent<
 
   constructor(
     private route: ActivatedRoute,
-    private userService: UserServiceService,
-    private challengeQuery: ChallengeGQL,
-    private participatesQuery: UserParticipatesInChallengeGQL
+    private userService: UserService,
+    private challengeQuery: ChallengeGQL
   ) {
     super(challengeQuery);
     this.loading = true;
@@ -46,24 +45,49 @@ export class ChallengeComponent extends QueryComponent<
       this.challengeId = params['id'];
       this.vars.challengeId = this.challengeId;
     });
-
-    this.userService.getCurrentUser().subscribe((user) => {
-      this.user = user;
-    });
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
-    this.participatesQuery
-      .watch({ userId: this.user.id, challengeId: this.challengeId })
-      .valueChanges.subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.participatesInChallenge = data.user.participatesInChallenge;
+    this.userService.getCurrentUser().subscribe((user) => {
+      this.user = user;
+      super.ngOnInit();
+    });
+  }
+
+  pushEmptySummary(): void {
+    console.log('pushing empty summary');
+    const newSummary = new Summary({
+      user: this.user,
+      summaryValue: 0,
+      challengeName: this.challenge.name,
+      position: this.summaries.length + 1,
+    });
+    this.summaries.push(newSummary);
+    this.participatesInChallenge = true;
+  }
+
+  updateRanking(activityValue): void {
+    console.log('logged value: ', activityValue);
+    this.summaries = this.summaries
+      .map((summary) => {
+        console.log(summary.user.id);
+        console.log(this.user.id);
+        if (summary.user.id === this.user.id) {
+          summary.summaryValue += activityValue;
+          console.log('asdfj');
+          return summary;
+        } else {
+          return summary;
+        }
+      })
+      .sort((a, b) => {
+        return a.position - b.position;
       });
   }
 
   extractData(data: ChallengeQuery): void {
     this.challenge = new Challenge(data.challenge);
+    console.log('challege: ', data);
     this.summaries = data.challenge.summaries
       .map((summary) => new Summary(summary))
       .sort((a, b) => {

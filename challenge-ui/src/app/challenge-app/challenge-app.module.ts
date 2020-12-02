@@ -19,6 +19,7 @@ import {
   NgxMatTimepickerModule,
 } from '@angular-material-components/datetime-picker';
 import { ChallengeComponent } from './challenge/challenge.component';
+import { ChallengeUserComponent } from './challenge/challenge-user.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ChallengeComponent } from './challenge/challenge.component';
     ChallengesComponent,
     CreateChallengeComponent,
     ChallengeComponent,
+    ChallengeUserComponent,
   ],
   imports: [
     CommonModule,

@@ -9,6 +9,7 @@ query challenge($challengeId: ChallengeId!, $size: Int, $offset: Int) {
     }
     summaries(size: $size, offset: $offset) {
       user {
+        id
         name
         email
       }

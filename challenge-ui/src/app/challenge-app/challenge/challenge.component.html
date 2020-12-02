@@ -2,11 +2,17 @@
 
 <div *ngIf="loading == false">
   <p>{{ challenge.name }}</p>
-  <button *ngIf="participatesInChallenge">Log activity</button>
-  <button *ngIf="!participatesInChallenge">Join challenge</button>
+  <div *ngIf="user">
+    <challenge-user
+      (joinedChallenge)="pushEmptySummary()"
+      (loggedActivity)="updateRanking($event)"
+      [user]="user"
+      [challengeId]="challengeId"
+    ></challenge-user>
+  </div>
   <div *ngIf="summaries.length == 0">No users participate in the challenge</div>
 
-  <div *ngIf="summaries.length > 0">
+  <div *ngIf="summaries.length > 0" class="margin-top">
     <table class="ui compact celled definition table margin-top">
       <thead>
         <tr>

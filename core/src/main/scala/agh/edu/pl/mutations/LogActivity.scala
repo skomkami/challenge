@@ -24,7 +24,7 @@ case class LogActivity(
     userId: UserId,
     challengeId: ChallengeId,
     value: Double,
-    date: OffsetDateTime = OffsetDateTime.now
+    date: Option[OffsetDateTime] = None
   ) extends CreateEntity[UserChallengeActivity] {
 
   override def toEntity(newId: UserChallengeActivityId): UserChallengeActivity =
@@ -33,7 +33,7 @@ case class LogActivity(
       userId = userId,
       challengeId = challengeId,
       value = value,
-      date = date
+      date = date.getOrElse(OffsetDateTime.now)
     )
 
   override def newEntity(
@@ -69,7 +69,7 @@ case class LogActivity(
       modify(existingSummary)(_.summaryValue)
         .using(_ + value)
         .modify(_.lastActive)
-        .setTo(Some(date))
+        .setTo(date.orElse(Some(OffsetDateTime.now)))
     repository.update(updatedSummary)
   }
 
@@ -81,7 +81,11 @@ case class LogActivity(
 
   override def generateId: UserChallengeActivityId =
     UserChallengeActivityId.generateId(
-      UserChallengeActivityId.DataToGenerateId(challengeId, userId, date)
+      UserChallengeActivityId.DataToGenerateId(
+        challengeId,
+        userId,
+        date.getOrElse(OffsetDateTime.now)
+      )
     )
 
   override def id: Option[UserChallengeActivityId] = None

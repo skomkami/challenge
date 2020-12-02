@@ -6,29 +6,28 @@ import { Observable } from '@apollo/client/core';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class UserServiceService {
-
+export class UserService {
   private currentUser?: User;
   loading: boolean;
 
-  constructor(private keycloak: KeycloakService, private query: UserByEmailGQL) {
-  }
+  constructor(
+    private keycloak: KeycloakService,
+    private query: UserByEmailGQL
+  ) {}
 
   getCurrentUser() {
     return this.currentUser
       ? Observable.of(this.currentUser)
       : this.query
-        .watch({email: this.keycloak.getUsername()})
-        .valueChanges
-        .pipe(
-          map(result => {
-            console.log(result);
-            const user = new User(result.data.getUserByEmail);
-            return user;
-          })
-        );
+          .watch({ email: this.keycloak.getUsername() })
+          .valueChanges.pipe(
+            map((result) => {
+              console.log(result);
+              const user = new User(result.data.getUserByEmail);
+              return user;
+            })
+          );
   }
-
 }

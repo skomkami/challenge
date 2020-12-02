@@ -1,0 +1,10 @@
+query allChallenges($size: Int, $offset: Int) {
+  allChallenges(size: $size, offset: $offset) {
+    id
+    name
+    finishesOn
+    createdBy {
+      name
+    }
+  }
+}
