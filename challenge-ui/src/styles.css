@@ -37,11 +37,11 @@ div.ui.main {
 }
 
 div.ui.main.container.segment {
-  min-height: 600px;
+  min-height: 650px;
 }
 
 .full-height {
-  min-height: 600px;
+  min-height: 650px;
 }
 html,
 body {
@@ -83,4 +83,17 @@ body {
 mat-footer-row mat-footer-cell {
   justify-content: center;
   font-style: italic;
+}
+
+mat-header-row {
+  background-color: #f9fafb;
+}
+
+mat-row:hover {
+  background-color: #f9fafb;
+}
+
+.bottom-link {
+  position: absolute;
+  bottom: 10px;
 }

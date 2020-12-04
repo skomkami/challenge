@@ -29,6 +29,7 @@ export class SearchBoxComponent implements OnInit {
   @Input() offset: number;
   @Input() pageSize: number;
   @Output() loading: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() total: EventEmitter<number> = new EventEmitter<number>();
   @Output() results: EventEmitter<Challenge[]> = new EventEmitter<
     Challenge[]
   >();
@@ -74,8 +75,8 @@ export class SearchBoxComponent implements OnInit {
       .subscribe(
         ({ data, loading }) => {
           this.loading.emit(false);
+          this.total.emit(data.allChallenges.total);
           const challenges = this.extractData(data);
-          console.log(challenges);
           this.results.emit(challenges);
         },
         (err: any) => {

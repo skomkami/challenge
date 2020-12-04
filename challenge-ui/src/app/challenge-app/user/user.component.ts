@@ -3,16 +3,14 @@ import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'user-component',
-  templateUrl: './user.component.html'
+  templateUrl: './user.component.html',
 })
 export class UserComponent implements OnInit {
-  @HostBinding('attr.class') cssClass = "sixteen wide mobile six wide computer column full-height";
+  @HostBinding('attr.class') cssClass =
+    'sixteen wide mobile six wide computer column';
   @Input() user: User;
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

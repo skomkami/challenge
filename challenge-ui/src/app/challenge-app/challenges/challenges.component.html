@@ -8,6 +8,7 @@
       [offset]="offset"
       [pageSize]="pageSize"
       (loading)="this.loading = $event"
+      (total)="this.total = $event"
       (results)="loadChallenges($event)"
       (removedSearch)="reset()"
     ></search-box>
@@ -24,7 +25,7 @@
   </div>
 </div>
 
-<mat-table [dataSource]="challenges" style="margin-top: 3em">
+<mat-table [dataSource]="challenges" style="margin-top: 45px">
   <ng-container matColumnDef="Name">
     <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
     <mat-cell *matCellDef="let challenge">{{ challenge.name }}</mat-cell>
@@ -56,7 +57,10 @@
     </mat-footer-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayColumns"></mat-row>
+  <mat-row
+    *matRowDef="let challenge; columns: displayColumns"
+    (click)="goToChallenge(challenge.id)"
+  ></mat-row>
   <mat-footer-row
     *matFooterRowDef="['loadingRow']"
     [ngClass]="{ hide: !loading }"
@@ -67,31 +71,7 @@
   ></mat-footer-row>
 </mat-table>
 <mat-paginator
-  [length]="100"
-  [pageIndex]="100"
   [pageSize]="pageSize"
+  [length]="total"
+  (page)="handlePageChange($event)"
 ></mat-paginator>
-
-<!-- <table class="ui stripped table" style="margin-top: 3em">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Finishes on</th>
-      <th>Created by</th>
-      <th>Leader</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr
-      *ngFor="let challenge of challenges"
-      (click)="goToChallenge(challenge.id)"
-    >
-      <td>{{ challenge.name }}</td>
-      <td>{{ challenge.finishesOn }}</td>
-      <td>{{ challenge.createdBy }}</td>
-      <td>
-        {{ challenge.leader ? challenge.leader.name : "No participants" }}
-      </td>
-    </tr>
-  </tbody>
-</table> -->

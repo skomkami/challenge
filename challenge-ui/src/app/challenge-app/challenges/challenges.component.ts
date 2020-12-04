@@ -22,8 +22,8 @@ export class ChallengesComponent extends QueryComponent<
   @HostBinding('attr.class') cssClass =
     'sixteen wide mobile ten wide computer column';
   @Input() user: User;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   challenges: MatTableDataSource<Challenge>;
   displayColumns: string[] = ['Name', 'Finishes on', 'Created by', 'Leader'];
 
@@ -36,6 +36,10 @@ export class ChallengesComponent extends QueryComponent<
       size: this.pageSize,
       offset: this.offset,
     };
+  }
+
+  updateVarsOffset(newOffset: number): void {
+    this.vars.offset = newOffset;
   }
 
   extractData(data: AllChallengesQuery): void {

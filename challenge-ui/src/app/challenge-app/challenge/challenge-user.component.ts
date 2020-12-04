@@ -1,3 +1,4 @@
+import { Summary } from 'src/app/models/summary.model';
 import { LogActivityGQL } from './log-activity.mutation.graphql-gen';
 import { finalize } from 'rxjs/operators';
 import { JoinChallengeGQL } from './join-challenge.mutation.graphql-gen';
@@ -25,7 +26,7 @@ export class ChallengeUserComponent extends QueryComponent<
   @Input() user: User;
   @Input() challengeId: string;
   @Output()
-  joinedChallenge: EventEmitter<boolean> = new EventEmitter<boolean>();
+  joinedChallenge: EventEmitter<Summary> = new EventEmitter<Summary>();
 
   @Output()
   loggedActivity: EventEmitter<number> = new EventEmitter<number>();
@@ -77,12 +78,12 @@ export class ChallengeUserComponent extends QueryComponent<
         finalize(() => {
           this.joiningChallenge = false;
           this.participatesInChallenge = true;
-          this.joinedChallenge.emit(true);
         })
       )
       .subscribe(
         ({ data }) => {
           console.log('Created summary:', data);
+          this.joinedChallenge.emit(new Summary(data.joinChallenge));
           this.errorMessage = null;
         },
         (error) => {

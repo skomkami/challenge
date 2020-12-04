@@ -4,7 +4,7 @@
   <p>{{ challenge.name }}</p>
   <div *ngIf="user">
     <challenge-user
-      (joinedChallenge)="pushEmptySummary()"
+      (joinedChallenge)="pushNewSummary($event)"
       (loggedActivity)="updateRanking($event)"
       [user]="user"
       [challengeId]="challengeId"
@@ -13,7 +13,7 @@
   <div *ngIf="summaries.length == 0">No users participate in the challenge</div>
 
   <div *ngIf="summaries.length > 0" class="margin-top">
-    <table class="ui compact celled definition table margin-top">
+    <table class="ui stripped table margin-top">
       <thead>
         <tr>
           <th>User</th>
@@ -27,12 +27,12 @@
           <td>{{ summary.user.name }}</td>
           <td>{{ summary.position }}</td>
           <td>{{ summary.summaryValue }}</td>
-          <td>{{ summary.lastActive }}</td>
+          <td>{{ summary.lastActive | date: "yyyy-MM-dd hh:mm" }}</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <a [routerLink]="['/home']">
+  <a [routerLink]="['/home']" class="bottom-link">
     <i class="angle left icon"></i>
     Back to home
   </a>

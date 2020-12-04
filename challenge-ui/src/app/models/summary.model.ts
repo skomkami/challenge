@@ -1,8 +1,9 @@
+import { Challenge } from './challenge.model';
 import { User } from './user.model';
 
 export class Summary {
   id?: string;
-  challengeName: string;
+  challenge: Challenge;
   summaryValue: number;
   position: number;
   userId: string;
@@ -11,7 +12,7 @@ export class Summary {
 
   constructor(obj?: any) {
     this.id = obj && obj.id;
-    this.challengeName = obj && obj.challenge && obj.challenge.name;
+    this.challenge = new Challenge(obj && obj.challenge);
     this.lastActive = obj && obj.lastActive;
     this.summaryValue = obj && obj.summaryValue;
     this.position = obj && obj.position;

@@ -18,13 +18,16 @@
     </div>
     <div class="field">
       <label for="email">Email:</label>
-      <input
-        name="email"
-        id="email"
-        placeholder="name@example.com"
-        [formControl]="email"
-        email="true"
-      />
+      <div class="ui left icon input">
+        <input
+          name="email"
+          id="email"
+          placeholder="name@example.com"
+          [formControl]="email"
+          email="true"
+        />
+        <i class="at icon"></i>
+      </div>
       <p *ngIf="!email.valid && email.touched" class="error-span message">
         Email is invalid
       </p>

@@ -7,7 +7,15 @@ import {
   UserChallengesQueryVariables,
 } from './user-challenges.query.graphql-gen';
 import { User } from './../../../generated/types.graphql-gen';
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  HostBinding,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'user-challenges',
@@ -18,10 +26,13 @@ export class UserChallengesComponent extends QueryComponent<
   UserChallengesQueryVariables
 > {
   @HostBinding('attr.class') cssClass =
-    'sixteen wide mobile ten wide tablet sixteen wide computer column full-height';
+    'sixteen wide mobile ten wide tablet sixteen wide computer column';
   @Input() user: User;
 
-  summaries: Array<Summary>;
+  // summaries: Array<Summary>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  summaries: MatTableDataSource<Summary>;
+  displayColumns: string[] = ['Name', 'Position', 'Points'];
 
   constructor(
     private summariesQuery: UserChallengesGQL,
@@ -39,11 +50,20 @@ export class UserChallengesComponent extends QueryComponent<
     super.ngOnInit();
   }
 
+  updateVarsOffset(newOffset: number): void {
+    this.vars.offset = newOffset;
+  }
+
   extractData(data: UserChallengesQuery): void {
-    this.summaries = data.user.challenges.results.map(
+    const summaries = data.user.challenges.results.map(
       (graphQlSummary) => new Summary(graphQlSummary)
     );
+    this.summaries = new MatTableDataSource(summaries);
     this.total = data.user.challenges.total;
-    this.nextPage = data.user.challenges.hasNextPage;
+  }
+
+  goToChallenge(challengeId: string): void {
+    console.log('Going to challenge: ', challengeId);
+    this.router.navigateByUrl('home/challenge/' + challengeId);
   }
 }

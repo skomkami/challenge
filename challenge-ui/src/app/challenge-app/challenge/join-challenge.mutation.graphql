@@ -1,5 +1,10 @@
 mutation joinChallenge($userId: UserId!, $challengeId: ChallengeId!) {
   joinChallenge(input: { userId: $userId, challengeId: $challengeId }) {
     id
+    summaryValue
+    lastActive
+    user {
+      name
+    }
   }
 }

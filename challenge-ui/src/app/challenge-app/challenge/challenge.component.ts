@@ -54,14 +54,8 @@ export class ChallengeComponent extends QueryComponent<
     });
   }
 
-  pushEmptySummary(): void {
-    console.log('pushing empty summary');
-    const newSummary = new Summary({
-      user: this.user,
-      summaryValue: 0,
-      challengeName: this.challenge.name,
-      position: this.summaries.length + 1,
-    });
+  pushNewSummary(newSummary: Summary): void {
+    newSummary.position = this.summaries.length + 1;
     this.summaries.push(newSummary);
     this.participatesInChallenge = true;
   }

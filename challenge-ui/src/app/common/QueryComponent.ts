@@ -6,7 +6,7 @@ import * as Apollo from 'apollo-angular';
 })
 export class QueryComponent<DataType, QueryVariables> implements OnInit {
   loading: boolean;
-  pageSize: number = 10;
+  pageSize: number = 8;
   offset: number = 0;
   total: number;
   nextPage: boolean;
@@ -23,6 +23,14 @@ export class QueryComponent<DataType, QueryVariables> implements OnInit {
         this.extractData(data);
       });
   }
+
+  handlePageChange(event): void {
+    const newOffset = event.pageIndex * this.pageSize;
+    this.updateVarsOffset(newOffset);
+    this.ngOnInit();
+  }
+
+  updateVarsOffset(newOffset: number): void {}
 
   extractData(data: DataType): void {}
 }
