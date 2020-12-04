@@ -76,7 +76,7 @@ export class ChallengeUserComponent extends QueryComponent<
       .pipe(
         finalize(() => {
           this.joiningChallenge = false;
-          console.log('emmiting joinedChallenge');
+          this.participatesInChallenge = true;
           this.joinedChallenge.emit(true);
         })
       )

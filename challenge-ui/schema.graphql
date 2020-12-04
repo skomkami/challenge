@@ -5,6 +5,7 @@ type Challenge {
   finishesOn: OffsetDateTime!
   createdBy: User!
   summaries(size: Int, offset: Int): [UserChallengeSummary!]!
+  leader: User
 }
 
 # The `String` scalar type represents textual data, represented as UTF-8 character
@@ -32,7 +33,7 @@ input CreateUser {
   id: UserId
   name: String!
   email: Email!
-  sex: Sex!
+  gender: Gender!
   createdAt: OffsetDateTime = false
 }
 
@@ -40,6 +41,11 @@ input CreateUser {
 # sequences. The String type is most often used by GraphQL to represent free-form
 # human-readable text.
 scalar Email
+
+enum Gender {
+  Male
+  Female
+}
 
 input JoinChallenge {
   userId: UserId!
@@ -50,7 +56,7 @@ input LogActivity {
   userId: UserId!
   challengeId: ChallengeId!
   value: Float!
-  date: OffsetDateTime = false
+  date: OffsetDateTime
 }
 
 type Mutation {
@@ -74,16 +80,11 @@ type Query {
   userchallengeactivity(id: UserChallengeActivityId!): UserChallengeActivity
 }
 
-enum Sex {
-  Male
-  Female
-}
-
 type User {
   id: UserId!
   name: String!
   email: Email!
-  sex: Sex!
+  gender: Gender!
   createdAt: OffsetDateTime!
   activities(size: Int, offset: Int): [UserChallengeActivity!]!
   challenges(size: Int, offset: Int): [UserChallengeSummary!]!
@@ -142,6 +143,6 @@ input UsersFilter {
   id: UserId
   name: String
   email: String
-  sex: Sex
+  gender: Gender
 }
 

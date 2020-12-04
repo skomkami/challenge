@@ -1,6 +1,12 @@
 <div class="ui search" style="min-width: 60%">
   <div class="ui icon input">
-    <input type="text" placeholder="Challenge name ..." />
+    <search-box
+      [offset]="offset"
+      [pageSize]="pageSize"
+      (loading)="this.loading = $event"
+      (results)="this.challenges = $event"
+      (removedSearch)="reset()"
+    ></search-box>
     <i class="search icon"></i>
   </div>
   <div class="results"></div>
@@ -22,7 +28,9 @@
       <td>{{ challenge.name }}</td>
       <td>{{ challenge.finishesOn }}</td>
       <td>{{ challenge.createdBy }}</td>
-      <td></td>
+      <td>
+        {{ challenge.leader ? challenge.leader.name : "No participants" }}
+      </td>
     </tr>
   </tbody>
 </table>

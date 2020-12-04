@@ -1,9 +1,9 @@
 query userByEmail($email: Email!) {
   getUserByEmail(email: $email) {
     id
-    name 
+    name
     email
-    sex
+    gender
     createdAt
   }
 }

@@ -44,4 +44,8 @@ export class ChallengesComponent extends QueryComponent<
     console.log('Going to challenge: ', challengeId);
     this.router.navigateByUrl('home/challenge/' + challengeId);
   }
+
+  reset(): void {
+    this.ngOnInit();
+  }
 }

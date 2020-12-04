@@ -18,7 +18,7 @@ export class UserChallengesComponent extends QueryComponent<
   UserChallengesQueryVariables
 > {
   @HostBinding('attr.class') cssClass =
-    'sixteen wide mobile ten wide tablet sixteen wide computer column';
+    'sixteen wide mobile ten wide tablet sixteen wide computer column full-height';
   @Input() user: User;
 
   summaries: Array<Summary>;

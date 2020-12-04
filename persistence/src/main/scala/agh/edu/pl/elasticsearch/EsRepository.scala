@@ -1,13 +1,17 @@
 package agh.edu.pl.elasticsearch
 
 import agh.edu.pl.error.DomainError
-import agh.edu.pl.filters.{ Filter, FilterEq }
+import agh.edu.pl.filters.{ Filter, FilterEq, StringQuery }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.repository.Repository
 import com.sksamuel.elastic4s.ElasticClient
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.requests.searches.queries.matches.MatchQuery
-import com.sksamuel.elastic4s.requests.searches.queries.{ BoolQuery, Query }
+import com.sksamuel.elastic4s.requests.searches.queries.{
+  BoolQuery,
+  Query,
+  RegexQuery
+}
 import io.circe.parser._
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder }
@@ -50,7 +54,12 @@ case class EsRepository(
     val qMusts = mutable.ListBuffer[Query]()
     qMusts += matchAllQuery()
 
-    val qFilters = queryFilter.getOrElse(Nil).map {
+    queryFilter.getOrElse(Nil).collect {
+      case StringQuery(field, value) =>
+        qMusts += RegexQuery(field, value)
+    }
+
+    val qFilters = queryFilter.getOrElse(Nil).collect {
       case FilterEq(field, value) => MatchQuery(field, value)
     }
 

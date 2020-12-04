@@ -14,5 +14,8 @@ export class Challenge {
     this.createdBy = obj && obj.createdBy && obj.createdBy.name;
     this.createdOn = obj && obj.createdOn;
     this.finishesOn = obj && obj.finishesOn;
+    if (obj && obj.leader) {
+      this.leader = new User(obj.leader);
+    }
   }
 }

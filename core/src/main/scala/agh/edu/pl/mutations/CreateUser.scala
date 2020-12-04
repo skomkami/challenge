@@ -8,7 +8,7 @@ import agh.edu.pl.context.Context
 import agh.edu.pl.entities
 import agh.edu.pl.entities.User
 import agh.edu.pl.ids.UserId
-import agh.edu.pl.models.{ Email, EntityIdSettings, Sex }
+import agh.edu.pl.models.{ Email, EntityIdSettings, Gender }
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
@@ -18,7 +18,7 @@ case class CreateUser(
     id: Option[UserId] = None,
     name: String,
     email: Email,
-    sex: Sex,
+    gender: Gender,
     createdAt: OffsetDateTime = OffsetDateTime.now
   ) extends CreateEntity[User] {
 
@@ -27,7 +27,7 @@ case class CreateUser(
       id = newId,
       name = name,
       email = email,
-      sex = sex,
+      gender = gender,
       createdAt = createdAt
     )
 

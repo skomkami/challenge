@@ -137,6 +137,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "leader",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -353,14 +365,14 @@
             "defaultValue": null
           },
           {
-            "name": "sex",
+            "name": "gender",
             "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "Sex",
+                "name": "Gender",
                 "ofType": null
               }
             },
@@ -389,6 +401,29 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "Gender",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "Male",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "Female",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -486,7 +521,7 @@
               "name": "OffsetDateTime",
               "ofType": null
             },
-            "defaultValue": "false"
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -1015,29 +1050,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "ENUM",
-        "name": "Sex",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "Male",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "Female",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "User",
         "description": null,
@@ -1091,7 +1103,7 @@
             "deprecationReason": null
           },
           {
-            "name": "sex",
+            "name": "gender",
             "description": null,
             "args": [],
             "type": {
@@ -1099,7 +1111,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "Sex",
+                "name": "Gender",
                 "ofType": null
               }
             },
@@ -1638,11 +1650,11 @@
             "defaultValue": null
           },
           {
-            "name": "sex",
+            "name": "gender",
             "description": null,
             "type": {
               "kind": "ENUM",
-              "name": "Sex",
+              "name": "Gender",
               "ofType": null
             },
             "defaultValue": null

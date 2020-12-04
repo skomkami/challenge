@@ -12,8 +12,9 @@ import agh.edu.pl.entities.{ Challenge, User, UserChallengeSummary }
 import agh.edu.pl.filters.{ ChallengesFilter, FilterEq }
 import agh.edu.pl.ids.ChallengeId
 import agh.edu.pl.mutations.CreateChallenge
+import cats.implicits._
 import sangria.macros.derive.{ deriveObjectType, AddFields, ReplaceField }
-import sangria.schema.{ Field, ListType, ObjectType }
+import sangria.schema.{ Field, ListType, ObjectType, OptionType }
 
 case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
   override def createEntitySettings: CreateChallenge.type = CreateChallenge
@@ -43,6 +44,28 @@ case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
                 size = c.arg(Size),
                 from = c.arg(Offset)
               )
+        )
+      ),
+      AddFields(
+        Field(
+          name = "leader",
+          fieldType = OptionType(UserType),
+          resolve = c => {
+            implicit val ec = c.ctx.ec
+            val repository = c.ctx.repository
+
+            repository
+              .getAll[UserChallengeSummary](
+                filter = Some(
+                  FilterEq("challengeId", c.value.id.value) :: FilterEq(
+                    "position",
+                    "1"
+                  ) :: Nil
+                )
+              )
+              .map(_.headOption.map(_.userId))
+              .flatMap(_.traverse(repository.getById[User]))
+          }
         )
       )
     )

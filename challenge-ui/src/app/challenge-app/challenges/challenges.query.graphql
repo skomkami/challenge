@@ -1,9 +1,12 @@
-query allChallenges($size: Int, $offset: Int) {
-  allChallenges(size: $size, offset: $offset) {
+query allChallenges($size: Int, $offset: Int, $nameFilter: String) {
+  allChallenges(size: $size, offset: $offset, filter: { name: $nameFilter }) {
     id
     name
     finishesOn
     createdBy {
+      name
+    }
+    leader {
       name
     }
   }
