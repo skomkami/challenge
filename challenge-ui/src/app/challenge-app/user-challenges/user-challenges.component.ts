@@ -29,7 +29,6 @@ export class UserChallengesComponent extends QueryComponent<
     'sixteen wide mobile ten wide tablet sixteen wide computer column';
   @Input() user: User;
 
-  // summaries: Array<Summary>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   summaries: MatTableDataSource<Summary>;
   displayColumns: string[] = ['Name', 'Position', 'Points'];

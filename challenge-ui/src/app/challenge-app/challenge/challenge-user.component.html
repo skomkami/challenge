@@ -17,20 +17,19 @@
           [formControl]="value"
           type="number"
         />
+        <button
+          class="ui blue button"
+          type="submit"
+          [ngClass]="{ loading: joiningChallenge }"
+          [disabled]="!logActivityForm.valid"
+        >
+          Log activity
+        </button>
       </div>
       <p *ngIf="!value.valid && value.touched" class="negative message">
         Provided value is invalid
       </p>
     </div>
-
-    <button
-      class="ui blue button"
-      type="submit"
-      [ngClass]="{ loading: joiningChallenge }"
-      [disabled]="!logActivityForm.valid"
-    >
-      Log activity
-    </button>
   </form>
 
   <button

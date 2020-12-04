@@ -4,22 +4,6 @@
   Your challenges
 </h2>
 
-<!-- <table class="ui stripped table">
-  <thead>
-    <tr>
-      <th>Challenge</th>
-      <th>Position</th>
-      <th>Points</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let summary of summaries">
-      <td>{{ summary.challengeName }}</td>
-      <td>{{ summary.position }}</td>
-      <td>{{ summary.summaryValue }}</td>
-    </tr>
-  </tbody>
-</table> -->
 <mat-table [dataSource]="summaries">
   <ng-container matColumnDef="Name">
     <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>

@@ -4,13 +4,15 @@ import {
   ChallengeQuery,
   ChallengeQueryVariables,
 } from './challenge.query.graphql-gen';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Challenge } from 'src/app/models/challenge.model';
 import { Summary } from 'src/app/models/summary.model';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user-service.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-challenge',
@@ -23,9 +25,12 @@ export class ChallengeComponent extends QueryComponent<
   user?: User;
   challengeId: string;
   challenge: Challenge;
-  summaries: Array<Summary>;
 
   participatesInChallenge: boolean;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  summaries: MatTableDataSource<Summary>;
+  displayColumns: string[] = ['User', 'Position', 'Points', 'Last active'];
 
   constructor(
     private route: ActivatedRoute,
@@ -55,20 +60,19 @@ export class ChallengeComponent extends QueryComponent<
   }
 
   pushNewSummary(newSummary: Summary): void {
-    newSummary.position = this.summaries.length + 1;
-    this.summaries.push(newSummary);
+    newSummary.position = this.total + 1;
+    this.summaries.data.push(newSummary);
     this.participatesInChallenge = true;
   }
 
   updateRanking(activityValue): void {
     console.log('logged value: ', activityValue);
-    this.summaries = this.summaries
+    const updatedSummaries = this.summaries.data
       .map((summary) => {
         console.log(summary.user.id);
         console.log(this.user.id);
         if (summary.user.id === this.user.id) {
           summary.summaryValue += activityValue;
-          console.log('asdfj');
           return summary;
         } else {
           return summary;
@@ -77,15 +81,22 @@ export class ChallengeComponent extends QueryComponent<
       .sort((a, b) => {
         return a.position - b.position;
       });
+    this.summaries = new MatTableDataSource(updatedSummaries);
+  }
+
+  updateVarsOffset(newOffset: number): void {
+    this.vars.offset = newOffset;
   }
 
   extractData(data: ChallengeQuery): void {
     this.challenge = new Challenge(data.challenge);
     console.log('challege: ', data);
-    this.summaries = data.challenge.summaries.results
+    this.total = data.challenge.summaries.total;
+    const summaries = data.challenge.summaries.results
       .map((summary) => new Summary(summary))
       .sort((a, b) => {
         return a.position - b.position;
       });
+    this.summaries = new MatTableDataSource(summaries);
   }
 }
