@@ -14,9 +14,6 @@ import com.softwaremill.quicklens._
 
 object GraphQLSchema {
 
-  implicit lazy val gqlOffsetDateTime =
-    CustomScalars.GraphQLOffsetDateTime
-
   val Size = Argument("size", OptionInputType(IntType))
   val Offset = Argument("offset", OptionInputType(IntType))
 

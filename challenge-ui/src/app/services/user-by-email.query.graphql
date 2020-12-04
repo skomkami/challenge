@@ -5,5 +5,8 @@ query userByEmail($email: Email!) {
     email
     gender
     createdAt
+    challenges {
+      total
+    }
   }
 }

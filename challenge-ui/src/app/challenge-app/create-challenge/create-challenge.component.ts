@@ -59,7 +59,10 @@ export class CreateChallengeComponent implements OnInit {
   }
 
   reset(): void {
-    this.challenge = new Challenge({ finishesOn: new Date() });
+    this.challenge = new Challenge({
+      finishesOn: new Date(),
+      createdBy: this.user && this.user.id,
+    });
   }
 
   onSubmit(form: any): void {

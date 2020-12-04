@@ -1,6 +1,6 @@
 package agh.edu.pl.graphql
 
-import agh.edu.pl.GraphQLSchema.{ gqlOffsetDateTime, ChallengeType, UserType }
+import agh.edu.pl.GraphQLSchema.{ ChallengeType, UserType }
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, User, UserChallengeSummary }
 import agh.edu.pl.filters.UserChallengeSummariesFilter

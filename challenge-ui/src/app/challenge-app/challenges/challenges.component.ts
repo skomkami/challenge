@@ -6,8 +6,10 @@ import {
 import { Challenge } from './../../models/challenge.model';
 import { QueryComponent } from '../../common/QueryComponent';
 import { User } from './../../../generated/types.graphql-gen';
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'challenges',
@@ -20,8 +22,10 @@ export class ChallengesComponent extends QueryComponent<
   @HostBinding('attr.class') cssClass =
     'sixteen wide mobile ten wide computer column';
   @Input() user: User;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  challenges: Array<Challenge>;
+  challenges: MatTableDataSource<Challenge>;
+  displayColumns: string[] = ['Name', 'Finishes on', 'Created by', 'Leader'];
 
   constructor(
     private challengesQuery: AllChallengesGQL,
@@ -35,9 +39,15 @@ export class ChallengesComponent extends QueryComponent<
   }
 
   extractData(data: AllChallengesQuery): void {
-    this.challenges = data.allChallenges.map(
+    this.total = data.allChallenges.total;
+    const challenges = data.allChallenges.results.map(
       (graphQlChallenge) => new Challenge(graphQlChallenge)
     );
+    this.loadChallenges(challenges);
+  }
+
+  loadChallenges(challenges: Challenge[]): void {
+    this.challenges = new MatTableDataSource(challenges);
   }
 
   goToChallenge(challengeId: string): void {
@@ -47,5 +57,9 @@ export class ChallengesComponent extends QueryComponent<
 
   reset(): void {
     this.ngOnInit();
+  }
+
+  redirectToCreateChallenge(): void {
+    this.router.navigateByUrl('home/create-challenge');
   }
 }

@@ -12,6 +12,7 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
 
 import {
   NgxMatDatetimePickerModule,
@@ -44,9 +45,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     HttpClientModule,
     ChallengeAppModule,
     KeycloakAngularModule,
+    MatTableModule,
     MatDatepickerModule,
     MatInputModule,
-
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,

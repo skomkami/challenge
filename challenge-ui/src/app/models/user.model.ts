@@ -10,6 +10,7 @@ export class User {
   gender: Gender;
   age?: number;
   createdAt?: string;
+  challenges?: number;
 
   constructor(obj?: any) {
     this.id = obj && obj.id;
@@ -18,5 +19,6 @@ export class User {
     this.gender = obj && obj.gender;
     this.age = obj && obj.age;
     this.createdAt = obj && obj.createdAt;
+    this.challenges = obj && obj.challenges && obj.challenges.total;
   }
 }

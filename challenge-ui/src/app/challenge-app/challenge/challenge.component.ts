@@ -88,7 +88,7 @@ export class ChallengeComponent extends QueryComponent<
   extractData(data: ChallengeQuery): void {
     this.challenge = new Challenge(data.challenge);
     console.log('challege: ', data);
-    this.summaries = data.challenge.summaries
+    this.summaries = data.challenge.summaries.results
       .map((summary) => new Summary(summary))
       .sort((a, b) => {
         return a.position - b.position;

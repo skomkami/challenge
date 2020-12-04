@@ -2,13 +2,17 @@ query userChallenges($userId: UserId!, $size: Int, $offset: Int) {
   user(id: $userId) {
     id
     challenges(size: $size, offset: $offset) {
-      challenge {
-        name
-        finishesOn
+      total
+      hasNextPage
+      results {
+        challenge {
+          name
+          finishesOn
+        }
+        position
+        lastActive
+        summaryValue
       }
-      position
-      lastActive
-      summaryValue
     }
   }
 }

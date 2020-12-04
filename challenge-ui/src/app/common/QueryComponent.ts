@@ -8,6 +8,8 @@ export class QueryComponent<DataType, QueryVariables> implements OnInit {
   loading: boolean;
   pageSize: number = 10;
   offset: number = 0;
+  total: number;
+  nextPage: boolean;
 
   vars: QueryVariables;
 

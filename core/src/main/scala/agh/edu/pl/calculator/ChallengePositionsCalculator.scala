@@ -53,6 +53,7 @@ case class ChallengePositionsCalculator(challengeId: ChallengeId) {
       .getAll[UserChallengeSummary](filter =
         Some(FilterEq("challengeId", challengeId.value) :: Nil)
       )
+      .map(_.results)
       .map(calculatePositions)
       .flatMap { sorted =>
         ctx.repository.updateMany(sorted)

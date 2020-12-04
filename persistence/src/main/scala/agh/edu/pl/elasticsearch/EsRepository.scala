@@ -4,6 +4,7 @@ import agh.edu.pl.error.DomainError
 import agh.edu.pl.filters.{ Filter, FilterEq, StringQuery }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.repository.Repository
+import agh.edu.pl.response.SearchResponse
 import com.sksamuel.elastic4s.ElasticClient
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.requests.searches.queries.matches.MatchQuery
@@ -37,18 +38,26 @@ case class EsRepository(
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]
-    ): Future[Seq[E]] =
+    ): Future[SearchResponse[E]] = {
+    val pageSize = size.getOrElse(10)
+    val from = offset.getOrElse(0)
     elasticClient
       .execute {
         search(INDEX_NAME)
           .bool(buildQuery(filters))
-          .size(size.getOrElse(10))
-          .from(offset.getOrElse(0))
+          .size(pageSize)
+          .from(from)
       }
-      .map(resp => resp.result.hits.hits)
-      .map { hits =>
-        hits.toIndexedSeq.map(_.sourceAsString).map(decodeSource(_)(decoder))
+      .map { resp =>
+        val hits = resp.result.hits.hits
+        val total = resp.result.totalHits
+        val entities =
+          hits.toIndexedSeq.map(_.sourceAsString).map(decodeSource(_)(decoder))
+        val hasNextPage = total - from - pageSize > 0
+
+        SearchResponse[E](total, hasNextPage, entities.toList)
       }
+  }
 
   private def buildQuery(queryFilter: Option[List[Filter]]): BoolQuery = {
     val qMusts = mutable.ListBuffer[Query]()

@@ -40,12 +40,10 @@ export class UserChallengesComponent extends QueryComponent<
   }
 
   extractData(data: UserChallengesQuery): void {
-    this.summaries = data.user.challenges.map(
+    this.summaries = data.user.challenges.results.map(
       (graphQlSummary) => new Summary(graphQlSummary)
     );
-  }
-
-  redirectToCreateChallenge(): void {
-    this.router.navigateByUrl('home/create-challenge');
+    this.total = data.user.challenges.total;
+    this.nextPage = data.user.challenges.hasNextPage;
   }
 }

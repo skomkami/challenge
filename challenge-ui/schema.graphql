@@ -4,7 +4,7 @@ type Challenge {
   createdOn: OffsetDateTime!
   finishesOn: OffsetDateTime!
   createdBy: User!
-  summaries(size: Int, offset: Int): [UserChallengeSummary!]!
+  summaries(size: Int, offset: Int): UserChallengeSummarysResponse!
   leader: User
 }
 
@@ -19,6 +19,12 @@ input ChallengesFilter {
   createdBy: UserId
   createdOn: OffsetDateTime
   finishesOn: OffsetDateTime
+}
+
+type ChallengesResponse {
+  total: Long!
+  hasNextPage: Boolean!
+  results: [Challenge!]!
 }
 
 input CreateChallenge {
@@ -59,6 +65,10 @@ input LogActivity {
   date: OffsetDateTime
 }
 
+# The `Long` scalar type represents non-fractional signed whole numeric values.
+# Long can represent values between -(2^63) and 2^63 - 1.
+scalar Long
+
 type Mutation {
   createUser(input: CreateUser!): User!
   createChallenge(input: CreateChallenge!): Challenge!
@@ -69,14 +79,14 @@ type Mutation {
 scalar OffsetDateTime
 
 type Query {
-  allUsers(size: Int, offset: Int, filter: UsersFilter): [User!]!
+  allUsers(size: Int, offset: Int, filter: UsersFilter): UsersResponse!
   user(id: UserId!): User
   getUserByEmail(email: Email!): User
-  allChallenges(size: Int, offset: Int, filter: ChallengesFilter): [Challenge!]!
+  allChallenges(size: Int, offset: Int, filter: ChallengesFilter): ChallengesResponse!
   challenge(id: ChallengeId!): Challenge
-  allUserChallengeSummaries(size: Int, offset: Int, filter: UserChallengeSummariesFilter): [UserChallengeSummary!]!
+  allUserChallengeSummaries(size: Int, offset: Int, filter: UserChallengeSummariesFilter): UserChallengeSummarysResponse!
   userchallengesummary(id: UserChallengeSummaryId!): UserChallengeSummary
-  allUserChallengeActivities(size: Int, offset: Int, filter: UserChallengeActivitiesFilter): [UserChallengeActivity!]!
+  allUserChallengeActivities(size: Int, offset: Int, filter: UserChallengeActivitiesFilter): UserChallengeActivitysResponse!
   userchallengeactivity(id: UserChallengeActivityId!): UserChallengeActivity
 }
 
@@ -86,8 +96,8 @@ type User {
   email: Email!
   gender: Gender!
   createdAt: OffsetDateTime!
-  activities(size: Int, offset: Int): [UserChallengeActivity!]!
-  challenges(size: Int, offset: Int): [UserChallengeSummary!]!
+  activities(size: Int, offset: Int): UserChallengeActivitysResponse!
+  challenges(size: Int, offset: Int): UserChallengeSummarysResponse!
   participatesInChallenge(challengeId: String!): Boolean!
 }
 
@@ -112,6 +122,12 @@ type UserChallengeActivity {
 # human-readable text.
 scalar UserChallengeActivityId
 
+type UserChallengeActivitysResponse {
+  total: Long!
+  hasNextPage: Boolean!
+  results: [UserChallengeActivity!]!
+}
+
 input UserChallengeSummariesFilter {
   id: UserChallengeSummaryId
   userId: UserId
@@ -134,6 +150,12 @@ type UserChallengeSummary {
 # human-readable text.
 scalar UserChallengeSummaryId
 
+type UserChallengeSummarysResponse {
+  total: Long!
+  hasNextPage: Boolean!
+  results: [UserChallengeSummary!]!
+}
+
 # The `String` scalar type represents textual data, represented as UTF-8 character
 # sequences. The String type is most often used by GraphQL to represent free-form
 # human-readable text.
@@ -144,5 +166,11 @@ input UsersFilter {
   name: String
   email: String
   gender: Gender
+}
+
+type UsersResponse {
+  total: Long!
+  hasNextPage: Boolean!
+  results: [User!]!
 }
 

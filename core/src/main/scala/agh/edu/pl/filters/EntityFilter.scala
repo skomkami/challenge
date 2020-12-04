@@ -12,7 +12,7 @@ trait EntityFilter[E] {
 abstract class EntityFilterSettings[F <: EntityFilter[_ <: Entity[_]]]
     extends JsonSerializable[F] {
   implicit val GraphQLOffsetDateTime: ScalarType[OffsetDateTime] =
-    agh.edu.pl.graphql.CustomScalars.GraphQLOffsetDateTime
+    agh.edu.pl.graphql.GraphQLOffsetDateTime
   def FilterInputType: InputObjectType[F]
   def FilterArgument: Argument[Option[F]]
 }

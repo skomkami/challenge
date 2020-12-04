@@ -1,7 +1,6 @@
 package agh.edu.pl.graphql
 
 import agh.edu.pl.GraphQLSchema.{
-  gqlOffsetDateTime,
   Offset,
   Size,
   UserChallengeSummaryType,
@@ -14,7 +13,7 @@ import agh.edu.pl.ids.ChallengeId
 import agh.edu.pl.mutations.CreateChallenge
 import cats.implicits._
 import sangria.macros.derive.{ deriveObjectType, AddFields, ReplaceField }
-import sangria.schema.{ Field, ListType, ObjectType, OptionType }
+import sangria.schema.{ Field, ObjectType, OptionType }
 
 case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
   override def createEntitySettings: CreateChallenge.type = CreateChallenge
@@ -34,7 +33,7 @@ case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
       AddFields(
         Field(
           name = "summaries",
-          fieldType = ListType(UserChallengeSummaryType),
+          fieldType = searchResponse(UserChallengeSummaryType),
           arguments = List(Size, Offset),
           resolve = c =>
             c.ctx
@@ -63,7 +62,7 @@ case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
                   ) :: Nil
                 )
               )
-              .map(_.headOption.map(_.userId))
+              .map(_.results.headOption.map(_.userId))
               .flatMap(_.traverse(repository.getById[User]))
           }
         )

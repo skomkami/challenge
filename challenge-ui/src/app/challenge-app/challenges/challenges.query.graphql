@@ -1,13 +1,17 @@
 query allChallenges($size: Int, $offset: Int, $nameFilter: String) {
   allChallenges(size: $size, offset: $offset, filter: { name: $nameFilter }) {
-    id
-    name
-    finishesOn
-    createdBy {
+    total
+    hasNextPage
+    results {
+      id
       name
-    }
-    leader {
-      name
+      finishesOn
+      createdBy {
+        name
+      }
+      leader {
+        name
+      }
     }
   }
 }

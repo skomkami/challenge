@@ -1,3 +1,5 @@
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { SearchBoxComponent } from './challenges/search-box.componenet';
 import { UserComponent } from './user/user.component';
 import { HomeComponent } from './home/home.component';
@@ -40,9 +42,10 @@ import { ChallengeUserComponent } from './challenge/challenge-user.component';
     ChallengeAppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
     MatDatepickerModule,
     MatInputModule,
-
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,

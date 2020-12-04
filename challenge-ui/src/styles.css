@@ -37,11 +37,11 @@ div.ui.main {
 }
 
 div.ui.main.container.segment {
-  min-height: 700px;
+  min-height: 600px;
 }
 
 .full-height {
-  min-height: 700px;
+  min-height: 600px;
 }
 html,
 body {
@@ -61,4 +61,26 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+
+.padding {
+  padding: 3em;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.hide {
+  display: none;
+}
+
+mat-footer-row mat-footer-cell {
+  justify-content: center;
+  font-style: italic;
 }

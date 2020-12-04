@@ -1,7 +1,6 @@
 package agh.edu.pl.graphql
 
 import agh.edu.pl.GraphQLSchema.{
-  gqlOffsetDateTime,
   Offset,
   Size,
   UserChallengeActivityType,
@@ -18,7 +17,6 @@ import sangria.schema.{
   Argument,
   BooleanType,
   Field,
-  ListType,
   ObjectType,
   OptionType,
   StringType
@@ -37,7 +35,7 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
       AddFields(
         Field(
           name = "activities",
-          fieldType = ListType(UserChallengeActivityType),
+          fieldType = searchResponse(UserChallengeActivityType),
           arguments = List(Size, Offset),
           resolve = c =>
             c.ctx
@@ -50,7 +48,7 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
         ),
         Field(
           name = "challenges",
-          fieldType = ListType(UserChallengeSummaryType),
+          fieldType = searchResponse(UserChallengeSummaryType),
           arguments = List(Size, Offset),
           resolve = c =>
             c.ctx
@@ -76,7 +74,7 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
                   )
                 )
               )
-              .map(_.nonEmpty)(c.ctx.ec)
+              .map(_.total != 0)(c.ctx.ec)
         )
       )
     )

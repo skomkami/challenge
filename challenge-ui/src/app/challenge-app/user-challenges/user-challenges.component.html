@@ -1,6 +1,10 @@
 <div *ngIf="loading" class="ui active loader"></div>
 
-<table class="ui compact celled definition table margin-top">
+<h2 class="ui center aligned header" style="margin-top: 2px">
+  Your challenges
+</h2>
+
+<table class="ui stripped table">
   <thead>
     <tr>
       <th>Challenge</th>
@@ -16,11 +20,3 @@
     </tr>
   </tbody>
 </table>
-
-<div
-  class="ui teal labeled icon bottom button"
-  (click)="redirectToCreateChallenge()"
->
-  Create New Challenge
-  <i class="add icon"></i>
-</div>
