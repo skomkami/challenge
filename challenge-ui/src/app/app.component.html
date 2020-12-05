@@ -2,17 +2,20 @@
 <div class="ui menu">
   <div class="ui container">
     <div class="header item borderless left">
-      <h1 class="ui header">
-        Challenge
-      </h1>
+      <h1 class="ui header">Challenge</h1>
     </div>
     <div class="item right">
-      <button *ngIf="!isLoggedIn" class="ui blue button" (click)="login()"><i class="sign in large icon"></i>Sign in</button>
-      <button *ngIf="isLoggedIn" class="ui blue button" (click)="logout()"><i class="sign out large icon"></i>Sign out</button>
+      <button *ngIf="!isLoggedIn" class="ui blue button" (click)="login()">
+        <i class="sign in large icon"></i>Sign in
+      </button>
+      <button *ngIf="isLoggedIn" class="ui blue button" (click)="logout()">
+        <i class="sign out large icon"></i>Sign out
+      </button>
     </div>
   </div>
 </div>
 
 <div class="ui main container segment">
+  <app-ng-dynamic-breadcrumb></app-ng-dynamic-breadcrumb>
   <router-outlet></router-outlet>
 </div>

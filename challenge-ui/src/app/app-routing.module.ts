@@ -6,16 +6,43 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', component: WelcomePageComponent, pathMatch: 'full' },
-  { path: 'register', component: RegisterComponent },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    data: {
+      breadcrumb: [
+        {
+          label: 'Welcome page',
+          url: '/',
+        },
+        {
+          label: 'Register',
+          url: '/register',
+        },
+      ],
+    },
+  },
   {
     path: 'home',
     loadChildren: './challenge-app/challenge-app.module#ChallengeAppModule',
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: {
+      breadcrumb: [
+        {
+          label: 'Welcome page',
+          url: '/',
+        },
+        {
+          label: 'Home',
+          url: '/home',
+        },
+      ],
+    },
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

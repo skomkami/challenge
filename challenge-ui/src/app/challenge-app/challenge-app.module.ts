@@ -23,6 +23,7 @@ import {
 } from '@angular-material-components/datetime-picker';
 import { ChallengeComponent } from './challenge/challenge.component';
 import { ChallengeUserComponent } from './challenge/challenge-user.component';
+import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ChallengeUserComponent } from './challenge/challenge-user.component';
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
+    NgDynamicBreadcrumbModule,
   ],
 })
 export class ChallengeAppModule {}

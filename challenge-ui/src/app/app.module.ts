@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
 
 import {
   NgxMatDatetimePickerModule,
@@ -51,6 +52,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
+    NgDynamicBreadcrumbModule,
   ],
   providers: [
     {

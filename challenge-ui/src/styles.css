@@ -97,3 +97,15 @@ mat-row:hover {
   position: absolute;
   bottom: 10px;
 }
+
+app-ng-dynamic-breadcrumb ul {
+  background-color: #ffffff !important;
+  font-size: 10px;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}

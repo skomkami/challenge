@@ -12,6 +12,13 @@
     lobortis maximus.
   </p>
   <p><b>Number of participating users: </b> {{ total }}</p>
+  <p>
+    <b>Status: </b> Active
+    <span class="dot" style="background-color: green"></span>
+  </p>
+  <p>
+    <b>Finishes on:</b> {{ challenge.finishesOn | date: "yyyy-MM-dd hh:mm" }}
+  </p>
 
   <div *ngIf="user">
     <challenge-user
