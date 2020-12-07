@@ -1,13 +1,18 @@
 package agh.edu.pl.elasticsearch
 
 import agh.edu.pl.error.DomainError
-import agh.edu.pl.filters.{ Filter, FilterEq }
+import agh.edu.pl.filters.{ Filter, FilterEq, StringQuery }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.repository.Repository
+import agh.edu.pl.response.SearchResponse
 import com.sksamuel.elastic4s.ElasticClient
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.requests.searches.queries.matches.MatchQuery
-import com.sksamuel.elastic4s.requests.searches.queries.{ BoolQuery, Query }
+import com.sksamuel.elastic4s.requests.searches.queries.{
+  BoolQuery,
+  Query,
+  RegexQuery
+}
 import io.circe.parser._
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder }
@@ -33,24 +38,37 @@ case class EsRepository(
     )(implicit
       tag: ClassTag[E],
       decoder: Decoder[E]
-    ): Future[Seq[E]] =
+    ): Future[SearchResponse[E]] = {
+    val pageSize = size.getOrElse(10)
+    val from = offset.getOrElse(0)
     elasticClient
       .execute {
         search(INDEX_NAME)
           .bool(buildQuery(filters))
-          .size(size.getOrElse(10))
-          .from(offset.getOrElse(0))
+          .size(pageSize)
+          .from(from)
       }
-      .map(resp => resp.result.hits.hits)
-      .map { hits =>
-        hits.toIndexedSeq.map(_.sourceAsString).map(decodeSource(_)(decoder))
+      .map { resp =>
+        val hits = resp.result.hits.hits
+        val total = resp.result.totalHits
+        val entities =
+          hits.toIndexedSeq.map(_.sourceAsString).map(decodeSource(_)(decoder))
+        val hasNextPage = total - from - pageSize > 0
+
+        SearchResponse[E](total, hasNextPage, entities.toList)
       }
+  }
 
   private def buildQuery(queryFilter: Option[List[Filter]]): BoolQuery = {
     val qMusts = mutable.ListBuffer[Query]()
     qMusts += matchAllQuery()
 
-    val qFilters = queryFilter.getOrElse(Nil).map {
+    queryFilter.getOrElse(Nil).collect {
+      case StringQuery(field, value) =>
+        qMusts += RegexQuery(field, value)
+    }
+
+    val qFilters = queryFilter.getOrElse(Nil).collect {
       case FilterEq(field, value) => MatchQuery(field, value)
     }
 
@@ -146,5 +164,46 @@ case class EsRepository(
         throw NotFoundEntity(className, entityId.value)
       }
       else entityId
+    }
+
+  override def updateMany[E <: Entity[_ <: EntityId]](
+      entities: Seq[E]
+    )(implicit
+      tag: ClassTag[E],
+      encoder: Encoder[E]
+    ): Future[Seq[EntityId]] = elasticClient
+    .execute {
+      val operations = entities.map { entity =>
+        updateById(INDEX_NAME, entity.id.value)
+          .docAsUpsert(entity.asJson.noSpaces)
+      }
+      bulk(operations)
+    }
+    .map { resp =>
+      if (resp.result.hasFailures) {
+        throw ???
+      }
+      else {
+        entities.map(_.id)
+      }
+    }
+
+  case class NotRefreshedIndex(index: String)
+      extends DomainError(
+        s"""Something went wrong while refreshing index: $index """
+      )
+
+  override def forceRefresh[E <: Entity[_]](
+      implicit
+      tag: ClassTag[E]
+    ): Future[Unit] = elasticClient
+    .execute {
+      refreshIndex(INDEX_NAME)
+    }
+    .map { resp =>
+      if (resp.isError) {
+        throw NotRefreshedIndex(INDEX_NAME)
+      }
+      else ()
     }
 }

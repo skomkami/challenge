@@ -72,7 +72,7 @@ case class GraphQLServer(repository: Repository, authService: AuthService) {
     val schema = token match {
       case Some(_) =>
         GraphQLSchema.SchemaDefinition
-      case None => GraphQLSchema.PublicSchemaDefinition
+      case None => GraphQLSchema.SchemaDefinition
     }
 
     Executor

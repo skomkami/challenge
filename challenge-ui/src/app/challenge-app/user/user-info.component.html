@@ -1,0 +1,21 @@
+<div class="ui grid">
+  <div class="sixteen wide mobile eight wide computer column">
+    <img
+      class="ui centered small image"
+      *ngIf="user.gender == 'Male'"
+      src="assets/img/male.png"
+    />
+    <img
+      class="ui centered small image"
+      *ngIf="user.gender == 'Female'"
+      src="assets/img/female.png"
+    />
+  </div>
+  <div class="sixteen wide mobile eight wide computer column">
+    <div class="center-vertically">
+      <div><b>Name:</b> {{ user.name }}</div>
+      <div><b>Email:</b> {{ user.email }}</div>
+      <div><b>Challenges:</b> {{ user.challenges }}</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div *ngIf="loading" class="ui active loader"></div>
+
+<h2 class="ui center aligned header" style="margin-top: 2px">
+  Your challenges
+</h2>
+
+<mat-table [dataSource]="summaries">
+  <ng-container matColumnDef="Name">
+    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+    <mat-cell *matCellDef="let summary">{{ summary.challenge.name }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Position">
+    <mat-header-cell *matHeaderCellDef>Position</mat-header-cell>
+    <mat-cell *matCellDef="let summary">{{ summary.position }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Points">
+    <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
+    <mat-cell *matCellDef="let summary">{{ summary.summaryValue }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="loadingRow">
+    <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+      Loading data...
+    </mat-footer-cell>
+  </ng-container>
+  <ng-container matColumnDef="noData">
+    <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+      No summarys found...
+    </mat-footer-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+  <mat-row
+    *matRowDef="let summary; columns: displayColumns"
+    (click)="goToChallenge(summary.challenge.id)"
+  ></mat-row>
+  <mat-footer-row
+    *matFooterRowDef="['loadingRow']"
+    [ngClass]="{ hide: !loading }"
+  ></mat-footer-row>
+  <mat-footer-row
+    *matFooterRowDef="['noData']"
+    [ngClass]="{ hide: !(summaries != null && summaries.data.length == 0) }"
+  ></mat-footer-row>
+</mat-table>
+<mat-paginator
+  [pageSize]="pageSize"
+  [length]="total"
+  (page)="handlePageChange($event)"
+></mat-paginator>

@@ -1,0 +1,51 @@
+<div *ngIf="!loading">
+  <form
+    *ngIf="participatesInChallenge"
+    [formGroup]="logActivityForm"
+    (ngSubmit)="logActivity()"
+    class="ui large form"
+    [class.error]="!logActivityForm.valid && logActivityForm.touched"
+  >
+    <h3 class="ui header">Log activity</h3>
+    <div class="field">
+      <label for="value">Value:</label>
+      <div class="ui input">
+        <input
+          name="value"
+          id="value"
+          placeholder="0"
+          [formControl]="value"
+          type="number"
+        />
+        <button
+          class="ui blue button"
+          type="submit"
+          [ngClass]="{ loading: joiningChallenge }"
+          [disabled]="!logActivityForm.valid"
+        >
+          Log activity
+        </button>
+      </div>
+      <p *ngIf="!value.valid && value.touched" class="negative message">
+        Provided value is invalid
+      </p>
+    </div>
+  </form>
+
+  <button
+    *ngIf="!participatesInChallenge"
+    type="submit"
+    [ngClass]="{ loading: joiningChallenge }"
+    class="ui blue button"
+    (click)="join()"
+  >
+    Join challenge
+  </button>
+
+  <div *ngIf="errorMessage">
+    <p class="error-span message">
+      Something went wrong while creating account. Error message:
+    </p>
+    <p class="error-span message">{{ errorMessage }}</p>
+  </div>
+</div>

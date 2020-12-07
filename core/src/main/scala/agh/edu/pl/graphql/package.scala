@@ -1,15 +1,16 @@
-package agh.edu.pl.graphql
+package agh.edu.pl
 
 import java.time.OffsetDateTime
 
+import agh.edu.pl.context.Context
+import agh.edu.pl.response.SearchResponse
 import sangria.ast.StringValue
-import sangria.schema.ScalarType
+import sangria.schema._
 import sangria.validation.Violation
 
 import scala.util.{ Failure, Success, Try }
 
-case object CustomScalars {
-
+package object graphql {
   case object DateTimeCoerceViolation extends Violation {
     override def errorMessage: String = "Error during parsing DateTime"
   }
@@ -35,4 +36,16 @@ case object CustomScalars {
       case Success(value) => Right(value)
       case Failure(_)     => Left(DateTimeCoerceViolation)
     }
+
+  def searchResponse[T](
+      entityOutput: ObjectType[Context, T]
+    ): ObjectType[Context, SearchResponse[T]] =
+    ObjectType[Context, SearchResponse[T]](
+      name = s"${entityOutput.name}sResponse",
+      fields = fields[Context, SearchResponse[T]](
+        Field("total", LongType, resolve = _.value.total),
+        Field("hasNextPage", BooleanType, resolve = _.value.hasNextPage),
+        Field("results", ListType(entityOutput), resolve = _.value.results)
+      )
+    )
 }

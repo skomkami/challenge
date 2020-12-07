@@ -86,7 +86,7 @@ object Server extends App with CorsSupport with AuthorizationHandler {
     Http()
       .newServerAt(config.server.bindHost, config.server.bindPort)
       .bind(corsHandler(route))
-  println(
+  scribe.info(
     s"open a browser with URL: http://${config.server.bindHost}:${config.server.bindPort}/graphiql"
   )
 

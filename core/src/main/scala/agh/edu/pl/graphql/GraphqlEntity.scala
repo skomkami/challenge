@@ -1,10 +1,12 @@
 package agh.edu.pl.graphql
 
+import agh.edu.pl.GraphQLSchema.{ Offset, Size }
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.filters.{ EntityFilter, EntityFilterSettings }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.mutations.CreateEntitySettings
+import agh.edu.pl.response.SearchResponse
 import io.circe.{ Decoder, Encoder }
 import sangria.schema._
 
@@ -20,6 +22,10 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
 
   def GraphQLOutputType: ObjectType[Context, T]
 
+  def GraphQLSearchResponse: OutputType[SearchResponse[T]] = searchResponse(
+    GraphQLOutputType
+  )
+
   def filterSettings: EntityFilterSettings[_ <: EntityFilter[T]]
 
   def createMutation: Field[Context, Unit] = Field(
@@ -30,13 +36,11 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
       c => c.arg(createEntitySettings.CreateEntityInput).createEntity(c.ctx)
   )
 
-  private val Id = Argument("id", StringType)
-  private val Size = Argument("size", OptionInputType(IntType))
-  private val Offset = Argument("offset", OptionInputType(IntType))
+  private val Id = Argument("id", createEntitySettings.idSettings.scalarAlias)
 
   protected def getAllQuery: Field[Context, Unit] = Field(
     name = s"all${plural(typeName)}",
-    fieldType = ListType(GraphQLOutputType),
+    fieldType = GraphQLSearchResponse,
     arguments = Size :: Offset :: filterSettings.FilterArgument :: Nil,
     resolve = c =>
       c.ctx
@@ -55,7 +59,7 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
     resolve = c =>
       c.ctx
         .repository
-        .getById[T](createEntitySettings.idCodec.fromString(c.arg(Id)))
+        .getById[T](c.arg(Id))
   )
 
   def queries: Seq[Field[Context, Unit]] =

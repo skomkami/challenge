@@ -1,0 +1,77 @@
+<div class="padding">
+  <h1 class="ui center aligned header">All challenges</h1>
+</div>
+
+<div class="ui search" style="min-width: 60%">
+  <div class="ui icon input">
+    <search-box
+      [offset]="offset"
+      [pageSize]="pageSize"
+      (loading)="this.loading = $event"
+      (total)="this.total = $event"
+      (results)="loadChallenges($event)"
+      (removedSearch)="reset()"
+    ></search-box>
+    <i class="search icon"></i>
+  </div>
+
+  <div
+    class="ui teal labeled icon bottom button"
+    style="position: absolute; right: 0"
+    (click)="redirectToCreateChallenge()"
+  >
+    Create New Challenge
+    <i class="add icon"></i>
+  </div>
+</div>
+
+<mat-table [dataSource]="challenges" style="margin-top: 45px">
+  <ng-container matColumnDef="Name">
+    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+    <mat-cell *matCellDef="let challenge">{{ challenge.name }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Finishes on">
+    <mat-header-cell *matHeaderCellDef>Finishes on</mat-header-cell>
+    <mat-cell *matCellDef="let challenge">{{
+      challenge.finishesOn | date: "yyyy-MM-dd hh:mm"
+    }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Created by">
+    <mat-header-cell *matHeaderCellDef>Created by</mat-header-cell>
+    <mat-cell *matCellDef="let challenge">{{ challenge.createdBy }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Leader">
+    <mat-header-cell *matHeaderCellDef>Leader</mat-header-cell>
+    <mat-cell *matCellDef="let challenge">{{
+      challenge.leader ? challenge.leader.name : "No participants"
+    }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="loadingRow">
+    <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+      Loading data...
+    </mat-footer-cell>
+  </ng-container>
+  <ng-container matColumnDef="noData">
+    <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+      No challenges found...
+    </mat-footer-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+  <mat-row
+    *matRowDef="let challenge; columns: displayColumns"
+    (click)="goToChallenge(challenge.id)"
+  ></mat-row>
+  <mat-footer-row
+    *matFooterRowDef="['loadingRow']"
+    [ngClass]="{ hide: !loading }"
+  ></mat-footer-row>
+  <mat-footer-row
+    *matFooterRowDef="['noData']"
+    [ngClass]="{ hide: !(challenges != null && challenges.data.length == 0) }"
+  ></mat-footer-row>
+</mat-table>
+<mat-paginator
+  [pageSize]="pageSize"
+  [length]="total"
+  (page)="handlePageChange($event)"
+></mat-paginator>

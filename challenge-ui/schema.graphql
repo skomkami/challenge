@@ -1,0 +1,176 @@
+type Challenge {
+  id: ChallengeId!
+  name: String!
+  createdOn: OffsetDateTime!
+  finishesOn: OffsetDateTime!
+  createdBy: User!
+  summaries(size: Int, offset: Int): UserChallengeSummarysResponse!
+  leader: User
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar ChallengeId
+
+input ChallengesFilter {
+  id: ChallengeId
+  name: String
+  createdBy: UserId
+  createdOn: OffsetDateTime
+  finishesOn: OffsetDateTime
+}
+
+type ChallengesResponse {
+  total: Long!
+  hasNextPage: Boolean!
+  results: [Challenge!]!
+}
+
+input CreateChallenge {
+  id: ChallengeId
+  name: String!
+  createdBy: UserId!
+  createdOn: OffsetDateTime = false
+  finishesOn: OffsetDateTime!
+}
+
+input CreateUser {
+  id: UserId
+  name: String!
+  email: Email!
+  gender: Gender!
+  createdAt: OffsetDateTime = false
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar Email
+
+enum Gender {
+  Male
+  Female
+}
+
+input JoinChallenge {
+  userId: UserId!
+  challengeId: ChallengeId!
+}
+
+input LogActivity {
+  userId: UserId!
+  challengeId: ChallengeId!
+  value: Float!
+  date: OffsetDateTime
+}
+
+# The `Long` scalar type represents non-fractional signed whole numeric values.
+# Long can represent values between -(2^63) and 2^63 - 1.
+scalar Long
+
+type Mutation {
+  createUser(input: CreateUser!): User!
+  createChallenge(input: CreateChallenge!): Challenge!
+  joinChallenge(input: JoinChallenge!): UserChallengeSummary!
+  logActivity(input: LogActivity!): UserChallengeActivity!
+}
+
+scalar OffsetDateTime
+
+type Query {
+  allUsers(size: Int, offset: Int, filter: UsersFilter): UsersResponse!
+  user(id: UserId!): User
+  getUserByEmail(email: Email!): User
+  allChallenges(size: Int, offset: Int, filter: ChallengesFilter): ChallengesResponse!
+  challenge(id: ChallengeId!): Challenge
+  allUserChallengeSummaries(size: Int, offset: Int, filter: UserChallengeSummariesFilter): UserChallengeSummarysResponse!
+  userchallengesummary(id: UserChallengeSummaryId!): UserChallengeSummary
+  allUserChallengeActivities(size: Int, offset: Int, filter: UserChallengeActivitiesFilter): UserChallengeActivitysResponse!
+  userchallengeactivity(id: UserChallengeActivityId!): UserChallengeActivity
+}
+
+type User {
+  id: UserId!
+  name: String!
+  email: Email!
+  gender: Gender!
+  createdAt: OffsetDateTime!
+  activities(size: Int, offset: Int): UserChallengeActivitysResponse!
+  challenges(size: Int, offset: Int): UserChallengeSummarysResponse!
+  participatesInChallenge(challengeId: String!): Boolean!
+}
+
+input UserChallengeActivitiesFilter {
+  id: UserChallengeActivityId
+  userId: UserId
+  challengeId: ChallengeId
+  value: Float
+  date: OffsetDateTime
+}
+
+type UserChallengeActivity {
+  id: UserChallengeActivityId!
+  value: Float!
+  date: OffsetDateTime!
+  user: User!
+  challenge: Challenge!
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar UserChallengeActivityId
+
+type UserChallengeActivitysResponse {
+  total: Long!
+  hasNextPage: Boolean!
+  results: [UserChallengeActivity!]!
+}
+
+input UserChallengeSummariesFilter {
+  id: UserChallengeSummaryId
+  userId: UserId
+  challengeId: ChallengeId
+  summaryValue: Float
+  lastActive: OffsetDateTime
+}
+
+type UserChallengeSummary {
+  id: UserChallengeSummaryId!
+  summaryValue: Float!
+  position: Int
+  lastActive: OffsetDateTime
+  user: User!
+  challenge: Challenge!
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar UserChallengeSummaryId
+
+type UserChallengeSummarysResponse {
+  total: Long!
+  hasNextPage: Boolean!
+  results: [UserChallengeSummary!]!
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar UserId
+
+input UsersFilter {
+  id: UserId
+  name: String
+  email: String
+  gender: Gender
+}
+
+type UsersResponse {
+  total: Long!
+  hasNextPage: Boolean!
+  results: [User!]!
+}
+

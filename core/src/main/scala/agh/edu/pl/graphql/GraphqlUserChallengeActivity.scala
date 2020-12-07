@@ -1,6 +1,6 @@
 package agh.edu.pl.graphql
 
-import agh.edu.pl.GraphQLSchema.{ gqlOffsetDateTime, ChallengeType, UserType }
+import agh.edu.pl.GraphQLSchema.{ ChallengeType, UserType }
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, User, UserChallengeActivity }
 import agh.edu.pl.filters.UserChallengeActivitiesFilter
@@ -26,7 +26,7 @@ case class GraphqlUserChallengeActivity()
       ReplaceField(
         "userId",
         Field(
-          "userId",
+          "user",
           UserType,
           resolve = c => c.ctx.repository.getById[User](c.value.userId)
         )
@@ -34,7 +34,7 @@ case class GraphqlUserChallengeActivity()
       ReplaceField(
         "challengeId",
         Field(
-          "challengeId",
+          "challenge",
           ChallengeType,
           resolve =
             c => c.ctx.repository.getById[Challenge](c.value.challengeId)

@@ -15,7 +15,7 @@ case class ChallengesFilter(
     finishesOn: Option[OffsetDateTime]
   ) extends EntityFilter[Challenge] {
   override def filters: Iterable[Filter] = {
-    val nameFilter = name.map(value => FilterEq("name", value))
+    val nameFilter = name.map(value => StringQuery("name", value))
     val createdByFilter =
       createdBy.map(value => FilterEq("createdBy", value.value))
     val createdOnFilter =

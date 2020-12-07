@@ -1,0 +1,11 @@
+mutation createChallenge($challenge: CreateChallenge!) {
+  createChallenge(input: $challenge) {
+    id
+    name
+    finishesOn
+    createdBy {
+      name
+      email
+    }
+  }
+}

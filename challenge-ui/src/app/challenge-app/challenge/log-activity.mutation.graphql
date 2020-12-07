@@ -1,0 +1,5 @@
+mutation logActivity($activity: LogActivity!) {
+  logActivity(input: $activity) {
+    id
+  }
+}

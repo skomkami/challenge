@@ -1,0 +1,9 @@
+schema: ./schema.graphql
+documents: src/**/*.graphql"
+extensions:
+  codegen:
+    generates:
+      ./generated-frontend.ts:
+        plugins:
+          - typescript
+          - typescript-apollo-angular

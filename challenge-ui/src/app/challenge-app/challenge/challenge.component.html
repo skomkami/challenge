@@ -1,0 +1,82 @@
+<div class="ui active laoder" *ngIf="loading == true"></div>
+
+<div *ngIf="loading == false">
+  <h2 class="ui center aligned header">{{ challenge.name }}</h2>
+  <p><b>Description:</b></p>
+  <p>
+    <!-- {{challenge.description}} -->
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sem
+    velit, placerat vel ultricies vel, ornare non ipsum. Sed turpis nisi,
+    pellentesque vel dolor sed, tincidunt convallis elit. Fusce elit felis,
+    lobortis vitae mauris id, pharetra bibendum diam. Aenean feugiat arcu id
+    lobortis maximus.
+  </p>
+  <p><b>Number of participating users: </b> {{ total }}</p>
+  <p>
+    <b>Status: </b> Active
+    <span class="dot" style="background-color: green"></span>
+  </p>
+  <p>
+    <b>Finishes on:</b> {{ challenge.finishesOn | date: "yyyy-MM-dd hh:mm" }}
+  </p>
+
+  <div *ngIf="user">
+    <challenge-user
+      (joinedChallenge)="pushNewSummary($event)"
+      (loggedActivity)="updateRanking($event)"
+      [user]="user"
+      [challengeId]="challengeId"
+    ></challenge-user>
+  </div>
+
+  <mat-table [dataSource]="summaries" class="margin-top">
+    <ng-container matColumnDef="User">
+      <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+      <mat-cell *matCellDef="let summary">{{ summary.user.name }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Position">
+      <mat-header-cell *matHeaderCellDef>Position</mat-header-cell>
+      <mat-cell *matCellDef="let summary">{{ summary.position }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Points">
+      <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
+      <mat-cell *matCellDef="let summary">{{ summary.summaryValue }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Last active">
+      <mat-header-cell *matHeaderCellDef>Last active</mat-header-cell>
+      <mat-cell *matCellDef="let summary">{{
+        summary.lastActive | date: "yyyy-MM-dd hh:mm"
+      }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="loadingRow">
+      <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+        Loading data...
+      </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+        No users participate in challenge...
+      </mat-footer-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+    <mat-row *matRowDef="let summary; columns: displayColumns"></mat-row>
+    <mat-footer-row
+      *matFooterRowDef="['loadingRow']"
+      [ngClass]="{ hide: !loading }"
+    ></mat-footer-row>
+    <mat-footer-row
+      *matFooterRowDef="['noData']"
+      [ngClass]="{ hide: !(summaries != null && summaries.data.length == 0) }"
+    ></mat-footer-row>
+  </mat-table>
+  <mat-paginator
+    [pageSize]="pageSize"
+    [length]="total"
+    (page)="handlePageChange($event)"
+  ></mat-paginator>
+
+  <a [routerLink]="['/home']" class="bottom-link">
+    <i class="angle left icon"></i>
+    Back to home
+  </a>
+</div>

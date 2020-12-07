@@ -10,7 +10,7 @@ object Dependencies {
     val quicklens = "1.6.1"
     val akkaHttp = "10.2.0"
     val akkaHttpCirce = "1.35.0"
-    val akkaStream = "2.6.9"
+    val akkaCore = "2.6.10"
     val elastic4s = "7.9.1"
     val elastic4sCirce = "6.7.8"
     val jboss = "3.4.1.Final"
@@ -19,6 +19,7 @@ object Dependencies {
     val pureconfig = "0.14.0"
     val refined = "0.9.17"
     val scalaTest = "3.2.2"
+    val scribe = "3.0.3"
     val sttp = "2.2.8"
   }
 
@@ -40,13 +41,15 @@ object Dependencies {
     }
 
     case object github {
-
       case object pureconfig {
         val pureconfig =
           "com.github.pureconfig" %% "pureconfig" % Versions.pureconfig
       }
     }
 
+    case object outr {
+      val scribe = "com.outr" %% "scribe" % Versions.scribe
+    }
     case object sksamuel {
       case object elastic4s {
         val `elastic4s-core` =
@@ -69,10 +72,12 @@ object Dependencies {
 
     case object typesafe {
       case object akka {
+        val `akka-actor` =
+          "com.typesafe.akka" %% "akka-actor" % Versions.akkaCore
         val `akka-http` =
           "com.typesafe.akka" %% "akka-http" % Versions.akkaHttp
         val `akka-stream` =
-          "com.typesafe.akka" %% "akka-stream" % Versions.akkaStream
+          "com.typesafe.akka" %% "akka-stream" % Versions.akkaCore
       }
     }
   }

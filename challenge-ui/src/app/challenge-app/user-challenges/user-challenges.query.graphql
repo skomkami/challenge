@@ -1,0 +1,19 @@
+query userChallenges($userId: UserId!, $size: Int, $offset: Int) {
+  user(id: $userId) {
+    id
+    challenges(size: $size, offset: $offset) {
+      total
+      hasNextPage
+      results {
+        challenge {
+          id
+          name
+          finishesOn
+        }
+        position
+        lastActive
+        summaryValue
+      }
+    }
+  }
+}

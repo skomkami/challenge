@@ -2,6 +2,7 @@ package agh.edu.pl.mutations
 
 import java.time.OffsetDateTime
 
+import agh.edu.pl.calculator.ChallengePositionsCalculator
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ UserChallengeActivity, UserChallengeSummary }
@@ -23,7 +24,7 @@ case class LogActivity(
     userId: UserId,
     challengeId: ChallengeId,
     value: Double,
-    date: OffsetDateTime = OffsetDateTime.now
+    date: Option[OffsetDateTime] = None
   ) extends CreateEntity[UserChallengeActivity] {
 
   override def toEntity(newId: UserChallengeActivityId): UserChallengeActivity =
@@ -32,7 +33,7 @@ case class LogActivity(
       userId = userId,
       challengeId = challengeId,
       value = value,
-      date = date
+      date = date.getOrElse(OffsetDateTime.now)
     )
 
   override def newEntity(
@@ -45,11 +46,19 @@ case class LogActivity(
       UserChallengeSummaryId.DataToGenerateId(challengeId, userId)
     )
 
-    for {
-      summary <- ctx.repository.getById[UserChallengeSummary](summaryId)
-      _ <- updateSummary(summary, ctx.repository)
-      created <- ctx.repository.create[UserChallengeActivity](toEntity(newId))
-    } yield created
+    val createActivity =
+      for {
+        summary <- ctx.repository.getById[UserChallengeSummary](summaryId)
+        _ <- updateSummary(summary, ctx.repository)
+        created <- ctx
+          .repository
+          .create[UserChallengeActivity](toEntity(newId))
+      } yield created
+
+    createActivity.onComplete(
+      ChallengePositionsCalculator(challengeId).processWhenSuccess(ctx)
+    )
+    createActivity
   }
 
   private def updateSummary(
@@ -60,7 +69,7 @@ case class LogActivity(
       modify(existingSummary)(_.summaryValue)
         .using(_ + value)
         .modify(_.lastActive)
-        .setTo(Some(date))
+        .setTo(date.orElse(Some(OffsetDateTime.now)))
     repository.update(updatedSummary)
   }
 
@@ -72,7 +81,11 @@ case class LogActivity(
 
   override def generateId: UserChallengeActivityId =
     UserChallengeActivityId.generateId(
-      UserChallengeActivityId.DataToGenerateId(challengeId, userId, date)
+      UserChallengeActivityId.DataToGenerateId(
+        challengeId,
+        userId,
+        date.getOrElse(OffsetDateTime.now)
+      )
     )
 
   override def id: Option[UserChallengeActivityId] = None
@@ -88,6 +101,6 @@ case object LogActivity
   lazy val CreateEntityInput: Argument[LogActivity] =
     Argument("input", LogActivityInputType)
 
-  override def idCodec: EntityIdSettings[UserChallengeActivityId] =
+  override def idSettings: EntityIdSettings[UserChallengeActivityId] =
     UserChallengeActivityId
 }

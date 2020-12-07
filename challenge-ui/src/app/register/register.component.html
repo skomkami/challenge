@@ -1,0 +1,67 @@
+<div class="ui text container">
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="onSubmit(registerForm.value)"
+    class="ui large form"
+    [class.error]="!registerForm.valid && registerForm.touched"
+  >
+    <h3 class="ui header">Create an Account</h3>
+    <div class="field">
+      <label for="name">Name:</label>
+      <div class="ui left icon input">
+        <input name="name" id="name" placeholder="Name" [formControl]="name" />
+        <i class="user icon"></i>
+      </div>
+      <p *ngIf="!name.valid && name.touched" class="error-span message">
+        Name is invalid
+      </p>
+    </div>
+    <div class="field">
+      <label for="email">Email:</label>
+      <div class="ui left icon input">
+        <input
+          name="email"
+          id="email"
+          placeholder="name@example.com"
+          [formControl]="email"
+          email="true"
+        />
+        <i class="at icon"></i>
+      </div>
+      <p *ngIf="!email.valid && email.touched" class="error-span message">
+        Email is invalid
+      </p>
+    </div>
+    <div class="field">
+      <label for="gender">Gender:</label>
+      <select class="ui dropdown menu" [formControl]="gender">
+        <option
+          *ngFor="let symbol of keys(symbols)"
+          [ngValue]="symbols[symbol]"
+          class="item"
+        >
+          {{ symbol }}
+        </option>
+      </select>
+    </div>
+    <button
+      type="submit"
+      [ngClass]="{ loading: loading }"
+      class="ui blue button"
+      [disabled]="!registerForm.valid"
+    >
+      Register
+    </button>
+    <div *ngIf="errorMessage">
+      <p class="error-span message">
+        Something went wrong while creating account. Error message:
+      </p>
+      <p class="error-span message">{{ errorMessage }}</p>
+    </div>
+    <br />
+    <a [routerLink]="['/']">
+      <i class="angle left icon"></i>
+      Back to welcome page
+    </a>
+  </form>
+</div>

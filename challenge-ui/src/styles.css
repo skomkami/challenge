@@ -1,0 +1,111 @@
+@import "./app/vendor/semantic.min.css";
+body {
+  background-color: #f4f0dc;
+  background-image: radial-gradient(#fffaec 2px, transparent 2px);
+  background-size: 15px 15px;
+}
+
+.ui.menu .item img.logo {
+  margin-right: 1.5em;
+}
+
+form.ui.segment.form {
+  background-color: #ffffff;
+  margin-top: 2em;
+}
+
+.margin-top {
+  margin-top: 2em;
+}
+
+form.form:after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+}
+
+div.ui.main {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+div.ui.main.container.segment {
+  min-height: 650px;
+}
+
+.full-height {
+  min-height: 650px;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.center-vertically {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.padding {
+  padding: 3em;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.hide {
+  display: none;
+}
+
+mat-footer-row mat-footer-cell {
+  justify-content: center;
+  font-style: italic;
+}
+
+mat-header-row {
+  background-color: #f9fafb;
+}
+
+mat-row:hover {
+  background-color: #f9fafb;
+}
+
+.bottom-link {
+  position: absolute;
+  bottom: 10px;
+}
+
+app-ng-dynamic-breadcrumb ul {
+  background-color: #ffffff !important;
+  font-size: 10px;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}

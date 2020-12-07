@@ -1,0 +1,24 @@
+query challenge($challengeId: ChallengeId!, $size: Int, $offset: Int) {
+  challenge(id: $challengeId) {
+    name
+    createdOn
+    finishesOn
+    createdBy {
+      name
+      email
+    }
+    summaries(size: $size, offset: $offset) {
+      total
+      results {
+        user {
+          id
+          name
+          email
+        }
+        position
+        lastActive
+        summaryValue
+      }
+    }
+  }
+}

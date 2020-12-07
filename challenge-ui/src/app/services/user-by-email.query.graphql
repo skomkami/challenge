@@ -1,0 +1,12 @@
+query userByEmail($email: Email!) {
+  getUserByEmail(email: $email) {
+    id
+    name
+    email
+    gender
+    createdAt
+    challenges {
+      total
+    }
+  }
+}
