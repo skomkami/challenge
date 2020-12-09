@@ -7,6 +7,7 @@ import agh.edu.pl.entities.{ User => DomainUser }
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
 import com.fullfacing.keycloak4s.admin.client.{ Keycloak, KeycloakClient }
+import com.fullfacing.keycloak4s.core.models.Credential
 import monix.eval.Task
 import monix.execution.Scheduler.Implicits.global
 import com.fullfacing.keycloak4s.core.models.User._
@@ -24,7 +25,13 @@ case class KeycloakService(
       username = user.email.address,
       enabled = true,
       email = Some(user.email.address),
-      firstName = Some(user.name)
+      firstName = Some(user.name),
+      credentials = List(
+        Credential(
+          temporary = Some(true),
+          value = Some("test")
+        )
+      )
     )
 
     users.create(userToCreate).map(_.left.map(_.getMessage)).runToFuture

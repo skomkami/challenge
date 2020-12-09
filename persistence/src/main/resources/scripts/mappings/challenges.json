@@ -13,6 +13,15 @@
       "createdOn" : {
         "type" : "date"
       },
+      "description" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
       "finishesOn" : {
         "type" : "date"
       },
@@ -22,6 +31,40 @@
           "keyword" : {
             "type" : "keyword",
             "ignore_above" : 256
+          }
+        }
+      },
+      "measure" : {
+        "properties" : {
+          "allowDecimal" : {
+            "type" : "boolean"
+          },
+          "unitName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "valueOrder" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "valueSummarization" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
           }
         }
       },

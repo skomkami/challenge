@@ -6,6 +6,9 @@ import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, User }
 import agh.edu.pl.ids.{ ChallengeId, UserId }
+import agh.edu.pl.measures.Measure
+import agh.edu.pl.measures.ValueOrder.SmallerWins
+import agh.edu.pl.measures.ValueSummarization.Summarize
 import agh.edu.pl.models.EntityIdSettings
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
@@ -15,25 +18,34 @@ import scala.concurrent.{ ExecutionContext, Future }
 case class CreateChallenge(
     override val id: Option[ChallengeId],
     name: String,
+    description: String,
     createdBy: UserId,
     createdOn: OffsetDateTime = OffsetDateTime.now,
-    finishesOn: OffsetDateTime
+    finishesOn: OffsetDateTime,
+    measure: Measure
   ) extends CreateEntity[Challenge] {
 
   override def toEntity(newId: ChallengeId): Challenge =
     Challenge(
       id = newId,
       name = name,
+      description = description,
       createdBy = createdBy,
       createdOn = createdOn,
-      finishesOn = finishesOn
+      finishesOn = finishesOn,
+      measure = measure
     )
 
-  override def newEntity(
+  override def createNewEntity(
       ctx: Context,
       newId: ChallengeId
     ): Future[Challenge] = {
     implicit val ec: ExecutionContext = ctx.ec
+
+    if (
+      measure.valueOrder == SmallerWins && measure.valueSummarization == Summarize
+    ) throw UnsupportedChallengeType
+
     for {
       _ <- ctx.repository.getById[User](createdBy)
       created <- ctx.repository.create[Challenge](toEntity(newId))

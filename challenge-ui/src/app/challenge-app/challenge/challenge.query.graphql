@@ -1,11 +1,18 @@
 query challenge($challengeId: ChallengeId!, $size: Int, $offset: Int) {
   challenge(id: $challengeId) {
     name
+    description
     createdOn
     finishesOn
     createdBy {
       name
       email
+    }
+    measure {
+      unitName
+      allowDecimal
+      valueOrder
+      valueSummarization
     }
     summaries(size: $size, offset: $offset) {
       total
@@ -17,7 +24,10 @@ query challenge($challengeId: ChallengeId!, $size: Int, $offset: Int) {
         }
         position
         lastActive
-        summaryValue
+        summaryValue {
+          integerValue
+          decimalValue
+        }
       }
     }
   }
