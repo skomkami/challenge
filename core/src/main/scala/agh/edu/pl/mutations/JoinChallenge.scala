@@ -1,5 +1,7 @@
 package agh.edu.pl.mutations
 
+import java.time.OffsetDateTime
+
 import agh.edu.pl.calculator.ChallengePositionsCalculator
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
@@ -36,11 +38,16 @@ case class JoinChallenge(
     implicit val ec: ExecutionContext = ctx.ec
     val newSummary = for {
       _ <- ctx.repository.getById[User](userId)
-      _ <- ctx.repository.getById[Challenge](challengeId)
+      challenge <- ctx.repository.getById[Challenge](challengeId)
       created <- ctx
         .repository
         .create[UserChallengeSummary](toEntity(newId))
-    } yield created
+    } yield {
+      if (challenge.finishesOn.isAfter(OffsetDateTime.now)) {
+        throw ChallengeInactive(challenge.name)
+      }
+      created
+    }
 
     newSummary.onComplete(
       ChallengePositionsCalculator(challengeId).processWhenSuccess(ctx)

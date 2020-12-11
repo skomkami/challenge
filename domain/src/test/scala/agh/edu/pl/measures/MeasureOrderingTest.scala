@@ -18,12 +18,12 @@ class MeasureOrderingTest extends AnyFlatSpec with Matchers {
       decimalValue = Some(2.2)
     ),
     MeasureValue(
-      integerValue = Some(5),
-      decimalValue = Some(5.5)
+      integerValue = None,
+      decimalValue = None
     ),
     MeasureValue(
-      integerValue = Some(0),
-      decimalValue = Some(0f)
+      integerValue = Some(5),
+      decimalValue = Some(5.5)
     ),
     MeasureValue(
       integerValue = None,

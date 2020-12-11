@@ -1,6 +1,11 @@
+import {
+  ValueOrder,
+  ValueSummarization,
+} from './../../../generated/types.graphql-gen';
 import { DatePipe } from '@angular/common';
 import { CreateChallengeGQL } from './create-challenge.mutation.graphql-gen';
 import { User } from '../../models/user.model';
+import { Measure } from '../../models/measure.model';
 import { Challenge } from '../../models/challenge.model';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user-service.service';
@@ -25,7 +30,16 @@ export class CreateChallengeComponent implements OnInit {
 
   form: FormGroup;
   name: AbstractControl;
+  description: AbstractControl;
+  unitName: AbstractControl;
+  allowDecimal: AbstractControl;
   finishesOn: AbstractControl;
+  valueOrder: AbstractControl;
+  valueSummarization: AbstractControl;
+
+  keys = Object.keys;
+  valueOrderSymbols = ValueOrder;
+  valueSummarizationSymbols = ValueSummarization;
 
   constructor(
     private userService: UserService,
@@ -37,17 +51,42 @@ export class CreateChallengeComponent implements OnInit {
     this.reset();
     this.form = fb.group({
       name: [this.challenge.name, Validators.required],
+      description: [this.challenge.description, Validators.required],
+      unitName: [this.challenge.measure.unitName, Validators.required],
+      allowDecimal: [this.challenge.measure.allowDecimal],
       finishesOn: [this.challenge.finishesOn, Validators.required],
+      valueOrder: [this.challenge.measure.valueOrder, Validators.required],
+      valueSummarization: [
+        this.challenge.measure.valueSummarization,
+        Validators.required,
+      ],
     });
     this.name = this.form.controls['name'];
     this.finishesOn = this.form.controls['finishesOn'];
+    this.description = this.form.controls['description'];
+    this.unitName = this.form.controls['unitName'];
+    this.allowDecimal = this.form.controls['allowDecimal'];
+    this.valueOrder = this.form.controls['valueOrder'];
+    this.valueSummarization = this.form.controls['valueSummarization'];
 
     this.name.valueChanges.subscribe((name) => {
       this.challenge.name = name;
     });
+    this.description.valueChanges.subscribe((description) => {
+      this.challenge.description = description;
+    });
+    this.unitName.valueChanges.subscribe((unitName) => {
+      this.challenge.measure.unitName = unitName;
+    });
     this.finishesOn.valueChanges.subscribe((finishesOn) => {
       const date = new Date(finishesOn);
       this.challenge.finishesOn = date.toISOString();
+    });
+    this.valueOrder.valueChanges.subscribe((valueOrder) => {
+      this.challenge.measure.valueOrder = valueOrder;
+    });
+    this.valueSummarization.valueChanges.subscribe((valueSummarization) => {
+      this.challenge.measure.valueSummarization = valueSummarization;
     });
   }
 
@@ -62,6 +101,10 @@ export class CreateChallengeComponent implements OnInit {
     this.challenge = new Challenge({
       finishesOn: new Date(),
       createdBy: this.user && this.user.id,
+      measure: new Measure({
+        valueOrder: ValueOrder.BiggerWins,
+        valueSummarization: ValueSummarization.Summarize,
+      }),
     });
   }
 

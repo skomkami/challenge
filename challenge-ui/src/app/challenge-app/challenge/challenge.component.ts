@@ -8,11 +8,14 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Challenge } from 'src/app/models/challenge.model';
 import { Summary } from 'src/app/models/summary.model';
+import {
+  MeasureValue,
+  measureValueOrdering,
+} from 'src/app/models/measure-value.model';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user-service.service';
-import { ChangeDetectorRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-challenge',
@@ -29,6 +32,7 @@ export class ChallengeComponent extends QueryComponent<
   participatesInChallenge: boolean;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatTable) table: MatTable<Summary>;
   summaries: MatTableDataSource<Summary>;
   displayColumns: string[] = ['User', 'Position', 'Points', 'Last active'];
 
@@ -60,28 +64,47 @@ export class ChallengeComponent extends QueryComponent<
   }
 
   pushNewSummary(newSummary: Summary): void {
-    newSummary.position = this.total + 1;
-    this.summaries.data.push(newSummary);
+    this.total = this.total + 1;
+    newSummary.position = this.total;
+    console.log(newSummary);
+    const newData = this.summaries.data;
+    newData.push(newSummary);
+    this.summaries.data = newData;
     this.participatesInChallenge = true;
   }
 
-  updateRanking(activityValue): void {
-    console.log('logged value: ', activityValue);
-    const updatedSummaries = this.summaries.data
-      .map((summary) => {
-        console.log(summary.user.id);
-        console.log(this.user.id);
-        if (summary.user.id === this.user.id) {
-          summary.summaryValue += activityValue;
-          return summary;
-        } else {
-          return summary;
-        }
-      })
-      .sort((a, b) => {
-        return a.position - b.position;
-      });
-    this.summaries = new MatTableDataSource(updatedSummaries);
+  updateRanking(activityValue: MeasureValue): void {
+    const summaryToUpdate = this.summaries.data.find(
+      (summary) => summary.user.id === this.user.id
+    );
+
+    const summariesWithoutCurrent = this.summaries.data.filter((summary) => {
+      const res = summary.user.id !== this.user.id;
+      return res;
+    });
+    this.summaries.data = summariesWithoutCurrent;
+    const updatedValue = summaryToUpdate.summaryValue.updated(
+      activityValue,
+      this.challenge.measure
+    );
+    summaryToUpdate.summaryValue = updatedValue;
+    summaryToUpdate.lastActive = new Date().toISOString();
+    const updatedSummaries = this.summaries.data;
+    updatedSummaries.push(summaryToUpdate);
+    updatedSummaries.sort((a, b) => {
+      return measureValueOrdering(
+        a.summaryValue,
+        b.summaryValue,
+        this.challenge.measure
+      );
+    });
+    updatedSummaries.map((summary, index) => {
+      const newSummary = summary;
+      newSummary.position = index + 1;
+      return newSummary;
+    });
+    console.log('updated summaries: ', updatedSummaries);
+    this.summaries.data = updatedSummaries;
   }
 
   updateVarsOffset(newOffset: number): void {
@@ -98,5 +121,11 @@ export class ChallengeComponent extends QueryComponent<
         return a.position - b.position;
       });
     this.summaries = new MatTableDataSource(summaries);
+  }
+
+  finished(): boolean {
+    const currentDate = new Date();
+    const challengeFinishDate = new Date(this.challenge.finishesOn);
+    return currentDate >= challengeFinishDate;
   }
 }

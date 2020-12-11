@@ -7,6 +7,7 @@ mutation joinChallenge($userId: UserId!, $challengeId: ChallengeId!) {
     }
     lastActive
     user {
+      id
       name
     }
   }

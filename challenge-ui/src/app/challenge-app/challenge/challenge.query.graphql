@@ -1,5 +1,6 @@
 query challenge($challengeId: ChallengeId!, $size: Int, $offset: Int) {
   challenge(id: $challengeId) {
+    id
     name
     description
     createdOn

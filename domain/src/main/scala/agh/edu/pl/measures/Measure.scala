@@ -38,26 +38,20 @@ case class Measure(
     }
 
   def ordering: Ordering[MeasureValue] = (x: MeasureValue, y: MeasureValue) => {
-    val compareResult =
-      if (allowDecimal) {
-        x.decimalValue.compare(y.decimalValue)
-      }
-      else {
-        x.integerValue.compare(y.integerValue)
-      }
-
-    if (
-      allowDecimal && x.decimalValue.isEmpty || !allowDecimal && x
-        .integerValue
-        .isEmpty
-    ) {
-      1 // if None should be last
-    }
-    else {
-      valueOrder match {
-        case BiggerWins  => -compareResult
-        case SmallerWins => compareResult
-      }
+    val a: Option[Double] =
+      if (allowDecimal) x.decimalValue else x.integerValue.map(_.doubleValue)
+    val b: Option[Double] =
+      if (allowDecimal) y.decimalValue else y.integerValue.map(_.doubleValue)
+    (a, b) match {
+      case (None, None)    => 0
+      case (Some(_), None) => -1
+      case (None, Some(_)) => 1
+      case (Some(a1), Some(b1)) =>
+        val compareResult = Ordering[Double].compare(a1, b1)
+        valueOrder match {
+          case BiggerWins  => -compareResult
+          case SmallerWins => compareResult
+        }
     }
   }
 }

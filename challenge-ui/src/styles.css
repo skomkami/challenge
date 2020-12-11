@@ -80,6 +80,10 @@ body {
   display: none;
 }
 
+.error-span {
+  color: #9f3a38;
+}
+
 mat-footer-row mat-footer-cell {
   justify-content: center;
   font-style: italic;

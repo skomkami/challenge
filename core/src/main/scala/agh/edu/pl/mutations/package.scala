@@ -13,4 +13,9 @@ package object mutations {
       extends DomainError(
         "Unsupported challenge type for SmallerWins and Summarization"
       )
+
+  case class ChallengeInactive(challengeName: String)
+      extends DomainError(
+        s"Challenge $challengeName has finished."
+      )
 }

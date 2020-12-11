@@ -8,13 +8,23 @@
   >
     <h3 class="ui header">Log activity</h3>
     <div class="field">
-      <label for="value">Value:</label>
+      <label for="value">Number of {{ challenge.measure.unitName }}:</label>
       <div class="ui input">
         <input
-          name="value"
-          id="value"
+          *ngIf="!challenge.measure.allowDecimal"
+          name="integerValue"
+          id="integerValue"
           placeholder="0"
-          [formControl]="value"
+          [formControl]="integerValue"
+          type="number"
+        />
+        <input
+          *ngIf="challenge.measure.allowDecimal"
+          name="decimalValue"
+          id="decimalValue"
+          placeholder="0.00"
+          step="0.01"
+          [formControl]="decimalValue"
           type="number"
         />
         <button
@@ -26,7 +36,13 @@
           Log activity
         </button>
       </div>
-      <p *ngIf="!value.valid && value.touched" class="negative message">
+      <p
+        *ngIf="
+          (!integerValue.valid && integerValue.touched) ||
+          (!decimalValue.valid && integerValue.touched)
+        "
+        class="negative message"
+      >
         Provided value is invalid
       </p>
     </div>

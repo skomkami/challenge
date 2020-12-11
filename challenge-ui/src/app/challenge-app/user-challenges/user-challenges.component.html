@@ -15,7 +15,7 @@
   </ng-container>
   <ng-container matColumnDef="Points">
     <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
-    <mat-cell *matCellDef="let summary">{{ summary.summaryValue }}</mat-cell>
+    <mat-cell *matCellDef="let summary">{{ summary | summaryValue }}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="loadingRow">
     <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
@@ -24,7 +24,7 @@
   </ng-container>
   <ng-container matColumnDef="noData">
     <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
-      No summarys found...
+      No summaries found...
     </mat-footer-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>

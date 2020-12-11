@@ -1,3 +1,5 @@
+import { Challenge } from 'src/app/models/challenge.model';
+import { MeasureValue } from 'src/app/models/measure-value.model';
 import { Summary } from 'src/app/models/summary.model';
 import { LogActivityGQL } from './log-activity.mutation.graphql-gen';
 import { finalize } from 'rxjs/operators';
@@ -24,15 +26,16 @@ export class ChallengeUserComponent extends QueryComponent<
   UserParticipatesInChallengeQueryVariables
 > {
   @Input() user: User;
-  @Input() challengeId: string;
+  @Input() challenge: Challenge;
   @Output()
   joinedChallenge: EventEmitter<Summary> = new EventEmitter<Summary>();
 
   @Output()
-  loggedActivity: EventEmitter<number> = new EventEmitter<number>();
+  loggedActivity: EventEmitter<MeasureValue> = new EventEmitter<MeasureValue>();
 
   logActivityForm: FormGroup;
-  value: AbstractControl;
+  integerValue: AbstractControl;
+  decimalValue: AbstractControl;
 
   participatesInChallenge: boolean;
 
@@ -40,28 +43,40 @@ export class ChallengeUserComponent extends QueryComponent<
   joiningChallenge: boolean;
   loggingActivity: boolean;
 
-  activityValue: number;
+  activityValue: MeasureValue;
 
   constructor(
     private participatesQuery: UserParticipatesInChallengeGQL,
     private joinChallenge: JoinChallengeGQL,
     private logActivityMutation: LogActivityGQL,
-    fb: FormBuilder
+    private fb: FormBuilder
   ) {
     super(participatesQuery);
-    this.logActivityForm = fb.group({
-      value: [this.activityValue, positiveNumberValidator()],
-    });
-    this.value = this.logActivityForm.controls['value'];
-    this.value.valueChanges.subscribe((value) => {
-      this.activityValue = value;
-    });
+    this.resetActivity();
   }
 
   ngOnInit(): void {
+    this.logActivityForm = this.fb.group({
+      integerValue: [
+        this.activityValue.integerValue,
+        positiveNumberValidator(!this.challenge.measure.allowDecimal),
+      ],
+      decimalValue: [
+        this.activityValue.decimalValue,
+        positiveNumberValidator(this.challenge.measure.allowDecimal),
+      ],
+    });
+    this.integerValue = this.logActivityForm.controls['integerValue'];
+    this.decimalValue = this.logActivityForm.controls['decimalValue'];
+    this.integerValue.valueChanges.subscribe((integerValue) => {
+      this.activityValue.integerValue = integerValue;
+    });
+    this.decimalValue.valueChanges.subscribe((decimalValue) => {
+      this.activityValue.decimalValue = decimalValue;
+    });
     this.vars = {
       userId: this.user.id,
-      challengeId: this.challengeId,
+      challengeId: this.challenge.id,
     };
     super.ngOnInit();
   }
@@ -73,7 +88,7 @@ export class ChallengeUserComponent extends QueryComponent<
   join(): void {
     this.joiningChallenge = true;
     this.joinChallenge
-      .mutate({ userId: this.user.id, challengeId: this.challengeId })
+      .mutate({ userId: this.user.id, challengeId: this.challenge.id })
       .pipe(
         finalize(() => {
           this.joiningChallenge = false;
@@ -93,13 +108,17 @@ export class ChallengeUserComponent extends QueryComponent<
       );
   }
 
+  resetActivity(): void {
+    this.activityValue = new MeasureValue();
+  }
+
   logActivity(): void {
     this.loggingActivity = true;
     this.logActivityMutation
       .mutate({
         activity: {
           userId: this.user.id,
-          challengeId: this.challengeId,
+          challengeId: this.challenge.id,
           value: this.activityValue,
         },
       })
@@ -113,8 +132,8 @@ export class ChallengeUserComponent extends QueryComponent<
           console.log('Logged activity:', data);
           this.errorMessage = null;
           this.loggedActivity.emit(this.activityValue);
-          this.activityValue = null;
           this.logActivityForm.reset();
+          this.resetActivity();
         },
         (error) => {
           console.log(error);
