@@ -1,9 +1,10 @@
 package agh.edu.pl.calculator
 
 import agh.edu.pl.context.Context
-import agh.edu.pl.entities.UserChallengeSummary
+import agh.edu.pl.entities.{ Challenge, UserChallengeSummary }
 import agh.edu.pl.filters.FilterEq
 import agh.edu.pl.ids.ChallengeId
+import agh.edu.pl.measures.Measure
 import agh.edu.pl.models.EntityId
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -47,23 +48,29 @@ case class ChallengePositionsCalculator(challengeId: ChallengeId) {
       ctx: Context
     )(implicit
       ec: ExecutionContext
-    ): Future[Seq[EntityId]] =
-    ctx
+    ): Future[Seq[EntityId]] = {
+    val summariesFuture = ctx
       .repository
       .getAll[UserChallengeSummary](filter =
         Some(FilterEq("challengeId", challengeId.value) :: Nil)
       )
       .map(_.results)
-      .map(calculatePositions)
-      .flatMap { sorted =>
-        ctx.repository.updateMany(sorted)
-      }
+
+    for {
+      challenge <- ctx.repository.getById[Challenge](challengeId)
+      summaries <- summariesFuture
+      sortedSummaries = calculatePositions(challenge.measure)(summaries)
+      sortedIds <- ctx.repository.updateMany(sortedSummaries)
+    } yield sortedIds
+  }
 
   private def calculatePositions(
+      measure: Measure
+    )(
       summaries: Seq[UserChallengeSummary]
     ): Seq[UserChallengeSummary] =
     summaries
-      .sortBy(_.summaryValue)(Ordering[Double].reverse)
+      .sortBy(_.summaryValue)(measure.ordering)
       .zipWithIndex
       .map {
         case (summary, position) => summary.copy(position = Some(position + 1))

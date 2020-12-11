@@ -1,8 +1,15 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 
-export function positiveNumberValidator(): ValidatorFn {
+export function positiveNumberValidator(validate: boolean): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } => {
-    const isNotOk = Number(control.value) <= 0;
-    return isNotOk ? { nonPositive: { value: control.value } } : null;
+    if (validate) {
+      const isNotOk = Number(control.value) <= 0;
+      const validationResult = isNotOk
+        ? { nonPositive: { value: control.value } }
+        : null;
+      return validationResult;
+    } else {
+      return null;
+    }
   };
 }

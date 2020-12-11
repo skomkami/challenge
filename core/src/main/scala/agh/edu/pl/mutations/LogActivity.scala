@@ -5,13 +5,19 @@ import java.time.OffsetDateTime
 import agh.edu.pl.calculator.ChallengePositionsCalculator
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
-import agh.edu.pl.entities.{ UserChallengeActivity, UserChallengeSummary }
+import agh.edu.pl.entities.{
+  Challenge,
+  UserChallengeActivity,
+  UserChallengeSummary
+}
+import agh.edu.pl.error.DomainError
 import agh.edu.pl.ids.{
   ChallengeId,
   UserChallengeActivityId,
   UserChallengeSummaryId,
   UserId
 }
+import agh.edu.pl.measures.{ Measure, MeasureValue }
 import agh.edu.pl.models.EntityIdSettings
 import agh.edu.pl.repository.Repository
 import com.softwaremill.quicklens._
@@ -23,7 +29,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 case class LogActivity(
     userId: UserId,
     challengeId: ChallengeId,
-    value: Double,
+    value: MeasureValue,
     date: Option[OffsetDateTime] = None
   ) extends CreateEntity[UserChallengeActivity] {
 
@@ -36,7 +42,7 @@ case class LogActivity(
       date = date.getOrElse(OffsetDateTime.now)
     )
 
-  override def newEntity(
+  override def createNewEntity(
       ctx: Context,
       newId: UserChallengeActivityId
     ): Future[UserChallengeActivity] = {
@@ -48,12 +54,18 @@ case class LogActivity(
 
     val createActivity =
       for {
+        challenge <- ctx.repository.getById[Challenge](challengeId)
         summary <- ctx.repository.getById[UserChallengeSummary](summaryId)
-        _ <- updateSummary(summary, ctx.repository)
+        _ <- updateSummary(summary, challenge.measure, ctx.repository)
         created <- ctx
           .repository
           .create[UserChallengeActivity](toEntity(newId))
-      } yield created
+      } yield {
+        if (challenge.finishesOn.isAfter(created.date)) {
+          throw ChallengeInactive(challenge.name)
+        }
+        created
+      }
 
     createActivity.onComplete(
       ChallengePositionsCalculator(challengeId).processWhenSuccess(ctx)
@@ -61,13 +73,30 @@ case class LogActivity(
     createActivity
   }
 
+  case class MeasureMismatch(missingValue: String)
+      extends DomainError(
+        s"Cannot log activity without $missingValue parameter"
+      )
+
   private def updateSummary(
       existingSummary: UserChallengeSummary,
+      measure: Measure,
       repository: Repository
     ): Future[UserChallengeSummary] = {
+
+    if (
+      measure.allowDecimal && value
+        .decimalValue
+        .isEmpty || !measure.allowDecimal && value.integerValue.isEmpty
+    ) {
+      val missingValue =
+        if (measure.allowDecimal) "value.decimalValue" else "value.integerValue"
+      throw MeasureMismatch(missingValue)
+    }
+
     val updatedSummary =
       modify(existingSummary)(_.summaryValue)
-        .using(_ + value)
+        .using(measure.updateSummaryValueFn(value))
         .modify(_.lastActive)
         .setTo(date.orElse(Some(OffsetDateTime.now)))
     repository.update(updatedSummary)

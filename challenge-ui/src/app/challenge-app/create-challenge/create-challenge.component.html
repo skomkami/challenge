@@ -15,6 +15,72 @@
     </div>
 
     <div class="field">
+      <label for="description">Description:</label>
+      <textarea
+        name="description"
+        id="description"
+        placeholder="Enter description..."
+        [formControl]="description"
+      ></textarea>
+      <p
+        *ngIf="!description.valid && description.touched"
+        class="error-span message"
+      >
+        Description is invalid
+      </p>
+    </div>
+
+    <div class="field">
+      <label for="unitName">Unit of measurement name:</label>
+      <input
+        name="unitName"
+        id="unitName"
+        placeholder="Unit of measurement name"
+        [formControl]="unitName"
+      />
+      <p *ngIf="!unitName.valid && unitName.touched" class="error-span message">
+        Name is invalid
+      </p>
+    </div>
+
+    <div class="field">
+      <label for="allowDecimal">Allow decimal values:</label>
+      <input
+        type="checkbox"
+        name="allowDecimal"
+        id="allowDecimal"
+        placeholder="allowDecimal"
+        [formControl]="allowDecimal"
+      />
+    </div>
+
+    <div class="field">
+      <label for="valueOrder">Value order:</label>
+      <select class="ui dropdown menu" [formControl]="valueOrder">
+        <option
+          *ngFor="let symbol of keys(valueOrderSymbols)"
+          [ngValue]="valueOrderSymbols[symbol]"
+          class="item"
+        >
+          {{ symbol }}
+        </option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="valueSummarization">Value summarization:</label>
+      <select class="ui dropdown menu" [formControl]="valueSummarization">
+        <option
+          *ngFor="let symbol of keys(valueSummarizationSymbols)"
+          [ngValue]="valueSummarizationSymbols[symbol]"
+          class="item"
+        >
+          {{ symbol }}
+        </option>
+      </select>
+    </div>
+
+    <div class="field">
       <label for="finishesOn">Finishes on:</label>
 
       <div class="ui labeled input">
@@ -51,9 +117,9 @@
       <p class="error-span message">{{ errorMessage }}</p>
     </div>
     <br /><br />
-    <a [routerLink]="['/home']">
-      <i class="angle left icon"></i>
-      Back to home
-    </a>
   </form>
 </div>
+<a [routerLink]="['/home']">
+  <i class="angle left icon"></i>
+  Back to home
+</a>

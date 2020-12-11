@@ -1,8 +1,10 @@
 type Challenge {
   id: ChallengeId!
   name: String!
+  description: String!
   createdOn: OffsetDateTime!
   finishesOn: OffsetDateTime!
+  measure: Measure!
   createdBy: User!
   summaries(size: Int, offset: Int): UserChallengeSummarysResponse!
   leader: User
@@ -30,9 +32,11 @@ type ChallengesResponse {
 input CreateChallenge {
   id: ChallengeId
   name: String!
+  description: String!
   createdBy: UserId!
   createdOn: OffsetDateTime = false
   finishesOn: OffsetDateTime!
+  measure: MeasureInput!
 }
 
 input CreateUser {
@@ -61,13 +65,37 @@ input JoinChallenge {
 input LogActivity {
   userId: UserId!
   challengeId: ChallengeId!
-  value: Float!
+  value: MeasureValueInput!
   date: OffsetDateTime
 }
 
 # The `Long` scalar type represents non-fractional signed whole numeric values.
 # Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
+
+type Measure {
+  unitName: String!
+  allowDecimal: Boolean!
+  valueSummarization: ValueSummarization!
+  valueOrder: ValueOrder!
+}
+
+input MeasureInput {
+  unitName: String!
+  allowDecimal: Boolean!
+  valueSummarization: ValueSummarization!
+  valueOrder: ValueOrder!
+}
+
+type MeasureValue {
+  integerValue: Int
+  decimalValue: Float
+}
+
+input MeasureValueInput {
+  integerValue: Int
+  decimalValue: Float
+}
 
 type Mutation {
   createUser(input: CreateUser!): User!
@@ -111,7 +139,7 @@ input UserChallengeActivitiesFilter {
 
 type UserChallengeActivity {
   id: UserChallengeActivityId!
-  value: Float!
+  value: MeasureValue!
   date: OffsetDateTime!
   user: User!
   challenge: Challenge!
@@ -138,7 +166,7 @@ input UserChallengeSummariesFilter {
 
 type UserChallengeSummary {
   id: UserChallengeSummaryId!
-  summaryValue: Float!
+  summaryValue: MeasureValue!
   position: Int
   lastActive: OffsetDateTime
   user: User!
@@ -172,5 +200,15 @@ type UsersResponse {
   total: Long!
   hasNextPage: Boolean!
   results: [User!]!
+}
+
+enum ValueOrder {
+  BiggerWins
+  SmallerWins
+}
+
+enum ValueSummarization {
+  Summarize
+  Best
 }
 

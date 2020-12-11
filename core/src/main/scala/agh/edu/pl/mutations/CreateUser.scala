@@ -31,7 +31,7 @@ case class CreateUser(
       createdAt = createdAt
     )
 
-  override def newEntity(ctx: Context, newId: UserId): Future[User] = {
+  override def createNewEntity(ctx: Context, newId: UserId): Future[User] = {
     implicit val ec: ExecutionContext = ctx.ec
     val entity = toEntity(newId)
 

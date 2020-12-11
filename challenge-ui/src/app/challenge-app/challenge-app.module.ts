@@ -1,3 +1,4 @@
+import { SummaryValue } from '../common/summary-value.pipe';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SearchBoxComponent } from './challenges/search-box.componenet';
@@ -37,6 +38,7 @@ import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
     ChallengeComponent,
     ChallengeUserComponent,
     SearchBoxComponent,
+    SummaryValue,
   ],
   imports: [
     CommonModule,

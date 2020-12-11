@@ -12,7 +12,6 @@ import {
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
@@ -65,8 +64,8 @@ export class RegisterComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.loading = false;
-          this.resetUser();
           this.registerForm.reset();
+          this.resetUser();
         })
       )
       .subscribe(

@@ -17,7 +17,7 @@ abstract class CreateEntity[
 
   final def finalId: E#IdType = id.getOrElse(generateId)
 
-  def newEntity(ctx: Context, newId: E#IdType): Future[E] =
+  def createNewEntity(ctx: Context, newId: E#IdType): Future[E] =
     ctx.repository.create[E](toEntity(newId))
 
   // by default don't update
@@ -30,7 +30,7 @@ abstract class CreateEntity[
       .getByIdOpt[E](finalId)
       .flatMap {
         case Some(existing) => updateEntity(ctx, existing)
-        case None           => newEntity(ctx, finalId)
+        case None           => createNewEntity(ctx, finalId)
       }(ctx.ec)
 
 }

@@ -32,7 +32,14 @@
         }
       },
       "value" : {
-        "type" : "float"
+        "properties" : {
+          "decimalValue" : {
+            "type" : "float"
+          },
+          "integerValue" : {
+            "type" : "long"
+          }
+        }
       }
     }
   }

@@ -19,11 +19,21 @@
           }
         }
       },
-      "summaryValue" : {
-        "type" : "float"
+      "lastActive" : {
+        "type" : "date"
       },
-      "position": {
-        "type" : "integer"
+      "position" : {
+        "type" : "long"
+      },
+      "summaryValue" : {
+        "properties" : {
+          "decimalValue" : {
+            "type" : "float"
+          },
+          "integerValue" : {
+            "type" : "long"
+          }
+        }
       },
       "userId" : {
         "type" : "text",
@@ -33,8 +43,7 @@
             "ignore_above" : 256
           }
         }
-      },
-      "lastActive": { "type":  "date" }
+      }
     }
   }
 }

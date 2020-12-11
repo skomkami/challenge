@@ -3,29 +3,27 @@
 <div *ngIf="loading == false">
   <h2 class="ui center aligned header">{{ challenge.name }}</h2>
   <p><b>Description:</b></p>
-  <p>
-    <!-- {{challenge.description}} -->
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sem
-    velit, placerat vel ultricies vel, ornare non ipsum. Sed turpis nisi,
-    pellentesque vel dolor sed, tincidunt convallis elit. Fusce elit felis,
-    lobortis vitae mauris id, pharetra bibendum diam. Aenean feugiat arcu id
-    lobortis maximus.
-  </p>
+  <p>{{ challenge.description }}</p>
   <p><b>Number of participating users: </b> {{ total }}</p>
   <p>
-    <b>Status: </b> Active
-    <span class="dot" style="background-color: green"></span>
+    <b>Status: </b>
+    <span *ngIf="!finished()"
+      >Active <span class="dot" style="background-color: green"></span
+    ></span>
+    <span *ngIf="finished()"
+      >Finished <span class="dot" style="background-color: red"></span
+    ></span>
   </p>
   <p>
-    <b>Finishes on:</b> {{ challenge.finishesOn | date: "yyyy-MM-dd hh:mm" }}
+    <b>Finishes on:</b> {{ challenge.finishesOn | date: "yyyy-MM-dd HH:mm" }}
   </p>
 
-  <div *ngIf="user">
+  <div *ngIf="user && !finished()">
     <challenge-user
       (joinedChallenge)="pushNewSummary($event)"
       (loggedActivity)="updateRanking($event)"
       [user]="user"
-      [challengeId]="challengeId"
+      [challenge]="challenge"
     ></challenge-user>
   </div>
 
@@ -40,12 +38,14 @@
     </ng-container>
     <ng-container matColumnDef="Points">
       <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
-      <mat-cell *matCellDef="let summary">{{ summary.summaryValue }}</mat-cell>
+      <mat-cell *matCellDef="let summary">{{
+        summary | summaryValue: challenge.measure
+      }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="Last active">
       <mat-header-cell *matHeaderCellDef>Last active</mat-header-cell>
       <mat-cell *matCellDef="let summary">{{
-        summary.lastActive | date: "yyyy-MM-dd hh:mm"
+        summary.lastActive | date: "yyyy-MM-dd HH:mm"
       }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="loadingRow">

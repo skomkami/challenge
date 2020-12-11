@@ -1,9 +1,13 @@
 mutation joinChallenge($userId: UserId!, $challengeId: ChallengeId!) {
   joinChallenge(input: { userId: $userId, challengeId: $challengeId }) {
     id
-    summaryValue
+    summaryValue {
+      integerValue
+      decimalValue
+    }
     lastActive
     user {
+      id
       name
     }
   }
