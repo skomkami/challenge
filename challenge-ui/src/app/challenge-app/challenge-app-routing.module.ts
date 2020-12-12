@@ -3,6 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CreateChallengeComponent } from './create-challenge/create-challenge.component';
+import { ActivitiesComponent } from './activities/activities.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'challenge/:id',
+    path: 'challenge/:challengeId',
     component: ChallengeComponent,
     data: {
       breadcrumb: [
@@ -32,12 +33,36 @@ const routes: Routes = [
           url: '../',
         },
         {
-          label: 'Home', // pageOneID Parameter value will be add
+          label: 'Home',
           url: '/home',
         },
         {
-          label: 'Challenge', // pageTwoID Parameter value will be add
-          url: '/challenge/:id',
+          label: 'Challenge',
+          url: '/challenge/:challengeId',
+        },
+      ],
+    },
+  },
+  {
+    path: 'challenge/:challengeId/user-activities/:userId',
+    component: ActivitiesComponent,
+    data: {
+      breadcrumb: [
+        {
+          label: 'Welcome page',
+          url: '../',
+        },
+        {
+          label: 'Home',
+          url: '/home',
+        },
+        {
+          label: 'Challenge',
+          url: '/challenge/:challengeId',
+        },
+        {
+          label: 'User activities',
+          url: '/challenge/:challengeId/user-activities/:userId',
         },
       ],
     },

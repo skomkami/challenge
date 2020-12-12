@@ -1,14 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { MeasureValue } from '../models/measure-value.model';
 import { Measure } from '../models/measure.model';
-import { Summary } from '../models/summary.model';
 
-@Pipe({ name: 'summaryValue' })
-export class SummaryValue implements PipeTransform {
-  transform(summary: Summary, measureOpt?: Measure): string {
-    const measure =
-      (summary.challenge && summary.challenge.measure) || measureOpt;
-    const value = summary.summaryValue;
-
+@Pipe({ name: 'displayMeasureValue' })
+export class DisplayMeasureValue implements PipeTransform {
+  transform(value: MeasureValue, measure: Measure): string {
     var finalValue = undefined;
     if (measure.allowDecimal) {
       finalValue = value.decimalValue;

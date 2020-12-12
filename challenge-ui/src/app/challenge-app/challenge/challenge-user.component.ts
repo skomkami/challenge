@@ -14,7 +14,12 @@ import { Component, Input } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { positiveNumberValidator } from './../../common/utils';
 
 @Component({
@@ -59,7 +64,10 @@ export class ChallengeUserComponent extends QueryComponent<
     this.logActivityForm = this.fb.group({
       integerValue: [
         this.activityValue.integerValue,
-        positiveNumberValidator(!this.challenge.measure.allowDecimal),
+        Validators.compose([
+          positiveNumberValidator(!this.challenge.measure.allowDecimal),
+          Validators.pattern('^[0-9]*$'),
+        ]),
       ],
       decimalValue: [
         this.activityValue.decimalValue,

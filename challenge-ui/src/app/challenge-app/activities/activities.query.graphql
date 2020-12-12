@@ -1,0 +1,36 @@
+query activities(
+  $userId: UserId!
+  $challengeId: ChallengeId!
+  $size: Int
+  $offset: Int
+) {
+  allUserChallengeActivities(
+    size: $size
+    offset: $offset
+    filter: { userId: $userId, challengeId: $challengeId }
+  ) {
+    total
+    results {
+      value {
+        integerValue
+        decimalValue
+      }
+      date
+    }
+  }
+  user(id: $userId) {
+    id
+    name
+  }
+  challenge(id: $challengeId) {
+    id
+    name
+    description
+    measure {
+      unitName
+      allowDecimal
+      valueOrder
+      valueSummarization
+    }
+  }
+}

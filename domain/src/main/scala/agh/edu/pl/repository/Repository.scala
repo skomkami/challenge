@@ -61,4 +61,5 @@ trait Repository {
     ): Future[Seq[EntityId]]
 
   def forceRefresh[E <: Entity[_]](implicit tag: ClassTag[E]): Future[Unit]
+  def allCount[E <: Entity[_]](implicit tag: ClassTag[E]): Future[Long]
 }

@@ -11,17 +11,24 @@ export class QueryComponent<DataType, QueryVariables> implements OnInit {
   total: number;
   nextPage: boolean;
 
+  errorMessage: string;
+
   vars: QueryVariables;
 
   constructor(private queryService: Apollo.Query<DataType, QueryVariables>) {}
 
   ngOnInit(): void {
-    this.queryService
-      .watch(this.vars)
-      .valueChanges.subscribe(({ data, loading }) => {
-        this.loading = loading;
+    this.queryService.watch(this.vars).valueChanges.subscribe(
+      ({ data, loading }) => {
         this.extractData(data);
-      });
+        this.loading = loading;
+      },
+      (error) => {
+        console.log(error);
+        this.loading = false;
+        this.errorMessage = error;
+      }
+    );
   }
 
   handlePageChange(event): void {

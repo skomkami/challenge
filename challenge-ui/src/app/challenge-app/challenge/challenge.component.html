@@ -1,4 +1,8 @@
-<div class="ui active laoder" *ngIf="loading == true"></div>
+<div *ngIf="loading">
+  <div class="ui active inverted dimmer">
+    <div class="ui large text loader">Loading</div>
+  </div>
+</div>
 
 <div *ngIf="loading == false">
   <h2 class="ui center aligned header">{{ challenge.name }}</h2>
@@ -39,7 +43,7 @@
     <ng-container matColumnDef="Points">
       <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
       <mat-cell *matCellDef="let summary">{{
-        summary | summaryValue: challenge.measure
+        summary.summaryValue | displayMeasureValue: challenge.measure
       }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="Last active">
@@ -59,7 +63,10 @@
       </mat-footer-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-    <mat-row *matRowDef="let summary; columns: displayColumns"></mat-row>
+    <mat-row
+      *matRowDef="let summary; columns: displayColumns"
+      (click)="goToActivities(summary.user.id)"
+    ></mat-row>
     <mat-footer-row
       *matFooterRowDef="['loadingRow']"
       [ngClass]="{ hide: !loading }"

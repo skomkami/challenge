@@ -206,4 +206,13 @@ case class EsRepository(
       }
       else ()
     }
+
+  override def allCount[E <: Entity[_]](
+      implicit
+      tag: ClassTag[E]
+    ): Future[Long] = elasticClient
+    .execute {
+      count(INDEX_NAME)
+    }
+    .map(_.result.count)
 }

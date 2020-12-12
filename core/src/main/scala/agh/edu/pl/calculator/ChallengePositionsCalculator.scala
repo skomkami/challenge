@@ -49,12 +49,15 @@ case class ChallengePositionsCalculator(challengeId: ChallengeId) {
     )(implicit
       ec: ExecutionContext
     ): Future[Seq[EntityId]] = {
-    val summariesFuture = ctx
-      .repository
-      .getAll[UserChallengeSummary](filter =
-        Some(FilterEq("challengeId", challengeId.value) :: Nil)
-      )
-      .map(_.results)
+    val summariesFuture = for {
+      allCount <- ctx.repository.allCount[UserChallengeSummary]
+      summariesResponse <- ctx
+        .repository
+        .getAll[UserChallengeSummary](
+          filter = Some(FilterEq("challengeId", challengeId.value) :: Nil),
+          size = Some(allCount.toInt)
+        )
+    } yield summariesResponse.results
 
     for {
       challenge <- ctx.repository.getById[Challenge](challengeId)

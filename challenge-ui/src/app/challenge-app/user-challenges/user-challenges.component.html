@@ -15,7 +15,10 @@
   </ng-container>
   <ng-container matColumnDef="Points">
     <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
-    <mat-cell *matCellDef="let summary">{{ summary | summaryValue }}</mat-cell>
+    <mat-cell *matCellDef="let summary">{{
+      summary.summaryValue
+        | displayMeasureValue: summary.challenge && summary.challenge.measure
+    }}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="loadingRow">
     <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">

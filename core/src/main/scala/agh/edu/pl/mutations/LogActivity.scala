@@ -60,12 +60,13 @@ case class LogActivity(
         created <- ctx
           .repository
           .create[UserChallengeActivity](toEntity(newId))
-      } yield {
-        if (challenge.finishesOn.isAfter(created.date)) {
+      } yield
+        if (challenge.finishesOn.isBefore(created.date)) {
           throw ChallengeInactive(challenge.name)
         }
-        created
-      }
+        else {
+          created
+        }
 
     createActivity.onComplete(
       ChallengePositionsCalculator(challengeId).processWhenSuccess(ctx)

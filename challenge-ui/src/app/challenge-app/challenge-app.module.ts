@@ -1,4 +1,4 @@
-import { SummaryValue } from '../common/summary-value.pipe';
+import { DisplayMeasureValue } from '../common/display-measure-value.pipe';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SearchBoxComponent } from './challenges/search-box.componenet';
@@ -25,6 +25,7 @@ import {
 import { ChallengeComponent } from './challenge/challenge.component';
 import { ChallengeUserComponent } from './challenge/challenge-user.component';
 import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
+import { ActivitiesComponent } from './activities/activities.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
     ChallengeComponent,
     ChallengeUserComponent,
     SearchBoxComponent,
-    SummaryValue,
+    DisplayMeasureValue,
+    ActivitiesComponent,
   ],
   imports: [
     CommonModule,

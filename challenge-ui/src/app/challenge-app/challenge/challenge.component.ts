@@ -5,7 +5,7 @@ import {
   ChallengeQueryVariables,
 } from './challenge.query.graphql-gen';
 import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Challenge } from 'src/app/models/challenge.model';
 import { Summary } from 'src/app/models/summary.model';
 import {
@@ -39,7 +39,8 @@ export class ChallengeComponent extends QueryComponent<
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private challengeQuery: ChallengeGQL
+    private challengeQuery: ChallengeGQL,
+    private router: Router
   ) {
     super(challengeQuery);
     this.loading = true;
@@ -51,7 +52,7 @@ export class ChallengeComponent extends QueryComponent<
     };
 
     route.params.subscribe((params) => {
-      this.challengeId = params['id'];
+      this.challengeId = params['challengeId'];
       this.vars.challengeId = this.challengeId;
     });
   }
@@ -127,5 +128,12 @@ export class ChallengeComponent extends QueryComponent<
     const currentDate = new Date();
     const challengeFinishDate = new Date(this.challenge.finishesOn);
     return currentDate >= challengeFinishDate;
+  }
+
+  goToActivities(userId: string): void {
+    console.log('Going to activities: ', userId);
+    this.router.navigateByUrl(
+      'home/challenge/' + this.challengeId + '/user-activities/' + userId
+    );
   }
 }
