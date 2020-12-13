@@ -16,7 +16,6 @@ type Challenge {
 scalar ChallengeId
 
 input ChallengesFilter {
-  id: ChallengeId
   name: String
   createdBy: UserId
   createdOn: OffsetDateTime
@@ -57,6 +56,34 @@ enum Gender {
   Female
 }
 
+type Invitation {
+  id: InvitationId!
+  read: Boolean!
+  sendTime: OffsetDateTime!
+  forUser: User!
+  fromUser: User!
+  toChallenge: Challenge!
+}
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar InvitationId
+
+input InvitationsFilter {
+  forUser: UserId
+  fromUser: UserId
+  toChallenge: ChallengeId
+  read: Boolean
+  sendTime: OffsetDateTime
+}
+
+type InvitationsResponse {
+  total: Long!
+  hasNextPage: Boolean!
+  results: [Invitation!]!
+}
+
 input JoinChallenge {
   userId: UserId!
   challengeId: ChallengeId!
@@ -72,6 +99,10 @@ input LogActivity {
 # The `Long` scalar type represents non-fractional signed whole numeric values.
 # Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
+
+input MarkInvitationAsRead {
+  id: InvitationId!
+}
 
 type Measure {
   unitName: String!
@@ -102,6 +133,8 @@ type Mutation {
   createChallenge(input: CreateChallenge!): Challenge!
   joinChallenge(input: JoinChallenge!): UserChallengeSummary!
   logActivity(input: LogActivity!): UserChallengeActivity!
+  sendInvitation(input: SendInvitation!): Invitation!
+  markInvitationAsRead(input: MarkInvitationAsRead!): Invitation!
 }
 
 scalar OffsetDateTime
@@ -116,6 +149,14 @@ type Query {
   userchallengesummary(id: UserChallengeSummaryId!): UserChallengeSummary
   allUserChallengeActivities(size: Int, offset: Int, filter: UserChallengeActivitiesFilter): UserChallengeActivitysResponse!
   userchallengeactivity(id: UserChallengeActivityId!): UserChallengeActivity
+  allInvitations(size: Int, offset: Int, filter: InvitationsFilter): InvitationsResponse!
+  invitation(id: InvitationId!): Invitation
+}
+
+input SendInvitation {
+  forUser: UserId!
+  fromUser: UserId!
+  toChallenge: ChallengeId!
 }
 
 type User {
@@ -126,11 +167,11 @@ type User {
   createdAt: OffsetDateTime!
   activities(size: Int, offset: Int): UserChallengeActivitysResponse!
   challenges(size: Int, offset: Int): UserChallengeSummarysResponse!
-  participatesInChallenge(challengeId: String!): Boolean!
+  invitations(size: Int, offset: Int, filter: InvitationsFilter): InvitationsResponse!
+  participatesInChallenge(challengeId: ChallengeId!): Boolean!
 }
 
 input UserChallengeActivitiesFilter {
-  id: UserChallengeActivityId
   userId: UserId
   challengeId: ChallengeId
   value: Float
@@ -157,7 +198,6 @@ type UserChallengeActivitysResponse {
 }
 
 input UserChallengeSummariesFilter {
-  id: UserChallengeSummaryId
   userId: UserId
   challengeId: ChallengeId
   summaryValue: Float
@@ -190,7 +230,6 @@ type UserChallengeSummarysResponse {
 scalar UserId
 
 input UsersFilter {
-  id: UserId
   name: String
   email: String
   gender: Gender
@@ -208,7 +247,7 @@ enum ValueOrder {
 }
 
 enum ValueSummarization {
-  Summarize
   Best
+  Summarize
 }
 

@@ -1,0 +1,10 @@
+mutation markInvitationAsRead($invitationId: InvitationId!) {
+  markInvitationAsRead(input: { id: $invitationId }) {
+    id
+    sendTime
+    fromUser {
+      id
+      name
+    }
+  }
+}

@@ -6,7 +6,7 @@
     [class.error]="!registerForm.valid && registerForm.touched"
   >
     <h3 class="ui header">Create an Account</h3>
-    <div class="field">
+    <div [className]="!name.valid && name.touched ? 'field error' : 'field'">
       <label for="name">Name:</label>
       <div class="ui left icon input">
         <input name="name" id="name" placeholder="Name" [formControl]="name" />
@@ -16,7 +16,7 @@
         Name is invalid
       </p>
     </div>
-    <div class="field">
+    <div [className]="!email.valid && email.touched ? 'field error' : 'field'">
       <label for="email">Email:</label>
       <div class="ui left icon input">
         <input

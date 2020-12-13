@@ -1,0 +1,20 @@
+query unreadUserInvitations($userId: UserId!, $size: Int, $offset: Int) {
+  allInvitations(
+    size: $size
+    offset: $offset
+    filter: { forUser: $userId, read: false }
+  ) {
+    total
+    results {
+      id
+      toChallenge {
+        id
+        name
+      }
+      sendTime
+      fromUser {
+        name
+      }
+    }
+  }
+}

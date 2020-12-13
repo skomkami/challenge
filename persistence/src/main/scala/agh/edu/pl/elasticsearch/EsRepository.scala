@@ -3,8 +3,7 @@ package agh.edu.pl.elasticsearch
 import agh.edu.pl.error.DomainError
 import agh.edu.pl.filters.{ Filter, FilterEq, StringQuery }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
-import agh.edu.pl.repository.Repository
-import agh.edu.pl.response.SearchResponse
+import agh.edu.pl.repository.{ Repository, SearchResponse }
 import com.sksamuel.elastic4s.ElasticClient
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.requests.searches.queries.matches.MatchQuery

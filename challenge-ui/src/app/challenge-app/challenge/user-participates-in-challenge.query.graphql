@@ -1,4 +1,7 @@
-query userParticipatesInChallenge($userId: UserId!, $challengeId: String!) {
+query userParticipatesInChallenge(
+  $userId: UserId!
+  $challengeId: ChallengeId!
+) {
   user(id: $userId) {
     participatesInChallenge(challengeId: $challengeId)
   }

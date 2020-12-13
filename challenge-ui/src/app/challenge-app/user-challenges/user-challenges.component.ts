@@ -33,10 +33,7 @@ export class UserChallengesComponent extends QueryComponent<
   summaries: MatTableDataSource<Summary>;
   displayColumns: string[] = ['Name', 'Position', 'Points'];
 
-  constructor(
-    private summariesQuery: UserChallengesGQL,
-    private router: Router
-  ) {
+  constructor(summariesQuery: UserChallengesGQL, private router: Router) {
     super(summariesQuery);
   }
 

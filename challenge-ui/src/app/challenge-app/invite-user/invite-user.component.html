@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Invite other users to join the challenge</h2>
+
+<mat-dialog-content>
+  <mat-table [dataSource]="users">
+    <ng-container matColumnDef="User">
+      <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+      <mat-cell *matCellDef="let user">{{ user.name }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Invite">
+      <mat-header-cell *matHeaderCellDef>Invite</mat-header-cell>
+      <mat-cell *matCellDef="let user">
+        <button
+          #btnRef
+          class="ui red button"
+          [disabled]="
+            user.id == currentUserId ||
+            user.participatesInChallenge ||
+            user.hasInvitationToChallenge
+          "
+          (click)="invite(user.id, btnRef)"
+        >
+          Invite
+        </button>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="loadingRow">
+      <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+        Loading data...
+      </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+        No users participate in challenge...
+      </mat-footer-cell>
+    </ng-container>
+    <mat-row *matRowDef="let user; columns: displayColumns"></mat-row>
+    <mat-footer-row
+      *matFooterRowDef="['loadingRow']"
+      [ngClass]="{ hide: !loading }"
+    ></mat-footer-row>
+    <mat-footer-row
+      *matFooterRowDef="['noData']"
+      [ngClass]="{ hide: !(users != null && users.data.length == 0) }"
+    ></mat-footer-row>
+  </mat-table>
+  <mat-paginator
+    [pageSize]="pageSize"
+    [length]="total"
+    (page)="handlePageChange($event)"
+  ></mat-paginator>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="ui button" (click)="close()">Close</button>
+</mat-dialog-actions>

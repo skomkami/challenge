@@ -113,3 +113,17 @@ app-ng-dynamic-breadcrumb ul {
   border-radius: 50%;
   display: inline-block;
 }
+
+.unread-invitations-dot {
+  height: 20px;
+  width: 20px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+}
+
+.underlined {
+  text-decoration: underline;
+}

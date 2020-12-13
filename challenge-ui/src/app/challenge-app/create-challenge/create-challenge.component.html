@@ -6,7 +6,7 @@
     [class.error]="!form.valid && form.touched"
   >
     <h2 class="ui header margin-top">Create a challenge</h2>
-    <div class="field">
+    <div [className]="!name.valid && name.touched ? 'field error' : 'field'">
       <label for="name">Name:</label>
       <input name="name" id="name" placeholder="Name" [formControl]="name" />
       <p *ngIf="!name.valid && name.touched" class="error-span message">
@@ -14,7 +14,11 @@
       </p>
     </div>
 
-    <div class="field">
+    <div
+      [className]="
+        !description.valid && description.touched ? 'field error' : 'field'
+      "
+    >
       <label for="description">Description:</label>
       <textarea
         name="description"
@@ -30,7 +34,11 @@
       </p>
     </div>
 
-    <div class="field">
+    <div
+      [className]="
+        !unitName.valid && unitName.touched ? 'field error' : 'field'
+      "
+    >
       <label for="unitName">Unit of measurement name:</label>
       <input
         name="unitName"
@@ -80,7 +88,11 @@
       </select>
     </div>
 
-    <div class="field">
+    <div
+      [className]="
+        !finishesOn.valid && finishesOn.touched ? 'field error' : 'field'
+      "
+    >
       <label for="finishesOn">Finishes on:</label>
 
       <div class="ui labeled input">

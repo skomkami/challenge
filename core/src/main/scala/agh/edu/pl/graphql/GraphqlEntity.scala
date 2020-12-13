@@ -5,8 +5,8 @@ import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.filters.{ EntityFilter, EntityFilterSettings }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
-import agh.edu.pl.mutations.CreateEntitySettings
-import agh.edu.pl.response.SearchResponse
+import agh.edu.pl.mutations.EntityCommandSettings
+import agh.edu.pl.repository.SearchResponse
 import io.circe.{ Decoder, Encoder }
 import sangria.schema._
 
@@ -18,7 +18,7 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
   ) {
   protected val typeName: String = tag.runtimeClass.getSimpleName
 
-  def createEntitySettings: CreateEntitySettings[T, _ <: CreateEntity[T]]
+  def createEntitySettings: EntityCommandSettings[T, _ <: CreateEntity[T]]
 
   def GraphQLOutputType: ObjectType[Context, T]
 
@@ -29,11 +29,10 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
   def filterSettings: EntityFilterSettings[_ <: EntityFilter[T]]
 
   def createMutation: Field[Context, Unit] = Field(
-    name = s"create$typeName",
+    name = firstLetterToLower(createEntitySettings.getClass),
     fieldType = GraphQLOutputType,
-    arguments = createEntitySettings.CreateEntityInput :: Nil,
-    resolve =
-      c => c.arg(createEntitySettings.CreateEntityInput).createEntity(c.ctx)
+    arguments = createEntitySettings.CommandInput :: Nil,
+    resolve = c => c.arg(createEntitySettings.CommandInput).createEntity(c.ctx)
   )
 
   private val Id = Argument("id", createEntitySettings.idSettings.scalarAlias)
@@ -64,5 +63,8 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
 
   def queries: Seq[Field[Context, Unit]] =
     getAllQuery :: getByIdQuery :: Nil
+
+  def mutations: Seq[Field[Context, Unit]] =
+    createMutation :: Nil
 
 }

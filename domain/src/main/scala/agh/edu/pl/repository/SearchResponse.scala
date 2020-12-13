@@ -1,4 +1,4 @@
-package agh.edu.pl.response
+package agh.edu.pl.repository
 
 case class SearchResponse[+T](
     total: Long,

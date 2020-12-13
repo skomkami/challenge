@@ -1,0 +1,16 @@
+query allUsers($challengeId: ChallengeId!, $size: Int, $offset: Int) {
+  allUsers(size: $size, offset: $offset) {
+    total
+    results {
+      id
+      name
+      gender
+      participatesInChallenge(challengeId: $challengeId)
+      invitations(filter: { toChallenge: $challengeId }) {
+        results {
+          id
+        }
+      }
+    }
+  }
+}

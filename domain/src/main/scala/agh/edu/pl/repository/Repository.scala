@@ -2,7 +2,6 @@ package agh.edu.pl.repository
 
 import agh.edu.pl.filters.Filter
 import agh.edu.pl.models.{ Entity, EntityId }
-import agh.edu.pl.response.SearchResponse
 import io.circe.{ Decoder, Encoder }
 
 import scala.concurrent.Future

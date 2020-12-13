@@ -13,7 +13,8 @@
     "gql:update-schema": "graphql get-schema -e default",
     "gql:codegen": "graphql-codegen --config codegen.yml",
     "gql:codegen:watch": "graphql-codegen --config codegen.yml --watch",
-    "start:ng": "ng serve"
+    "start:ng": "ng serve",
+    "postinstall": "ngcc"
   },
   "private": true,
   "dependencies": {

@@ -58,13 +58,13 @@ case class CreateChallenge(
 }
 
 case object CreateChallenge
-    extends CreateEntitySettings[Challenge, CreateChallenge] {
+    extends EntityCommandSettings[Challenge, CreateChallenge] {
   import sangria.marshalling.circe._
 
   lazy val CreateChallengeInputType: InputObjectType[CreateChallenge] =
     deriveInputObjectType[CreateChallenge]()
 
-  lazy val CreateEntityInput: Argument[CreateChallenge] =
+  lazy val CommandInput: Argument[CreateChallenge] =
     Argument("input", CreateChallengeInputType)
 
   override def idSettings: EntityIdSettings[ChallengeId] = ChallengeId

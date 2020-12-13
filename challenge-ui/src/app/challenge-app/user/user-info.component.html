@@ -16,6 +16,15 @@
       <div><b>Name:</b> {{ user.name }}</div>
       <div><b>Email:</b> {{ user.email }}</div>
       <div><b>Challenges:</b> {{ user.challenges }}</div>
+      <div *ngIf="user.unreadInvitations > 0">
+        <b
+          ><a class="underlined" (click)="openInvitationsDialog(user.id)"
+            >Invitations </a
+          ><span class="unread-invitations-dot">{{
+            user.unreadInvitations
+          }}</span>
+        </b>
+      </div>
     </div>
   </div>
 </div>

@@ -53,13 +53,13 @@ case class CreateUser(
     UserId.generateId(UserId.DeterministicId(email))
 }
 
-case object CreateUser extends CreateEntitySettings[User, CreateUser] {
+case object CreateUser extends EntityCommandSettings[User, CreateUser] {
   import sangria.marshalling.circe._
 
   private lazy val CreateUserInputType: InputObjectType[CreateUser] =
     deriveInputObjectType[CreateUser]()
 
-  lazy val CreateEntityInput: Argument[CreateUser] =
+  lazy val CommandInput: Argument[CreateUser] =
     Argument("input", CreateUserInputType)
 
   override def idSettings: EntityIdSettings[UserId] = UserId

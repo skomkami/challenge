@@ -3,7 +3,7 @@ package agh.edu.pl
 import java.time.OffsetDateTime
 
 import agh.edu.pl.context.Context
-import agh.edu.pl.response.SearchResponse
+import agh.edu.pl.repository.SearchResponse
 import sangria.ast.StringValue
 import sangria.schema._
 import sangria.validation.Violation
@@ -48,4 +48,10 @@ package object graphql {
         Field("results", ListType(entityOutput), resolve = _.value.results)
       )
     )
+
+  def firstLetterToLower[T](tag: Class[T]): String = {
+    val name = tag.getSimpleName.dropRight(1)
+    val firstLetter = name.charAt(0).toLower
+    s"$firstLetter${name.drop(1)}"
+  }
 }

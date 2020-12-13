@@ -122,13 +122,13 @@ case class LogActivity(
 }
 
 case object LogActivity
-    extends CreateEntitySettings[UserChallengeActivity, LogActivity] {
+    extends EntityCommandSettings[UserChallengeActivity, LogActivity] {
   import sangria.marshalling.circe._
 
   lazy val LogActivityInputType: InputObjectType[LogActivity] =
     deriveInputObjectType[LogActivity]()
 
-  lazy val CreateEntityInput: Argument[LogActivity] =
+  lazy val CommandInput: Argument[LogActivity] =
     Argument("input", LogActivityInputType)
 
   override def idSettings: EntityIdSettings[UserChallengeActivityId] =

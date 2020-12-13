@@ -1,0 +1,11 @@
+mutation sendInvitation(
+  $forUser: UserId!
+  $fromUser: UserId!
+  $challengeId: ChallengeId!
+) {
+  sendInvitation(
+    input: { forUser: $forUser, fromUser: $fromUser, toChallenge: $challengeId }
+  ) {
+    id
+  }
+}

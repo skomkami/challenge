@@ -73,13 +73,13 @@ case class JoinChallenge(
 }
 
 case object JoinChallenge
-    extends CreateEntitySettings[UserChallengeSummary, JoinChallenge] {
+    extends EntityCommandSettings[UserChallengeSummary, JoinChallenge] {
   import sangria.marshalling.circe._
 
   lazy val JoinChallengeInputType: InputObjectType[JoinChallenge] =
     deriveInputObjectType[JoinChallenge]()
 
-  lazy val CreateEntityInput: Argument[JoinChallenge] =
+  lazy val CommandInput: Argument[JoinChallenge] =
     Argument("input", JoinChallengeInputType)
 
   override def idSettings: EntityIdSettings[UserChallengeSummaryId] =

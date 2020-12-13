@@ -31,6 +31,10 @@
     ></challenge-user>
   </div>
 
+  <button (click)="openInviteDialog()" class="ui blue button">
+    <i class="user icon"></i><i class="plus icon"></i>Invite
+  </button>
+
   <mat-table [dataSource]="summaries" class="margin-top">
     <ng-container matColumnDef="User">
       <mat-header-cell *matHeaderCellDef>User</mat-header-cell>

@@ -1,15 +1,21 @@
 package agh.edu.pl.graphql
 
 import agh.edu.pl.GraphQLSchema.{
+  InvitationType,
   Offset,
   Size,
   UserChallengeActivityType,
   UserChallengeSummaryType
 }
 import agh.edu.pl.context.Context
-import agh.edu.pl.entities.{ User, UserChallengeActivity, UserChallengeSummary }
-import agh.edu.pl.filters.{ FilterEq, UsersFilter }
-import agh.edu.pl.ids.UserId
+import agh.edu.pl.entities.{
+  Invitation,
+  User,
+  UserChallengeActivity,
+  UserChallengeSummary
+}
+import agh.edu.pl.filters.{ FilterEq, InvitationsFilter, UsersFilter }
+import agh.edu.pl.ids.{ ChallengeId, UserId }
 import agh.edu.pl.models.Email.{ scalarAlias => emailType }
 import agh.edu.pl.mutations.CreateUser
 import sangria.macros.derive.{ deriveObjectType, AddFields }
@@ -27,8 +33,8 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
 
   override lazy val filterSettings: UsersFilter.type = UsersFilter
 
-  private val ChallengeIdArg: Argument[String] =
-    Argument("challengeId", StringType)
+  private val ChallengeIdArg: Argument[ChallengeId] =
+    Argument("challengeId", ChallengeId.scalarAlias)
 
   override def GraphQLOutputType: ObjectType[Context, User] =
     deriveObjectType[Context, User](
@@ -60,6 +66,22 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
               )
         ),
         Field(
+          name = "invitations",
+          fieldType = searchResponse(InvitationType),
+          arguments = List(Size, Offset, InvitationsFilter.FilterArgument),
+          resolve = c => {
+            val filters =
+              c.arg(InvitationsFilter.FilterArgument).toList.flatMap(_.filters)
+            c.ctx
+              .repository
+              .getAll[Invitation](
+                Some(FilterEq("forUser", c.value.id.value) :: filters),
+                size = c.arg(Size),
+                from = c.arg(Offset)
+              )
+          }
+        ),
+        Field(
           name = "participatesInChallenge",
           fieldType = BooleanType,
           arguments = List(ChallengeIdArg),
@@ -70,7 +92,7 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
                 Some(
                   List(
                     FilterEq("userId", c.value.id.value),
-                    FilterEq("challengeId", c.arg(ChallengeIdArg))
+                    FilterEq("challengeId", c.arg(ChallengeIdArg).value)
                   )
                 )
               )

@@ -3,12 +3,11 @@ package agh.edu.pl.filters
 import java.time.OffsetDateTime
 
 import agh.edu.pl.entities.Challenge
-import agh.edu.pl.ids.{ ChallengeId, UserId }
+import agh.edu.pl.ids.UserId
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType, OptionInputType }
 
 case class ChallengesFilter(
-    id: Option[ChallengeId],
     name: Option[String],
     createdBy: Option[UserId],
     createdOn: Option[OffsetDateTime],

@@ -3,19 +3,17 @@ package agh.edu.pl.filters
 import java.time.OffsetDateTime
 
 import agh.edu.pl.entities.UserChallengeSummary
-import agh.edu.pl.ids.{ ChallengeId, UserChallengeSummaryId, UserId }
+import agh.edu.pl.ids.{ ChallengeId, UserId }
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType, OptionInputType }
 
 case class UserChallengeSummariesFilter(
-    id: Option[UserChallengeSummaryId],
     userId: Option[UserId],
     challengeId: Option[ChallengeId],
     summaryValue: Option[Double],
     lastActive: Option[OffsetDateTime]
   ) extends EntityFilter[UserChallengeSummary] {
   override def filters: Iterable[Filter] = {
-    val idFilter = id.map(value => FilterEq("id", value.value))
     val userIdFilter = userId.map(value => FilterEq("userId", value.value))
     val challengeIdFilter =
       challengeId.map(value => FilterEq("challengeId", value.value))
@@ -24,7 +22,7 @@ case class UserChallengeSummariesFilter(
     val lastActiveFilter =
       lastActive.map(value => FilterEq("lastActive", value.toString))
 
-    idFilter ++ userIdFilter ++ challengeIdFilter ++ summaryValueFilter ++ lastActiveFilter ++ Nil
+    userIdFilter ++ challengeIdFilter ++ summaryValueFilter ++ lastActiveFilter ++ Nil
   }
 }
 

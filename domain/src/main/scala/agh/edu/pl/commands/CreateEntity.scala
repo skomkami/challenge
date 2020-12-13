@@ -9,8 +9,7 @@ import scala.reflect.ClassTag
 
 abstract class CreateEntity[
     E <: Entity[_ <: EntityId]: Decoder: Encoder: ClassTag
-  ](
-  ) {
+  ] extends Command[E] {
   def id: Option[E#IdType]
   def generateId: E#IdType
   def toEntity(newId: E#IdType): E

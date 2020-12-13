@@ -3,6 +3,7 @@ package agh.edu.pl
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{
   Challenge,
+  Invitation,
   User,
   UserChallengeActivity,
   UserChallengeSummary
@@ -33,6 +34,7 @@ object GraphQLSchema {
   private val GraphQLChallenge = GraphqlChallenge()
   private val GraphQLUserChallengeSummary = GraphqlUserChallengeSummary()
   private val GraphQLUserChallengeActivity = GraphqlUserChallengeActivity()
+  private val GraphQLInvitation = GraphqlInvitation()
 
   lazy val UserType: ObjectType[Context, User] = GraphQLUser.GraphQLOutputType
   lazy val ChallengeType: ObjectType[Context, Challenge] =
@@ -42,19 +44,22 @@ object GraphQLSchema {
   lazy val UserChallengeActivityType
       : ObjectType[Context, UserChallengeActivity] =
     GraphQLUserChallengeActivity.GraphQLOutputType
+  lazy val InvitationType: ObjectType[Context, Invitation] =
+    GraphQLInvitation.GraphQLOutputType
 
   val schemaProviders: List[GraphqlEntity[_, _]] =
     List(
       GraphQLUser,
       GraphQLChallenge,
       GraphQLUserChallengeSummary,
-      GraphQLUserChallengeActivity
+      GraphQLUserChallengeActivity,
+      GraphQLInvitation
     )
 
   private lazy val Mutation: ObjectType[Context, Unit] = ObjectType(
     "Mutation",
     fields[Context, Unit](
-      schemaProviders.map(_.createMutation): _*
+      schemaProviders.flatMap(_.mutations): _*
     )
   )
 

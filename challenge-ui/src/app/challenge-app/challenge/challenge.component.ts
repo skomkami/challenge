@@ -1,3 +1,7 @@
+import {
+  InviteUserComponent,
+  InviteComponentInput,
+} from './../invite-user/invite-user.component';
 import { QueryComponent } from './../../common/QueryComponent';
 import {
   ChallengeGQL,
@@ -16,6 +20,7 @@ import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user-service.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-challenge',
@@ -40,7 +45,8 @@ export class ChallengeComponent extends QueryComponent<
     private route: ActivatedRoute,
     private userService: UserService,
     private challengeQuery: ChallengeGQL,
-    private router: Router
+    private router: Router,
+    private matDialog: MatDialog
   ) {
     super(challengeQuery);
     this.loading = true;
@@ -131,9 +137,17 @@ export class ChallengeComponent extends QueryComponent<
   }
 
   goToActivities(userId: string): void {
-    console.log('Going to activities: ', userId);
     this.router.navigateByUrl(
       'home/challenge/' + this.challengeId + '/user-activities/' + userId
     );
+  }
+
+  openInviteDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = new InviteComponentInput(
+      this.user.id,
+      this.challengeId
+    );
+    this.matDialog.open(InviteUserComponent, dialogConfig);
   }
 }
