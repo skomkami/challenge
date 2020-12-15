@@ -3,12 +3,11 @@ package agh.edu.pl.graphql
 import agh.edu.pl.GraphQLSchema.{ ChallengeType, UserType }
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, User, UserChallengeSummary }
-import agh.edu.pl.filters.UserChallengeSummariesFilter
 import agh.edu.pl.ids.UserChallengeSummaryId
 import agh.edu.pl.mutations.JoinChallenge
+import com.softwaremill.quicklens._
 import sangria.macros.derive.{ deriveObjectType, ReplaceField }
 import sangria.schema.{ Field, ObjectType }
-import com.softwaremill.quicklens._
 
 case class GraphqlUserChallengeSummary()
     extends GraphqlEntity[UserChallengeSummaryId, UserChallengeSummary] {
@@ -17,9 +16,6 @@ case class GraphqlUserChallengeSummary()
 
   override def createMutation: Field[Context, Unit] =
     super.createMutation.modify(_.name).setTo("joinChallenge")
-
-  override lazy val filterSettings: UserChallengeSummariesFilter.type =
-    UserChallengeSummariesFilter
 
   override def GraphQLOutputType: ObjectType[Context, UserChallengeSummary] =
     deriveObjectType[Context, UserChallengeSummary](

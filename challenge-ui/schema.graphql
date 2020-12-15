@@ -10,17 +10,18 @@ type Challenge {
   leader: User
 }
 
-# The `String` scalar type represents textual data, represented as UTF-8 character
-# sequences. The String type is most often used by GraphQL to represent free-form
-# human-readable text.
-scalar ChallengeId
-
-input ChallengesFilter {
+input ChallengeFilter {
   name: String
+  description: String
   createdBy: UserId
   createdOn: OffsetDateTime
   finishesOn: OffsetDateTime
 }
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar ChallengeId
 
 type ChallengesResponse {
   total: Long!
@@ -65,18 +66,18 @@ type Invitation {
   toChallenge: Challenge!
 }
 
-# The `String` scalar type represents textual data, represented as UTF-8 character
-# sequences. The String type is most often used by GraphQL to represent free-form
-# human-readable text.
-scalar InvitationId
-
-input InvitationsFilter {
+input InvitationFilter {
   forUser: UserId
   fromUser: UserId
   toChallenge: ChallengeId
   read: Boolean
   sendTime: OffsetDateTime
 }
+
+# The `String` scalar type represents textual data, represented as UTF-8 character
+# sequences. The String type is most often used by GraphQL to represent free-form
+# human-readable text.
+scalar InvitationId
 
 type InvitationsResponse {
   total: Long!
@@ -140,16 +141,16 @@ type Mutation {
 scalar OffsetDateTime
 
 type Query {
-  allUsers(size: Int, offset: Int, filter: UsersFilter): UsersResponse!
+  allUsers(size: Int, offset: Int, filter: UserFilter): UsersResponse!
   user(id: UserId!): User
   getUserByEmail(email: Email!): User
-  allChallenges(size: Int, offset: Int, filter: ChallengesFilter): ChallengesResponse!
+  allChallenges(size: Int, offset: Int, filter: ChallengeFilter): ChallengesResponse!
   challenge(id: ChallengeId!): Challenge
-  allUserChallengeSummaries(size: Int, offset: Int, filter: UserChallengeSummariesFilter): UserChallengeSummarysResponse!
+  allUserChallengeSummaries(size: Int, offset: Int, filter: UserChallengeSummaryFilter): UserChallengeSummarysResponse!
   userchallengesummary(id: UserChallengeSummaryId!): UserChallengeSummary
-  allUserChallengeActivities(size: Int, offset: Int, filter: UserChallengeActivitiesFilter): UserChallengeActivitysResponse!
+  allUserChallengeActivities(size: Int, offset: Int, filter: UserChallengeActivityFilter): UserChallengeActivitysResponse!
   userchallengeactivity(id: UserChallengeActivityId!): UserChallengeActivity
-  allInvitations(size: Int, offset: Int, filter: InvitationsFilter): InvitationsResponse!
+  allInvitations(size: Int, offset: Int, filter: InvitationFilter): InvitationsResponse!
   invitation(id: InvitationId!): Invitation
 }
 
@@ -167,15 +168,8 @@ type User {
   createdAt: OffsetDateTime!
   activities(size: Int, offset: Int): UserChallengeActivitysResponse!
   challenges(size: Int, offset: Int): UserChallengeSummarysResponse!
-  invitations(size: Int, offset: Int, filter: InvitationsFilter): InvitationsResponse!
+  invitations(size: Int, offset: Int, filter: InvitationFilter): InvitationsResponse!
   participatesInChallenge(challengeId: ChallengeId!): Boolean!
-}
-
-input UserChallengeActivitiesFilter {
-  userId: UserId
-  challengeId: ChallengeId
-  value: Float
-  date: OffsetDateTime
 }
 
 type UserChallengeActivity {
@@ -184,6 +178,12 @@ type UserChallengeActivity {
   date: OffsetDateTime!
   user: User!
   challenge: Challenge!
+}
+
+input UserChallengeActivityFilter {
+  userId: UserId
+  challengeId: ChallengeId
+  date: OffsetDateTime
 }
 
 # The `String` scalar type represents textual data, represented as UTF-8 character
@@ -197,13 +197,6 @@ type UserChallengeActivitysResponse {
   results: [UserChallengeActivity!]!
 }
 
-input UserChallengeSummariesFilter {
-  userId: UserId
-  challengeId: ChallengeId
-  summaryValue: Float
-  lastActive: OffsetDateTime
-}
-
 type UserChallengeSummary {
   id: UserChallengeSummaryId!
   summaryValue: MeasureValue!
@@ -211,6 +204,11 @@ type UserChallengeSummary {
   lastActive: OffsetDateTime
   user: User!
   challenge: Challenge!
+}
+
+input UserChallengeSummaryFilter {
+  userId: UserId
+  challengeId: ChallengeId
 }
 
 # The `String` scalar type represents textual data, represented as UTF-8 character
@@ -224,16 +222,17 @@ type UserChallengeSummarysResponse {
   results: [UserChallengeSummary!]!
 }
 
+input UserFilter {
+  name: String
+  email: Email
+  gender: Gender
+  createdAt: OffsetDateTime
+}
+
 # The `String` scalar type represents textual data, represented as UTF-8 character
 # sequences. The String type is most often used by GraphQL to represent free-form
 # human-readable text.
 scalar UserId
-
-input UsersFilter {
-  name: String
-  email: String
-  gender: Gender
-}
 
 type UsersResponse {
   total: Long!
@@ -247,7 +246,7 @@ enum ValueOrder {
 }
 
 enum ValueSummarization {
-  Best
   Summarize
+  Best
 }
 

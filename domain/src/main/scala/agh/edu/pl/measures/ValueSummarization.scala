@@ -12,7 +12,7 @@ object ValueSummarization
   case object Summarize extends ValueSummarization
   case object Best extends ValueSummarization
 
-  implicit val GenderEnum: EnumType[ValueSummarization] =
+  implicit val EnumType: EnumType[ValueSummarization] =
     deriveEnumType[ValueSummarization]()
 
   override def values: IndexedSeq[ValueSummarization] = findValues

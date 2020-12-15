@@ -3,7 +3,6 @@ package agh.edu.pl.graphql
 import agh.edu.pl.GraphQLSchema.{ ChallengeType, UserType }
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, Invitation, User }
-import agh.edu.pl.filters.InvitationsFilter
 import agh.edu.pl.ids.InvitationId
 import agh.edu.pl.mutations.{ MarkInvitationAsRead, SendInvitation }
 import com.softwaremill.quicklens._
@@ -16,9 +15,6 @@ case class GraphqlInvitation() extends GraphqlEntity[InvitationId, Invitation] {
 
   override def createMutation: Field[Context, Unit] =
     super.createMutation.modify(_.name).setTo("sendInvitation")
-
-  override lazy val filterSettings: InvitationsFilter.type =
-    InvitationsFilter
 
   override def GraphQLOutputType: ObjectType[Context, Invitation] =
     deriveObjectType[Context, Invitation](

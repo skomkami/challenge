@@ -201,23 +201,23 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "ChallengeId",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "INPUT_OBJECT",
-        "name": "ChallengesFilter",
+        "name": "ChallengeFilter",
         "description": null,
         "fields": null,
         "inputFields": [
           {
             "name": "name",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "description",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -257,6 +257,16 @@
             "defaultValue": null
           }
         ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "ChallengeId",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -653,18 +663,8 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "InvitationId",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "INPUT_OBJECT",
-        "name": "InvitationsFilter",
+        "name": "InvitationFilter",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -719,6 +719,16 @@
             "defaultValue": null
           }
         ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "InvitationId",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -1386,7 +1396,7 @@
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UsersFilter",
+                  "name": "UserFilter",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1487,7 +1497,7 @@
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ChallengesFilter",
+                  "name": "ChallengeFilter",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1561,7 +1571,7 @@
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserChallengeSummariesFilter",
+                  "name": "UserChallengeSummaryFilter",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1635,7 +1645,7 @@
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "UserChallengeActivitiesFilter",
+                  "name": "UserChallengeActivityFilter",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1709,7 +1719,7 @@
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "InvitationsFilter",
+                  "name": "InvitationFilter",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -2001,7 +2011,7 @@
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "InvitationsFilter",
+                  "name": "InvitationFilter",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -2053,57 +2063,6 @@
         ],
         "inputFields": null,
         "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "UserChallengeActivitiesFilter",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "userId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "UserId",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "challengeId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "ChallengeId",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "value",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "OffsetDateTime",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -2199,6 +2158,47 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "UserChallengeActivityFilter",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "userId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "UserId",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "challengeId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ChallengeId",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "date",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "OffsetDateTime",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "SCALAR",
         "name": "UserChallengeActivityId",
         "description": null,
@@ -2272,57 +2272,6 @@
         ],
         "inputFields": null,
         "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "UserChallengeSummariesFilter",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "userId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "UserId",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "challengeId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "ChallengeId",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "summaryValue",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "lastActive",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "OffsetDateTime",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -2426,6 +2375,37 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "UserChallengeSummaryFilter",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "userId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "UserId",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "challengeId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ChallengeId",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "SCALAR",
         "name": "UserChallengeSummaryId",
         "description": null,
@@ -2503,18 +2483,8 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "UserId",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "INPUT_OBJECT",
-        "name": "UsersFilter",
+        "name": "UserFilter",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -2533,7 +2503,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Email",
               "ofType": null
             },
             "defaultValue": null
@@ -2547,8 +2517,28 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "OffsetDateTime",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "UserId",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -2652,13 +2642,13 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "Best",
+            "name": "Summarize",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "Summarize",
+            "name": "Best",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

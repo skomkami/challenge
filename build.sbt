@@ -3,7 +3,7 @@ import Util._
 
 ThisBuild / organization := "agh.edu.pl"
 ThisBuild / scalaVersion := "2.13.3"
-ThisBuild / version := "0.0.1-SNAPSHOT"
+ThisBuild / version := "1.0"
 
 ThisBuild / scalacOptions ++= Seq(
   "-deprecation",
@@ -100,12 +100,18 @@ lazy val main =
     .in(file("main"))
     .dependsOn(delivery % Cctt)
     .dependsOn(persistence % Cctt)
+    .enablePlugins(sbtdocker.DockerPlugin, JavaAppPackaging)
     .settings(commonSettings)
     .settings(
       libraryDependencies ++= Seq(
         com.github.pureconfig.pureconfig
       )
     )
+//    .settings(dockerBaseImage := "openjdk:8-jre-alpine")
+//    .settings(dockerExecCommand := Seq("apk", "add", "--no-cache", "bash"))
+    .settings(dockerExposedPorts := Seq(8080))
+    .settings(dockerUsername := Some("kamilskomro"))
+    .settings(packageName := "challenge-backend")
 
 lazy val baseLibraries = Seq(
   com.beachape.`enumeratum-circe`,

@@ -30,11 +30,13 @@ object GraphQLSchema {
       )
     )
 
-  private val GraphQLUser = GraphqlUser()
-  private val GraphQLChallenge = GraphqlChallenge()
-  private val GraphQLUserChallengeSummary = GraphqlUserChallengeSummary()
-  private val GraphQLUserChallengeActivity = GraphqlUserChallengeActivity()
-  private val GraphQLInvitation = GraphqlInvitation()
+  val GraphQLUser: GraphqlUser = GraphqlUser()
+  val GraphQLChallenge: GraphqlChallenge = GraphqlChallenge()
+  val GraphQLUserChallengeSummary: GraphqlUserChallengeSummary =
+    GraphqlUserChallengeSummary()
+  val GraphQLUserChallengeActivity: GraphqlUserChallengeActivity =
+    GraphqlUserChallengeActivity()
+  val GraphQLInvitation: GraphqlInvitation = GraphqlInvitation()
 
   lazy val UserType: ObjectType[Context, User] = GraphQLUser.GraphQLOutputType
   lazy val ChallengeType: ObjectType[Context, Challenge] =

@@ -8,7 +8,7 @@ import agh.edu.pl.GraphQLSchema.{
 }
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, User, UserChallengeSummary }
-import agh.edu.pl.filters.{ ChallengesFilter, FilterEq }
+import agh.edu.pl.filters.FilterEq
 import agh.edu.pl.ids.ChallengeId
 import agh.edu.pl.mutations.CreateChallenge
 import cats.implicits._
@@ -17,8 +17,6 @@ import sangria.schema.{ Field, ObjectType, OptionType }
 
 case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
   override def createEntitySettings: CreateChallenge.type = CreateChallenge
-
-  override lazy val filterSettings: ChallengesFilter.type = ChallengesFilter
 
   override def GraphQLOutputType: ObjectType[Context, Challenge] =
     deriveObjectType[Context, Challenge](

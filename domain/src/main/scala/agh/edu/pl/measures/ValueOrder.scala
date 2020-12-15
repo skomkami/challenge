@@ -10,7 +10,7 @@ object ValueOrder extends Enum[ValueOrder] with CirceEnum[ValueOrder] {
   case object BiggerWins extends ValueOrder
   case object SmallerWins extends ValueOrder
 
-  implicit val GenderEnum: EnumType[ValueOrder] = deriveEnumType[ValueOrder]()
+  implicit val EnumType: EnumType[ValueOrder] = deriveEnumType[ValueOrder]()
 
   override def values: IndexedSeq[ValueOrder] = findValues
 }

@@ -3,7 +3,7 @@ package agh.edu.pl.graphql
 import agh.edu.pl.GraphQLSchema.{ Offset, Size }
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
-import agh.edu.pl.filters.{ EntityFilter, EntityFilterSettings }
+import agh.edu.pl.filters.{ EntFilter, FilterBuilder }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.mutations.EntityCommandSettings
 import agh.edu.pl.repository.SearchResponse
@@ -26,7 +26,11 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
     GraphQLOutputType
   )
 
-  def filterSettings: EntityFilterSettings[_ <: EntityFilter[T]]
+  private lazy val filterInput: InputObjectType[EntFilter[T]] =
+    FilterBuilder.filterType
+
+  lazy val filterArg: Argument[Option[EntFilter[T]]] =
+    Argument("filter", OptionInputType(filterInput))
 
   def createMutation: Field[Context, Unit] = Field(
     name = firstLetterToLower(createEntitySettings.getClass),
@@ -40,12 +44,12 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
   protected def getAllQuery: Field[Context, Unit] = Field(
     name = s"all${plural(typeName)}",
     fieldType = GraphQLSearchResponse,
-    arguments = Size :: Offset :: filterSettings.FilterArgument :: Nil,
+    arguments = Size :: Offset :: filterArg :: Nil,
     resolve = c =>
       c.ctx
         .repository
         .getAll[T](
-          filter = c.arg(filterSettings.FilterArgument).map(_.filters.toList),
+          filter = c.arg(filterArg).map(_.filters.toList),
           size = c.arg(Size),
           from = c.arg(Offset)
         )

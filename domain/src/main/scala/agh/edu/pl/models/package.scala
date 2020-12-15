@@ -33,7 +33,7 @@ package object models {
       deriveEncoder[E]
   }
 
-  abstract class EntityId {
+  trait EntityId {
     def value: String
   }
 

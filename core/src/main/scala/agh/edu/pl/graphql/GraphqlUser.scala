@@ -1,12 +1,6 @@
 package agh.edu.pl.graphql
 
-import agh.edu.pl.GraphQLSchema.{
-  InvitationType,
-  Offset,
-  Size,
-  UserChallengeActivityType,
-  UserChallengeSummaryType
-}
+import agh.edu.pl.GraphQLSchema._
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{
   Invitation,
@@ -14,24 +8,15 @@ import agh.edu.pl.entities.{
   UserChallengeActivity,
   UserChallengeSummary
 }
-import agh.edu.pl.filters.{ FilterEq, InvitationsFilter, UsersFilter }
+import agh.edu.pl.filters.FilterEq
 import agh.edu.pl.ids.{ ChallengeId, UserId }
 import agh.edu.pl.models.Email.{ scalarAlias => emailType }
 import agh.edu.pl.mutations.CreateUser
 import sangria.macros.derive.{ deriveObjectType, AddFields }
-import sangria.schema.{
-  Argument,
-  BooleanType,
-  Field,
-  ObjectType,
-  OptionType,
-  StringType
-}
+import sangria.schema.{ Argument, BooleanType, Field, ObjectType, OptionType }
 
 case class GraphqlUser() extends GraphqlEntity[UserId, User] {
   override def createEntitySettings: CreateUser.type = CreateUser
-
-  override lazy val filterSettings: UsersFilter.type = UsersFilter
 
   private val ChallengeIdArg: Argument[ChallengeId] =
     Argument("challengeId", ChallengeId.scalarAlias)
@@ -68,10 +53,10 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
         Field(
           name = "invitations",
           fieldType = searchResponse(InvitationType),
-          arguments = List(Size, Offset, InvitationsFilter.FilterArgument),
+          arguments = List(Size, Offset, GraphQLInvitation.filterArg),
           resolve = c => {
             val filters =
-              c.arg(InvitationsFilter.FilterArgument).toList.flatMap(_.filters)
+              c.arg(GraphQLInvitation.filterArg).toList.flatMap(_.filters)
             c.ctx
               .repository
               .getAll[Invitation](

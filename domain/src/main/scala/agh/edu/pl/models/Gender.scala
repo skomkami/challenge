@@ -10,7 +10,7 @@ object Gender extends Enum[Gender] with CirceEnum[Gender] {
   case object Male extends Gender
   case object Female extends Gender
 
-  implicit val GenderEnum: EnumType[Gender] = deriveEnumType[Gender]()
+  implicit val EnumType: EnumType[Gender] = deriveEnumType[Gender]()
 
   override def values: IndexedSeq[Gender] = findValues
 }
