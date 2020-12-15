@@ -27,12 +27,14 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
         Field(
           name = "activities",
           fieldType = searchResponse(UserChallengeActivityType),
-          arguments = List(Size, Offset),
+          arguments = List(Size, Offset, GraphQLUserChallengeActivity.sortArg),
           resolve = c =>
             c.ctx
               .repository
               .getAll[UserChallengeActivity](
                 Some(FilterEq("userId", c.value.id.value) :: Nil),
+                sorts =
+                  c.arg(GraphQLUserChallengeActivity.sortArg).map(_.sorts),
                 size = c.arg(Size),
                 from = c.arg(Offset)
               )

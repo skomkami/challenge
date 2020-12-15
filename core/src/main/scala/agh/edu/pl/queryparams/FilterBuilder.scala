@@ -1,5 +1,6 @@
-package agh.edu.pl.filters
+package agh.edu.pl.queryparams
 
+import agh.edu.pl.filters.{ Filter, FilterEq, StringQuery }
 import agh.edu.pl.measures.{ ValueOrder, ValueSummarization }
 import agh.edu.pl.models.{ Email, Gender }
 import agh.edu.pl.registry.DomainRegistry
@@ -13,18 +14,18 @@ import sangria.schema._
 import scala.collection.immutable.ListMap
 import scala.reflect.ClassTag
 
-case class EntFilter[T](filters: List[Filter] = Nil)
+case class EntityFilter[T](filters: List[Filter] = Nil)
 
-case object EntFilter {
+case object EntityFilter {
   implicit def fromInput[T](
       implicit
       tag: ClassTag[T]
-    ): FromInput[EntFilter[T]] =
-    new FromInput[EntFilter[T]] {
+    ): FromInput[EntityFilter[T]] =
+    new FromInput[EntityFilter[T]] {
       override val marshaller: ResultMarshaller =
         CoercedScalaResultMarshaller.default
 
-      override def fromResult(node: marshaller.Node): EntFilter[T] = {
+      override def fromResult(node: marshaller.Node): EntityFilter[T] = {
         val filters = node.asInstanceOf[ListMap[_, Option[_]]].collect {
           case (name, Some(value)) =>
             val strName = name.toString
@@ -41,7 +42,7 @@ case object EntFilter {
             }
 
         }
-        EntFilter[T](filters.toList)
+        EntityFilter[T](filters.toList)
       }
     }
 }
@@ -51,7 +52,7 @@ case object FilterBuilder {
   def filterType[T](
       implicit
       tag: ClassTag[T]
-    ): InputObjectType[EntFilter[T]] = {
+    ): InputObjectType[EntityFilter[T]] = {
     val fields =
       tag
         .runtimeClass
@@ -81,7 +82,7 @@ case object FilterBuilder {
         }
         .flatMap(_.toList)
 
-    InputObjectType[EntFilter[T]](
+    InputObjectType[EntityFilter[T]](
       name = s"${tag.runtimeClass.getSimpleName}Filter",
       fields = fields.toList
     )

@@ -54,7 +54,7 @@ case class ChallengePositionsCalculator(challengeId: ChallengeId) {
       summariesResponse <- ctx
         .repository
         .getAll[UserChallengeSummary](
-          filter = Some(FilterEq("challengeId", challengeId.value) :: Nil),
+          filters = Some(FilterEq("challengeId", challengeId.value) :: Nil),
           size = Some(allCount.toInt)
         )
     } yield summariesResponse.results

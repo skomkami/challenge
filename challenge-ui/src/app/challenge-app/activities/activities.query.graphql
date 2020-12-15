@@ -8,6 +8,7 @@ query activities(
     size: $size
     offset: $offset
     filter: { userId: $userId, challengeId: $challengeId }
+    orderBy: { date: Desc }
   ) {
     total
     results {

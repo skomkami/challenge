@@ -2,6 +2,7 @@ package agh.edu.pl.repository
 
 import agh.edu.pl.filters.Filter
 import agh.edu.pl.models.{ Entity, EntityId }
+import agh.edu.pl.sort.Sort
 import io.circe.{ Decoder, Encoder }
 
 import scala.concurrent.Future
@@ -10,7 +11,8 @@ import scala.reflect.ClassTag
 trait Repository {
 
   def getAll[E](
-      filter: Option[List[Filter]] = None,
+      filters: Option[List[Filter]] = None,
+      sorts: Option[List[Sort]] = None,
       size: Option[Int] = None,
       from: Option[Int] = None
     )(implicit

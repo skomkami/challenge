@@ -1,6 +1,7 @@
 package agh.edu.pl.graphql
 
 import agh.edu.pl.GraphQLSchema.{
+  GraphQLUserChallengeSummary,
   Offset,
   Size,
   UserChallengeSummaryType,
@@ -32,12 +33,14 @@ case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
         Field(
           name = "summaries",
           fieldType = searchResponse(UserChallengeSummaryType),
-          arguments = List(Size, Offset),
+          arguments = List(Size, Offset, GraphQLUserChallengeSummary.sortArg),
           resolve = c =>
             c.ctx
               .repository
               .getAll[UserChallengeSummary](
-                filter = Some(FilterEq("challengeId", c.value.id.value) :: Nil),
+                filters =
+                  Some(FilterEq("challengeId", c.value.id.value) :: Nil),
+                sorts = c.arg(GraphQLUserChallengeSummary.sortArg).map(_.sorts),
                 size = c.arg(Size),
                 from = c.arg(Offset)
               )
@@ -53,7 +56,7 @@ case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
 
             repository
               .getAll[UserChallengeSummary](
-                filter = Some(
+                filters = Some(
                   FilterEq("challengeId", c.value.id.value) :: FilterEq(
                     "position",
                     "1"

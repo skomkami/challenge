@@ -3,9 +3,14 @@ package agh.edu.pl.graphql
 import agh.edu.pl.GraphQLSchema.{ Offset, Size }
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
-import agh.edu.pl.filters.{ EntFilter, FilterBuilder }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.mutations.EntityCommandSettings
+import agh.edu.pl.queryparams.{
+  EntityFilter,
+  EntitySort,
+  FilterBuilder,
+  SortBuilder
+}
 import agh.edu.pl.repository.SearchResponse
 import io.circe.{ Decoder, Encoder }
 import sangria.schema._
@@ -26,11 +31,17 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
     GraphQLOutputType
   )
 
-  private lazy val filterInput: InputObjectType[EntFilter[T]] =
+  private lazy val filterInput: InputObjectType[EntityFilter[T]] =
     FilterBuilder.filterType
 
-  lazy val filterArg: Argument[Option[EntFilter[T]]] =
+  lazy val filterArg: Argument[Option[EntityFilter[T]]] =
     Argument("filter", OptionInputType(filterInput))
+
+  private lazy val sortInput: InputObjectType[EntitySort[T]] =
+    SortBuilder.sortType(GraphQLOutputType)
+
+  lazy val sortArg: Argument[Option[EntitySort[T]]] =
+    Argument("orderBy", OptionInputType(sortInput))
 
   def createMutation: Field[Context, Unit] = Field(
     name = firstLetterToLower(createEntitySettings.getClass),
@@ -44,12 +55,13 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
   protected def getAllQuery: Field[Context, Unit] = Field(
     name = s"all${plural(typeName)}",
     fieldType = GraphQLSearchResponse,
-    arguments = Size :: Offset :: filterArg :: Nil,
+    arguments = Size :: Offset :: filterArg :: sortArg :: Nil,
     resolve = c =>
       c.ctx
         .repository
         .getAll[T](
-          filter = c.arg(filterArg).map(_.filters.toList),
+          filters = c.arg(filterArg).map(_.filters),
+          sorts = c.arg(sortArg).map(_.sorts),
           size = c.arg(Size),
           from = c.arg(Offset)
         )

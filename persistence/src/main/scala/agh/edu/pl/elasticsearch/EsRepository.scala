@@ -4,6 +4,7 @@ import agh.edu.pl.error.DomainError
 import agh.edu.pl.filters.{ Filter, FilterEq, StringQuery }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.repository.{ Repository, SearchResponse }
+import agh.edu.pl.sort.Sort
 import com.sksamuel.elastic4s.ElasticClient
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.requests.searches.queries.matches.MatchQuery
@@ -12,6 +13,8 @@ import com.sksamuel.elastic4s.requests.searches.queries.{
   Query,
   RegexQuery
 }
+import com.sksamuel.elastic4s.requests.searches.sort.SortOrder.{ Asc, Desc }
+import com.sksamuel.elastic4s.requests.searches.sort.{ Sort => EsSort }
 import io.circe.parser._
 import io.circe.syntax._
 import io.circe.{ Decoder, Encoder }
@@ -32,6 +35,7 @@ case class EsRepository(
 
   override def getAll[E](
       filters: Option[List[Filter]] = None,
+      sorts: Option[List[Sort]] = None,
       size: Option[Int] = None,
       offset: Option[Int] = None
     )(implicit
@@ -46,6 +50,7 @@ case class EsRepository(
           .bool(buildQuery(filters))
           .size(pageSize)
           .from(from)
+          .sortBy(buildSorts(sorts))
       }
       .map { resp =>
         val hits = resp.result.hits.hits
@@ -73,6 +78,16 @@ case class EsRepository(
 
     must(qMusts.toSeq).filter(qFilters)
   }
+
+  private def buildSorts(querySorts: Option[List[Sort]]): Seq[EsSort] =
+    querySorts.getOrElse(Nil).map { sort =>
+      fieldSort(sort.field).order {
+        sort.order match {
+          case agh.edu.pl.sort.SortOrder.Desc => Desc
+          case agh.edu.pl.sort.SortOrder.Asc  => Asc
+        }
+      }
+    }
 
   override def create[E <: Entity[_ <: EntityId]](
       entity: E

@@ -6,7 +6,7 @@ type Challenge {
   finishesOn: OffsetDateTime!
   measure: Measure!
   createdBy: User!
-  summaries(size: Int, offset: Int): UserChallengeSummarysResponse!
+  summaries(size: Int, offset: Int, orderBy: UserChallengeSummarySort): UserChallengeSummarysResponse!
   leader: User
 }
 
@@ -22,6 +22,14 @@ input ChallengeFilter {
 # sequences. The String type is most often used by GraphQL to represent free-form
 # human-readable text.
 scalar ChallengeId
+
+input ChallengeSort {
+  id: SortOrder
+  name: SortOrder
+  description: SortOrder
+  createdOn: SortOrder
+  finishesOn: SortOrder
+}
 
 type ChallengesResponse {
   total: Long!
@@ -78,6 +86,12 @@ input InvitationFilter {
 # sequences. The String type is most often used by GraphQL to represent free-form
 # human-readable text.
 scalar InvitationId
+
+input InvitationSort {
+  id: SortOrder
+  read: SortOrder
+  sendTime: SortOrder
+}
 
 type InvitationsResponse {
   total: Long!
@@ -141,16 +155,16 @@ type Mutation {
 scalar OffsetDateTime
 
 type Query {
-  allUsers(size: Int, offset: Int, filter: UserFilter): UsersResponse!
+  allUsers(size: Int, offset: Int, filter: UserFilter, orderBy: UserSort): UsersResponse!
   user(id: UserId!): User
   getUserByEmail(email: Email!): User
-  allChallenges(size: Int, offset: Int, filter: ChallengeFilter): ChallengesResponse!
+  allChallenges(size: Int, offset: Int, filter: ChallengeFilter, orderBy: ChallengeSort): ChallengesResponse!
   challenge(id: ChallengeId!): Challenge
-  allUserChallengeSummaries(size: Int, offset: Int, filter: UserChallengeSummaryFilter): UserChallengeSummarysResponse!
+  allUserChallengeSummaries(size: Int, offset: Int, filter: UserChallengeSummaryFilter, orderBy: UserChallengeSummarySort): UserChallengeSummarysResponse!
   userchallengesummary(id: UserChallengeSummaryId!): UserChallengeSummary
-  allUserChallengeActivities(size: Int, offset: Int, filter: UserChallengeActivityFilter): UserChallengeActivitysResponse!
+  allUserChallengeActivities(size: Int, offset: Int, filter: UserChallengeActivityFilter, orderBy: UserChallengeActivitySort): UserChallengeActivitysResponse!
   userchallengeactivity(id: UserChallengeActivityId!): UserChallengeActivity
-  allInvitations(size: Int, offset: Int, filter: InvitationFilter): InvitationsResponse!
+  allInvitations(size: Int, offset: Int, filter: InvitationFilter, orderBy: InvitationSort): InvitationsResponse!
   invitation(id: InvitationId!): Invitation
 }
 
@@ -160,13 +174,18 @@ input SendInvitation {
   toChallenge: ChallengeId!
 }
 
+enum SortOrder {
+  Desc
+  Asc
+}
+
 type User {
   id: UserId!
   name: String!
   email: Email!
   gender: Gender!
   createdAt: OffsetDateTime!
-  activities(size: Int, offset: Int): UserChallengeActivitysResponse!
+  activities(size: Int, offset: Int, orderBy: UserChallengeActivitySort): UserChallengeActivitysResponse!
   challenges(size: Int, offset: Int): UserChallengeSummarysResponse!
   invitations(size: Int, offset: Int, filter: InvitationFilter): InvitationsResponse!
   participatesInChallenge(challengeId: ChallengeId!): Boolean!
@@ -190,6 +209,11 @@ input UserChallengeActivityFilter {
 # sequences. The String type is most often used by GraphQL to represent free-form
 # human-readable text.
 scalar UserChallengeActivityId
+
+input UserChallengeActivitySort {
+  id: SortOrder
+  date: SortOrder
+}
 
 type UserChallengeActivitysResponse {
   total: Long!
@@ -216,6 +240,12 @@ input UserChallengeSummaryFilter {
 # human-readable text.
 scalar UserChallengeSummaryId
 
+input UserChallengeSummarySort {
+  id: SortOrder
+  position: SortOrder
+  lastActive: SortOrder
+}
+
 type UserChallengeSummarysResponse {
   total: Long!
   hasNextPage: Boolean!
@@ -233,6 +263,14 @@ input UserFilter {
 # sequences. The String type is most often used by GraphQL to represent free-form
 # human-readable text.
 scalar UserId
+
+input UserSort {
+  id: SortOrder
+  name: SortOrder
+  email: SortOrder
+  createdAt: SortOrder
+  participatesInChallenge: SortOrder
+}
 
 type UsersResponse {
   total: Long!

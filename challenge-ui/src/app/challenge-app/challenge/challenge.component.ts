@@ -122,11 +122,9 @@ export class ChallengeComponent extends QueryComponent<
     this.challenge = new Challenge(data.challenge);
     console.log('challege: ', data);
     this.total = data.challenge.summaries.total;
-    const summaries = data.challenge.summaries.results
-      .map((summary) => new Summary(summary))
-      .sort((a, b) => {
-        return a.position - b.position;
-      });
+    const summaries = data.challenge.summaries.results.map(
+      (summary) => new Summary(summary)
+    );
     this.summaries = new MatTableDataSource(summaries);
   }
 
