@@ -13,7 +13,7 @@ import agh.edu.pl.filters.FilterEq
 import agh.edu.pl.ids.ChallengeId
 import agh.edu.pl.mutations.CreateChallenge
 import cats.implicits._
-import sangria.macros.derive.{ deriveObjectType, AddFields, ReplaceField }
+import sangria.macros.derive.{ deriveObjectType, AddFields }
 import sangria.schema.{ Field, ObjectType, OptionType }
 
 case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
@@ -21,15 +21,12 @@ case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
 
   override def GraphQLOutputType: ObjectType[Context, Challenge] =
     deriveObjectType[Context, Challenge](
-      ReplaceField(
-        "createdBy",
-        Field(
-          "createdBy",
-          UserType,
-          resolve = c => c.ctx.repository.getById[User](c.value.createdBy)
-        )
-      ),
       AddFields(
+        Field(
+          name = "createdBy",
+          fieldType = UserType,
+          resolve = c => c.ctx.repository.getById[User](c.value.createdById)
+        ),
         Field(
           name = "summaries",
           fieldType = searchResponse(UserChallengeSummaryType),

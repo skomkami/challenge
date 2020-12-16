@@ -9,6 +9,67 @@
     "subscriptionType": null,
     "types": [
       {
+        "kind": "INPUT_OBJECT",
+        "name": "BooleanConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "gt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "Boolean",
+        "description": "The `Boolean` scalar type represents `true` or `false`.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "Challenge",
         "description": null,
@@ -55,6 +116,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdById",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UserId",
                 "ofType": null
               }
             },
@@ -217,6 +294,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ChallengeIdConditions",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "name",
             "description": null,
             "type": {
@@ -237,11 +324,11 @@
             "defaultValue": null
           },
           {
-            "name": "createdBy",
+            "name": "createdById",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "UserId",
+              "kind": "INPUT_OBJECT",
+              "name": "UserIdConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -250,8 +337,8 @@
             "name": "createdOn",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "OffsetDateTime",
+              "kind": "INPUT_OBJECT",
+              "name": "OffsetDateTimeConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -260,8 +347,8 @@
             "name": "finishesOn",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "OffsetDateTime",
+              "kind": "INPUT_OBJECT",
+              "name": "OffsetDateTimeConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -277,6 +364,37 @@
         "description": null,
         "fields": null,
         "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ChallengeIdConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ChallengeId",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ChallengeId",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -309,6 +427,16 @@
           },
           {
             "name": "description",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "createdById",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -406,16 +534,6 @@
         ],
         "inputFields": null,
         "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "Boolean",
-        "description": "The `Boolean` scalar type represents `true` or `false`.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -627,6 +745,88 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "GenderConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Gender",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Gender",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "IntConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "gt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "Invitation",
         "description": null,
@@ -641,6 +841,54 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "InvitationId",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "forUserId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UserId",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fromUserId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UserId",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "toChallengeId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ChallengeId",
                 "ofType": null
               }
             },
@@ -740,31 +988,41 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "forUser",
+            "name": "id",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "UserId",
+              "kind": "INPUT_OBJECT",
+              "name": "InvitationIdConditions",
               "ofType": null
             },
             "defaultValue": null
           },
           {
-            "name": "fromUser",
+            "name": "forUserId",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "UserId",
+              "kind": "INPUT_OBJECT",
+              "name": "UserIdConditions",
               "ofType": null
             },
             "defaultValue": null
           },
           {
-            "name": "toChallenge",
+            "name": "fromUserId",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "ChallengeId",
+              "kind": "INPUT_OBJECT",
+              "name": "UserIdConditions",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "toChallengeId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ChallengeIdConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -773,8 +1031,8 @@
             "name": "read",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
+              "kind": "INPUT_OBJECT",
+              "name": "BooleanConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -783,8 +1041,8 @@
             "name": "sendTime",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "OffsetDateTime",
+              "kind": "INPUT_OBJECT",
+              "name": "OffsetDateTimeConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -806,12 +1064,73 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "InvitationIdConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "InvitationId",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "InvitationId",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "InvitationSort",
         "description": null,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "forUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "fromUserId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "toChallengeId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -1475,6 +1794,57 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "OffsetDateTimeConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "OffsetDateTime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "OffsetDateTime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "gt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "OffsetDateTime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "OffsetDateTime",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "Query",
         "description": null,
@@ -1939,7 +2309,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "forUser",
+            "name": "forUserId",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -1953,7 +2323,7 @@
             "defaultValue": null
           },
           {
-            "name": "fromUser",
+            "name": "fromUserId",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -1967,7 +2337,7 @@
             "defaultValue": null
           },
           {
-            "name": "toChallenge",
+            "name": "toChallengeId",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -2283,6 +2653,38 @@
             "deprecationReason": null
           },
           {
+            "name": "userId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UserId",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "challengeId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ChallengeId",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "value",
             "description": null,
             "args": [],
@@ -2359,11 +2761,21 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UserChallengeActivityIdConditions",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "userId",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "UserId",
+              "kind": "INPUT_OBJECT",
+              "name": "UserIdConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -2372,8 +2784,8 @@
             "name": "challengeId",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "ChallengeId",
+              "kind": "INPUT_OBJECT",
+              "name": "ChallengeIdConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -2382,8 +2794,8 @@
             "name": "date",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "OffsetDateTime",
+              "kind": "INPUT_OBJECT",
+              "name": "OffsetDateTimeConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -2405,12 +2817,63 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "UserChallengeActivityIdConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "UserChallengeActivityId",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "UserChallengeActivityId",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "UserChallengeActivitySort",
         "description": null,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "userId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "challengeId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -2523,6 +2986,38 @@
             "deprecationReason": null
           },
           {
+            "name": "userId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UserId",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "challengeId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ChallengeId",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "summaryValue",
             "description": null,
             "args": [],
@@ -2607,11 +3102,21 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UserChallengeSummaryIdConditions",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "userId",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "UserId",
+              "kind": "INPUT_OBJECT",
+              "name": "UserIdConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -2620,8 +3125,28 @@
             "name": "challengeId",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "ChallengeId",
+              "kind": "INPUT_OBJECT",
+              "name": "ChallengeIdConditions",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "position",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IntConditions",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastActive",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "OffsetDateTimeConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -2643,12 +3168,63 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "UserChallengeSummaryIdConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "UserChallengeSummaryId",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "UserChallengeSummaryId",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "UserChallengeSummarySort",
         "description": null,
         "fields": null,
         "inputFields": [
           {
             "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "userId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "challengeId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -2756,6 +3332,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UserIdConditions",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "name",
             "description": null,
             "type": {
@@ -2770,7 +3356,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Email",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null
@@ -2779,8 +3365,8 @@
             "name": "gender",
             "description": null,
             "type": {
-              "kind": "ENUM",
-              "name": "Gender",
+              "kind": "INPUT_OBJECT",
+              "name": "GenderConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -2789,8 +3375,18 @@
             "name": "createdAt",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "OffsetDateTime",
+              "kind": "INPUT_OBJECT",
+              "name": "OffsetDateTimeConditions",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "participatesInChallenge",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BooleanConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -2806,6 +3402,37 @@
         "description": null,
         "fields": null,
         "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "UserIdConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "UserId",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "UserId",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -2970,13 +3597,13 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "Summarize",
+            "name": "Best",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "Best",
+            "name": "Summarize",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

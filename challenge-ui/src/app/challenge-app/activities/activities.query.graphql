@@ -7,7 +7,7 @@ query activities(
   allUserChallengeActivities(
     size: $size
     offset: $offset
-    filter: { userId: $userId, challengeId: $challengeId }
+    filter: { userId: { eq: $userId }, challengeId: { eq: $challengeId } }
     orderBy: { date: Desc }
   ) {
     total

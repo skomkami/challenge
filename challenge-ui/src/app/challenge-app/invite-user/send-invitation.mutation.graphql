@@ -1,10 +1,14 @@
 mutation sendInvitation(
-  $forUser: UserId!
-  $fromUser: UserId!
+  $forUserId: UserId!
+  $fromUserId: UserId!
   $challengeId: ChallengeId!
 ) {
   sendInvitation(
-    input: { forUser: $forUser, fromUser: $fromUser, toChallenge: $challengeId }
+    input: {
+      forUserId: $forUserId
+      fromUserId: $fromUserId
+      toChallengeId: $challengeId
+    }
   ) {
     id
   }

@@ -6,7 +6,7 @@ import agh.edu.pl.entities.{ Challenge, User, UserChallengeActivity }
 import agh.edu.pl.ids.UserChallengeActivityId
 import agh.edu.pl.mutations.LogActivity
 import com.softwaremill.quicklens._
-import sangria.macros.derive.{ deriveObjectType, ReplaceField }
+import sangria.macros.derive.{ deriveObjectType, AddFields }
 import sangria.schema.{ Field, ObjectType }
 
 case class GraphqlUserChallengeActivity()
@@ -19,19 +19,15 @@ case class GraphqlUserChallengeActivity()
 
   override def GraphQLOutputType: ObjectType[Context, UserChallengeActivity] =
     deriveObjectType[Context, UserChallengeActivity](
-      ReplaceField(
-        "userId",
+      AddFields(
         Field(
-          "user",
-          UserType,
+          name = "user",
+          fieldType = UserType,
           resolve = c => c.ctx.repository.getById[User](c.value.userId)
-        )
-      ),
-      ReplaceField(
-        "challengeId",
+        ),
         Field(
-          "challenge",
-          ChallengeType,
+          name = "challenge",
+          fieldType = ChallengeType,
           resolve =
             c => c.ctx.repository.getById[Challenge](c.value.challengeId)
         )

@@ -2,7 +2,7 @@ query unreadUserInvitations($userId: UserId!, $size: Int, $offset: Int) {
   allInvitations(
     size: $size
     offset: $offset
-    filter: { forUser: $userId, read: false }
+    filter: { forUserId: { eq: $userId }, read: { eq: false } }
   ) {
     total
     results {

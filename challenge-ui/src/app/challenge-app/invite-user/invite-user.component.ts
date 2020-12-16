@@ -79,8 +79,8 @@ export class InviteUserComponent extends QueryComponent<
 
     this.sendInvitation
       .mutate({
-        forUser: userId,
-        fromUser: this.currentUserId,
+        forUserId: userId,
+        fromUserId: this.currentUserId,
         challengeId: this.challengeId,
       })
       .pipe(

@@ -30,7 +30,7 @@ case class CreateChallenge(
       id = newId,
       name = name,
       description = description,
-      createdBy = createdBy,
+      createdById = createdBy,
       createdOn = createdOn,
       finishesOn = finishesOn,
       measure = measure

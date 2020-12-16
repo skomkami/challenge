@@ -11,7 +11,7 @@ final case class Challenge(
     override val id: ChallengeId,
     name: String,
     description: String,
-    createdBy: UserId,
+    createdById: UserId,
     createdOn: OffsetDateTime,
     finishesOn: OffsetDateTime,
     measure: Measure

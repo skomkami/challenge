@@ -1,7 +1,7 @@
 package agh.edu.pl.elasticsearch
 
 import agh.edu.pl.error.DomainError
-import agh.edu.pl.filters.{ Filter, FilterEq, StringQuery }
+import agh.edu.pl.filters.{ FieldFilter, Filter, FilterEq, StringQuery }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.repository.{ Repository, SearchResponse }
 import agh.edu.pl.sort.Sort
@@ -11,6 +11,7 @@ import com.sksamuel.elastic4s.requests.searches.queries.matches.MatchQuery
 import com.sksamuel.elastic4s.requests.searches.queries.{
   BoolQuery,
   Query,
+  RangeQuery,
   RegexQuery
 }
 import com.sksamuel.elastic4s.requests.searches.sort.SortOrder.{ Asc, Desc }
@@ -74,6 +75,17 @@ case class EsRepository(
 
     val qFilters = queryFilter.getOrElse(Nil).collect {
       case FilterEq(field, value) => MatchQuery(field, value)
+      case FieldFilter(field, value) if value.eq.isDefined =>
+        MatchQuery(field, value.eq.get)
+      case FieldFilter(field, value) if value.neq.isDefined =>
+        not(MatchQuery(field, value.neq.get))
+      case FieldFilter(field, value) if value.gt.isDefined =>
+        RangeQuery(field, gt = value.gt)
+      case FieldFilter(field, value) if value.lt.isDefined =>
+        RangeQuery(field, lt = value.lt)
+      case FieldFilter(field, value)
+          if value.gt.isDefined && value.lt.isDefined =>
+        RangeQuery(field, gt = value.gt, lt = value.lt)
     }
 
     must(qMusts.toSeq).filter(qFilters)

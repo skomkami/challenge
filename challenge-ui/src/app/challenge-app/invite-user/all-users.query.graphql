@@ -11,7 +11,7 @@ query allUsers(
       name
       gender
       participatesInChallenge(challengeId: $challengeId)
-      invitations(filter: { toChallenge: $challengeId }) {
+      invitations(filter: { toChallengeId: { eq: $challengeId } }) {
         results {
           id
         }

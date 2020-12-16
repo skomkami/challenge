@@ -13,17 +13,17 @@ import sangria.schema.{ Argument, InputObjectType }
 import scala.concurrent.{ ExecutionContext, Future }
 
 case class SendInvitation(
-    forUser: UserId,
-    fromUser: UserId,
-    toChallenge: ChallengeId
+    forUserId: UserId,
+    fromUserId: UserId,
+    toChallengeId: ChallengeId
   ) extends CreateEntity[Invitation] {
 
   override def toEntity(newId: InvitationId): Invitation =
     Invitation(
       id = newId,
-      forUser = forUser,
-      fromUser = fromUser,
-      toChallenge = toChallenge,
+      forUserId = forUserId,
+      fromUserId = fromUserId,
+      toChallengeId = toChallengeId,
       read = false,
       sendTime = OffsetDateTime.now
     )
@@ -35,9 +35,9 @@ case class SendInvitation(
     implicit val ec: ExecutionContext = ctx.ec
 
     for {
-      _ <- ctx.repository.getById[User](forUser)
-      _ <- ctx.repository.getById[User](fromUser)
-      challenge <- ctx.repository.getById[Challenge](toChallenge)
+      _ <- ctx.repository.getById[User](forUserId)
+      _ <- ctx.repository.getById[User](fromUserId)
+      challenge <- ctx.repository.getById[Challenge](toChallengeId)
       created <- ctx.repository.create(toEntity(newId))
     } yield challenge.checkAvailabilityAndReturn(created)
   }
@@ -51,8 +51,8 @@ case class SendInvitation(
   override def generateId: InvitationId =
     InvitationId.generateId(
       InvitationId.DataToGenerateId(
-        forUser,
-        toChallenge
+        forUserId,
+        toChallengeId
       )
     )
 

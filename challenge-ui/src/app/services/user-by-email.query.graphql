@@ -8,7 +8,7 @@ query userByEmail($email: Email!) {
     challenges {
       total
     }
-    unreadInvitations: invitations(filter: { read: false }) {
+    unreadInvitations: invitations(filter: { read: { eq: false } }) {
       total
     }
   }

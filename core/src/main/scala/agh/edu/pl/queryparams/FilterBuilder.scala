@@ -1,17 +1,13 @@
 package agh.edu.pl.queryparams
 
-import agh.edu.pl.filters.{ Filter, FilterEq, StringQuery }
-import agh.edu.pl.measures.{ ValueOrder, ValueSummarization }
-import agh.edu.pl.models.{ Email, Gender }
+import agh.edu.pl.filters.{ FieldFilter, Filter, FilterConds, StringQuery }
+import agh.edu.pl.models.Email
 import agh.edu.pl.registry.DomainRegistry
-import sangria.marshalling.{
-  CoercedScalaResultMarshaller,
-  FromInput,
-  ResultMarshaller
-}
+import io.circe.Json
+import sangria.marshalling.circe.CirceResultMarshaller
+import sangria.marshalling.{ FromInput, ResultMarshaller }
 import sangria.schema._
 
-import scala.collection.immutable.ListMap
 import scala.reflect.ClassTag
 
 case class EntityFilter[T](filters: List[Filter] = Nil)
@@ -23,24 +19,39 @@ case object EntityFilter {
     ): FromInput[EntityFilter[T]] =
     new FromInput[EntityFilter[T]] {
       override val marshaller: ResultMarshaller =
-        CoercedScalaResultMarshaller.default
+        CirceResultMarshaller
 
       override def fromResult(node: marshaller.Node): EntityFilter[T] = {
-        val filters = node.asInstanceOf[ListMap[_, Option[_]]].collect {
-          case (name, Some(value)) =>
-            val strName = name.toString
-            val strValue = value.toString
-            tag
-              .runtimeClass
-              .getDeclaredField(strName)
-              .getType
-              .getSimpleName match {
-              case "String" =>
-                StringQuery(strName, strValue)
-              case _ =>
-                FilterEq(name.toString, value.toString)
+        val mapBuilder = node.asInstanceOf[Json]
+        val valuesMap = mapBuilder.asObject.map(_.toMap).getOrElse(Map.empty)
+        val filters = valuesMap.map {
+          case (fieldName, conditions) =>
+            val declaredFields = tag.runtimeClass.getDeclaredFields
+            if (
+              declaredFields
+                .find(_.getName == fieldName)
+                .exists(_.getType.getSimpleName == "String")
+            ) {
+              StringQuery(fieldName, conditions.asString.getOrElse(""))
             }
-
+            else {
+              val map = conditions.asObject.map(_.toMap).getOrElse(Map.empty)
+              val emptyConds = FilterConds()
+              val filterConds = map.foldLeft(emptyConds) { (condsAcc, entry) =>
+                entry match {
+                  case ("eq", value) =>
+                    condsAcc.copy(eq = value.asString)
+                  case ("neq", value) =>
+                    condsAcc.copy(neq = value.asString)
+                  case ("lt", value) =>
+                    condsAcc.copy(lt = value.asString)
+                  case ("gt", value) =>
+                    condsAcc.copy(gt = value.asString)
+                  case _ => condsAcc
+                }
+              }
+              FieldFilter(fieldName, filterConds)
+            }
         }
         EntityFilter[T](filters.toList)
       }
@@ -49,41 +60,84 @@ case object EntityFilter {
 
 case object FilterBuilder {
 
+  trait Condition[T]
+
+  private val basicConditions = List("eq", "neq")
+  private val extendedConditions = basicConditions ++ List("gt", "lt")
+
+  private def conditionsInput[T](
+      conditions: List[String],
+      inputType: InputType[T]
+    ): InputObjectType[_] = {
+    val fields =
+      conditions.map(cond => InputField(cond, OptionInputType(inputType)))
+
+    val conditionsInputType = InputObjectType[Condition[T]](
+      name = s"Conditions",
+      fields = fields
+    )
+    inputType match {
+      case ScalarAlias(ScalarType(name, _, _, _, _, _, _, _, _), _, _) =>
+        conditionsInputType.copy(name = s"${name}Conditions")
+      case ScalarType(name, _, _, _, _, _, _, _, _) =>
+        conditionsInputType.copy(name = s"${name}Conditions")
+      case EnumType(name, _, _, _, _) =>
+        conditionsInputType.copy(name = s"${name}Conditions")
+      case _ =>
+        conditionsInputType.copy(name =
+          s"${inputType.getClass.getSimpleName}Conditions"
+        )
+    }
+  }
+
   def filterType[T](
-      implicit
-      tag: ClassTag[T]
+      graphqlType: ObjectType[_, T]
     ): InputObjectType[EntityFilter[T]] = {
     val fields =
-      tag
-        .runtimeClass
-        .getDeclaredFields
+      graphqlType
+        .fields
         .map { field =>
-          val inputType = field.getType.getSimpleName match {
-            case "String"             => Some(StringType)
-            case "Email"              => Some(Email.scalarAlias)
-            case "Int"                => Some(IntType)
-            case "boolean"            => Some(BooleanType)
-            case "Gender"             => Some(Gender.EnumType)
-            case "ValueOrder"         => Some(ValueOrder.EnumType)
-            case "ValueSummarization" => Some(ValueSummarization.EnumType)
-            case "OffsetDateTime" =>
-              Some(agh.edu.pl.graphql.GraphQLOffsetDateTime)
-            case _ => None
-          }
-          inputType
-            .orElse {
-              DomainRegistry
-                .idsSettings
-                .get(field.getType.getSimpleName)
-                .map(_.scalarAlias)
-            }
-            .map(OptionInputType.apply)
-            .map(InputField(field.getName, _))
+          field.name -> extractFromOptionType(field.fieldType)
         }
-        .flatMap(_.toList)
+        .collect {
+          case (name, fieldDef @ ScalarAlias(alias, _, _))
+              if DomainRegistry
+                .idsSettings
+                .contains(alias.name) =>
+            InputField(
+              name,
+              OptionInputType(
+                OptionInputType(
+                  conditionsInput(
+                    basicConditions,
+                    fieldDef
+                  )
+                )
+              )
+            )
+          case (name, typeDef @ EnumType(_, _, _, _, _)) =>
+            InputField(
+              name,
+              OptionInputType(conditionsInput(basicConditions, typeDef))
+            )
+          case (name, StringType | Email.scalarAlias) =>
+            InputField(name, OptionInputType(StringType))
+          case (name, typeDef @ ScalarType(_, _, _, _, _, _, _, _, _)) =>
+            scribe.info(s"scalar type: $name")
+            InputField(
+              name,
+              OptionInputType(conditionsInput(extendedConditions, typeDef))
+            )
+          case (name, typeDef @ ScalarAlias(_, _, _)) =>
+            scribe.info(s"scalar alias: $name")
+            InputField(
+              name,
+              OptionInputType(conditionsInput(extendedConditions, typeDef))
+            )
+        }
 
     InputObjectType[EntityFilter[T]](
-      name = s"${tag.runtimeClass.getSimpleName}Filter",
+      name = s"${graphqlType.name}Filter",
       fields = fields.toList
     )
   }

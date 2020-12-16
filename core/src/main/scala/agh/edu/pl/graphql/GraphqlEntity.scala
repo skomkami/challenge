@@ -32,7 +32,7 @@ abstract class GraphqlEntity[Id <: EntityId, T <: Entity[Id]: Encoder: Decoder](
   )
 
   private lazy val filterInput: InputObjectType[EntityFilter[T]] =
-    FilterBuilder.filterType
+    FilterBuilder.filterType(GraphQLOutputType)
 
   lazy val filterArg: Argument[Option[EntityFilter[T]]] =
     Argument("filter", OptionInputType(filterInput))

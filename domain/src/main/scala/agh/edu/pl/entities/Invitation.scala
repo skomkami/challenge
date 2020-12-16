@@ -7,9 +7,9 @@ import agh.edu.pl.models.{ Entity, JsonSerializable }
 
 final case class Invitation(
     override val id: InvitationId,
-    forUser: UserId,
-    fromUser: UserId,
-    toChallenge: ChallengeId,
+    forUserId: UserId,
+    fromUserId: UserId,
+    toChallengeId: ChallengeId,
     read: Boolean,
     sendTime: OffsetDateTime
   ) extends Entity[InvitationId](id) {

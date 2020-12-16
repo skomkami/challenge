@@ -1,7 +1,5 @@
 package agh.edu.pl.mutations
 
-import java.time.OffsetDateTime
-
 import agh.edu.pl.calculator.ChallengePositionsCalculator
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context

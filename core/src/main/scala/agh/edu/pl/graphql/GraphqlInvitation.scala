@@ -6,7 +6,7 @@ import agh.edu.pl.entities.{ Challenge, Invitation, User }
 import agh.edu.pl.ids.InvitationId
 import agh.edu.pl.mutations.{ MarkInvitationAsRead, SendInvitation }
 import com.softwaremill.quicklens._
-import sangria.macros.derive.{ deriveObjectType, ReplaceField }
+import sangria.macros.derive.{ deriveObjectType, AddFields }
 import sangria.schema.{ Field, ObjectType }
 
 case class GraphqlInvitation() extends GraphqlEntity[InvitationId, Invitation] {
@@ -18,29 +18,22 @@ case class GraphqlInvitation() extends GraphqlEntity[InvitationId, Invitation] {
 
   override def GraphQLOutputType: ObjectType[Context, Invitation] =
     deriveObjectType[Context, Invitation](
-      ReplaceField(
-        "forUser",
+      AddFields(
         Field(
-          "forUser",
-          UserType,
-          resolve = c => c.ctx.repository.getById[User](c.value.forUser)
-        )
-      ),
-      ReplaceField(
-        "fromUser",
+          name = "forUser",
+          fieldType = UserType,
+          resolve = c => c.ctx.repository.getById[User](c.value.forUserId)
+        ),
         Field(
-          "fromUser",
-          UserType,
-          resolve = c => c.ctx.repository.getById[User](c.value.fromUser)
-        )
-      ),
-      ReplaceField(
-        "toChallenge",
+          name = "fromUser",
+          fieldType = UserType,
+          resolve = c => c.ctx.repository.getById[User](c.value.fromUserId)
+        ),
         Field(
-          "toChallenge",
-          ChallengeType,
+          name = "toChallenge",
+          fieldType = ChallengeType,
           resolve =
-            c => c.ctx.repository.getById[Challenge](c.value.toChallenge)
+            c => c.ctx.repository.getById[Challenge](c.value.toChallengeId)
         )
       )
     )

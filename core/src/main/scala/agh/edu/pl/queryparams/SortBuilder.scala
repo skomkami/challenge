@@ -8,7 +8,6 @@ import sangria.marshalling.{
 }
 import sangria.schema.{ ObjectType, _ }
 
-import scala.annotation.tailrec
 import scala.collection.immutable.ListMap
 
 case class EntitySort[T](sorts: List[Sort] = Nil)
@@ -30,13 +29,6 @@ case object EntitySort {
 }
 
 case object SortBuilder {
-  @tailrec
-  private def extractFromOptionType(fieldType: OutputType[_]): OutputType[_] =
-    fieldType match {
-      case OptionType(underlyingType) => extractFromOptionType(underlyingType)
-      case baseType                   => baseType
-    }
-
   def sortType[T](
       graphqlType: ObjectType[_, T]
     ): InputObjectType[EntitySort[T]] = {
@@ -46,9 +38,6 @@ case object SortBuilder {
         field.name -> extractFromOptionType(field.fieldType)
       }
       .collect {
-//      case (name, StringType) => name
-//      case (name, IntType) => name
-//      case (name, GraphQLOffsetDateTime) => name
         case (name, ScalarType(_, _, _, _, _, _, _, _, _)) => name
         case (name, ScalarAlias(_, _, _))                  => name
       }
