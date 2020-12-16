@@ -1,5 +1,10 @@
-query allUsers($challengeId: ChallengeId!, $size: Int, $offset: Int) {
-  allUsers(size: $size, offset: $offset) {
+query allUsers(
+  $challengeId: ChallengeId!
+  $size: Int
+  $offset: Int
+  $nameFilter: String
+) {
+  allUsers(size: $size, offset: $offset, filter: { name: $nameFilter }) {
     total
     results {
       id

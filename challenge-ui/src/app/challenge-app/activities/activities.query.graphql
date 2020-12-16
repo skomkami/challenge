@@ -22,6 +22,7 @@ query activities(
   user(id: $userId) {
     id
     name
+    gender
   }
   challenge(id: $challengeId) {
     id

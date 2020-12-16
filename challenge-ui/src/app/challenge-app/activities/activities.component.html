@@ -4,53 +4,71 @@
   </div>
 </div>
 <div *ngIf="!loading">
-  {{ user.name }}
-  {{ challenge.name }}
+  <div>
+    <img
+      class="ui centered small image"
+      *ngIf="user.gender == 'Male'"
+      src="assets/img/male.png"
+    />
+    <img
+      class="ui centered small image"
+      *ngIf="user.gender == 'Female'"
+      src="assets/img/female.png"
+    />
+  </div>
+  <div style="text-align: center">
+    <div>
+      <h2>{{ challenge.name }}</h2>
+    </div>
+    <div class="margin-top"><b>Name:</b> {{ user.name }}</div>
+    <div><b>Activities in this challenge:</b> {{ total }}</div>
+  </div>
+  <div>
+    <mat-table [dataSource]="activities" class="margin-top">
+      <ng-container matColumnDef="Points">
+        <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
+        <mat-cell *matCellDef="let activity">{{
+          activity.value | displayMeasureValue: challenge.measure
+        }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Date">
+        <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+        <mat-cell *matCellDef="let activity">{{
+          activity.date | date: "yyyy-MM-dd HH:mm"
+        }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="loadingRow">
+        <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+          Loading data...
+        </mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
+          User {{ user.name }} has no activities in this challenge yet...
+        </mat-footer-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+      <mat-row *matRowDef="let summary; columns: displayColumns"></mat-row>
+      <mat-footer-row
+        *matFooterRowDef="['loadingRow']"
+        [ngClass]="{ hide: !loading }"
+      ></mat-footer-row>
+      <mat-footer-row
+        *matFooterRowDef="['noData']"
+        [ngClass]="{
+          hide: !(activities != null && activities.data.length == 0)
+        }"
+      ></mat-footer-row>
+    </mat-table>
+    <mat-paginator
+      [pageSize]="pageSize"
+      [length]="total"
+      (page)="handlePageChange($event)"
+    ></mat-paginator>
+  </div>
 
-  <mat-table [dataSource]="activities" class="margin-top">
-    <ng-container matColumnDef="Points">
-      <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
-      <mat-cell *matCellDef="let activity">{{
-        activity.value | displayMeasureValue: challenge.measure
-      }}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Date">
-      <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-      <mat-cell *matCellDef="let activity">{{
-        activity.date | date: "yyyy-MM-dd HH:mm"
-      }}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="loadingRow">
-      <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
-        Loading data...
-      </mat-footer-cell>
-    </ng-container>
-    <ng-container matColumnDef="noData">
-      <mat-footer-cell *matFooterCellDef colspan="displayColumns.length()">
-        User {{ user.name }} has no activities in this challenge yet...
-      </mat-footer-cell>
-    </ng-container>
-    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-    <mat-row *matRowDef="let summary; columns: displayColumns"></mat-row>
-    <mat-footer-row
-      *matFooterRowDef="['loadingRow']"
-      [ngClass]="{ hide: !loading }"
-    ></mat-footer-row>
-    <mat-footer-row
-      *matFooterRowDef="['noData']"
-      [ngClass]="{
-        hide: !(activities != null && activities.data.length == 0)
-      }"
-    ></mat-footer-row>
-  </mat-table>
-  <mat-paginator
-    [pageSize]="pageSize"
-    [length]="total"
-    (page)="handlePageChange($event)"
-  ></mat-paginator>
+  <a [routerLink]="['/home/challenge/' + challengeId]" class="bottom-link">
+    <i class="angle left icon"></i>
+    Back to challenge
+  </a>
 </div>
-
-<a [routerLink]="['/home/challenge/' + challengeId]" class="bottom-link">
-  <i class="angle left icon"></i>
-  Back to challenge
-</a>

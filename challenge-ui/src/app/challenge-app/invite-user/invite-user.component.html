@@ -1,6 +1,19 @@
 <h2 mat-dialog-title>Invite other users to join the challenge</h2>
 
 <mat-dialog-content>
+  <div class="ui icon input full-width" *ngIf="challengeId">
+    <invite-search-box
+      [offset]="offset"
+      [pageSize]="pageSize"
+      [challengeId]="challengeId"
+      (loading)="this.loading = $event"
+      (total)="this.total = $event"
+      (results)="loadUsers($event)"
+      (removedSearch)="reset()"
+    ></invite-search-box>
+    <i class="search icon"></i>
+  </div>
+
   <mat-table [dataSource]="users">
     <ng-container matColumnDef="User">
       <mat-header-cell *matHeaderCellDef>User</mat-header-cell>

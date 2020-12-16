@@ -31,7 +31,11 @@
     ></challenge-user>
   </div>
 
-  <button (click)="openInviteDialog()" class="ui blue button">
+  <button
+    *ngIf="!finished()"
+    (click)="openInviteDialog()"
+    class="ui blue button"
+  >
     <i class="user icon"></i><i class="plus icon"></i>Invite
   </button>
 

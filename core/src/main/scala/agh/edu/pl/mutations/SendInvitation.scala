@@ -37,9 +37,9 @@ case class SendInvitation(
     for {
       _ <- ctx.repository.getById[User](forUser)
       _ <- ctx.repository.getById[User](fromUser)
-      _ <- ctx.repository.getById[Challenge](toChallenge)
+      challenge <- ctx.repository.getById[Challenge](toChallenge)
       created <- ctx.repository.create(toEntity(newId))
-    } yield created
+    } yield challenge.checkAvailabilityAndReturn(created)
   }
 
   override def updateEntity(

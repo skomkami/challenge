@@ -61,8 +61,15 @@ export class InviteUserComponent extends QueryComponent<
     const users = data.allUsers.results.map((result) => {
       return new User(result);
     });
-    console.log(users);
+    this.loadUsers(users);
+  }
+
+  loadUsers(users: User[]): void {
     this.users = new MatTableDataSource(users);
+  }
+
+  reset(): void {
+    this.ngOnInit();
   }
 
   invite(userId: string, btnRef: HTMLButtonElement): void {

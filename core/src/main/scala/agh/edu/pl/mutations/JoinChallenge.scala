@@ -42,13 +42,7 @@ case class JoinChallenge(
       created <- ctx
         .repository
         .create[UserChallengeSummary](toEntity(newId))
-    } yield
-      if (challenge.finishesOn.isBefore(OffsetDateTime.now)) {
-        throw ChallengeInactive(challenge.name)
-      }
-      else {
-        created
-      }
+    } yield challenge.checkAvailabilityAndReturn(created)
 
     newSummary.onComplete(
       ChallengePositionsCalculator(challengeId).processWhenSuccess(ctx)

@@ -1,3 +1,4 @@
+import { InviteSearchBoxComponent } from './invite-user/invite-search-box.component';
 import { InviteUserComponent } from './invite-user/invite-user.component';
 import { DisplayMeasureValue } from '../common/display-measure-value.pipe';
 import { MatTableModule } from '@angular/material/table';
@@ -42,6 +43,7 @@ import { ViewInvitationsComponent } from './view-invitations/view-invitations.co
     ChallengeComponent,
     ChallengeUserComponent,
     SearchBoxComponent,
+    InviteSearchBoxComponent,
     DisplayMeasureValue,
     ActivitiesComponent,
     InviteUserComponent,

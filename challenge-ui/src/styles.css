@@ -127,3 +127,7 @@ app-ng-dynamic-breadcrumb ul {
 .underlined {
   text-decoration: underline;
 }
+
+.full-width {
+  width: 100%;
+}

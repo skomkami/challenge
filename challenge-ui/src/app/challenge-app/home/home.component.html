@@ -1,3 +1,8 @@
+<div *ngIf="!user">
+  <div class="ui active inverted dimmer">
+    <div class="ui large text loader">Loading</div>
+  </div>
+</div>
 <div *ngIf="user" class="ui relaxed grid">
   <user-component [user]="user"></user-component>
   <challenges [user]="user"></challenges>
