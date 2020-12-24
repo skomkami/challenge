@@ -107,7 +107,8 @@ lazy val main =
         com.github.pureconfig.pureconfig
       )
     )
-//    .settings(dockerBaseImage := "openjdk:8-jre-alpine")
+
+    //    .settings(dockerBaseImage := "openjdk:8-jre-alpine")
 //    .settings(dockerExecCommand := Seq("apk", "add", "--no-cache", "bash"))
     .settings(dockerExposedPorts := Seq(8080))
     .settings(dockerUsername := Some("kamilskomro"))

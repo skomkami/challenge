@@ -7,5 +7,5 @@ import agh.edu.pl.entities.User
 import scala.concurrent.Future
 
 trait AuthService {
-  def pushUser(user: User): Future[Either[String, UUID]]
+  def createUser(user: User): Future[Either[String, UUID]]
 }

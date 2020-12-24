@@ -1,34 +1,27 @@
 package agh.edu.pl
 
 import agh.edu.pl.context.Context
-import agh.edu.pl.entities.{
-  Challenge,
-  Invitation,
-  User,
-  UserChallengeActivity,
-  UserChallengeSummary
-}
+import agh.edu.pl.entities._
 import agh.edu.pl.graphql._
-import agh.edu.pl.models.{ Entity, EntityId }
-import sangria.schema.{ Field, ObjectType, _ }
 import com.softwaremill.quicklens._
+import sangria.schema.{ ObjectType, _ }
 
 object GraphQLSchema {
 
   val Size = Argument("size", OptionInputType(IntType))
   val Offset = Argument("offset", OptionInputType(IntType))
 
-  val EntityType: InterfaceType[Context, Entity[_ <: EntityId]] =
-    InterfaceType(
-      "Entity",
-      fields[Context, Entity[_ <: EntityId]](
-        Field(
-          "id",
-          StringType,
-          resolve = _.value.id.value
-        )
-      )
-    )
+//  val EntityType: InterfaceType[Context, Entity[_ <: EntityId]] =
+//    InterfaceType(
+//      "Entity",
+//      fields[Context, Entity[_ <: EntityId]](
+//        Field(
+//          "id",
+//          StringType,
+//          resolve = _.value.id.value
+//        )
+//      )
+//    )
 
   val GraphQLUser: GraphqlUser = GraphqlUser()
   val GraphQLChallenge: GraphqlChallenge = GraphqlChallenge()

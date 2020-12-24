@@ -26,7 +26,7 @@ import scala.reflect.ClassTag
 import scala.util.chaining._
 
 case class EsRepository(
-    elasticClient: ElasticClient
+    private val elasticClient: ElasticClient
   )(implicit
     ec: ExecutionContext
   ) extends Repository {

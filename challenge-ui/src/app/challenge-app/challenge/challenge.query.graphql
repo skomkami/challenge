@@ -15,7 +15,7 @@ query challenge($challengeId: ChallengeId!, $size: Int, $offset: Int) {
       valueOrder
       valueSummarization
     }
-    summaries(size: $size, offset: $offset) {
+    summaries(size: $size, offset: $offset, orderBy: { position: Asc }) {
       total
       results {
         user {

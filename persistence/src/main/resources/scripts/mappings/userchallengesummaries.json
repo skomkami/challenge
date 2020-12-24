@@ -2,22 +2,10 @@
   "mappings" : {
     "properties" : {
       "challengeId" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+        "type":  "keyword"
       },
       "id" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+        "type":  "keyword"
       },
       "lastActive" : {
         "type" : "date"
@@ -36,13 +24,7 @@
         }
       },
       "userId" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+        "type":  "keyword"
       }
     }
   }

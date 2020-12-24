@@ -1,6 +1,20 @@
-{"index":{"_index":"users","_id":"1926ed003d85e207fb173cb082de9668"}}
-{"id":"1926ed003d85e207fb173cb082de9668","name":"Duane","email":"duane@example.com","gender":"Male","createdAt":"2020-10-08T22:09:02.451+02:00"}
-{"index":{"_index":"users","_id":"c1369f548c8bedecb49808e23ecebaf7"}}
-{"id":"c1369f548c8bedecb49808e23ecebaf7","name":"Matt","email":"matt@example.com","gender":"Male","createdAt":"2020-10-02T10:25:59+02:00"}
-{"index":{"_index":"users","_id":"aa04d4005905a8e893d755c146461c6e"}}
-{"id": "aa04d4005905a8e893d755c146461c6e", "name": "Ricky","email": "ricky@example.com", "gender": "Male", "createdAt":"2020-10-03T20:25:59+02:00"}
+{"index": {"_index" : "users", "_id" : "2246e6e3bf8f660136cdf1aa97942151"}}
+{"id" : "2246e6e3bf8f660136cdf1aa97942151", "name" : "amiga", "email" : "amiga@com", "gender" : "Female", "createdAt" : "2020-12-16T23:56:39.056+01:00"}
+{"index": {"_index" : "users", "_id" : "9a95cc8ad653d995d57d54ebdcd838c6"}}
+{"id" : "9a95cc8ad653d995d57d54ebdcd838c6", "name" : "doofus", "email" : "doofus@com", "gender" : "Male", "createdAt" : "2020-12-16T23:56:39.056+01:00"}
+{"index": {"_index" : "users", "_id" : "0d9ea771b6a57733dbb9795eafe4b9e3"}}
+{"id" : "0d9ea771b6a57733dbb9795eafe4b9e3", "name" : "gizmo", "email" : "gizmo@com", "gender" : "Male", "createdAt" : "2020-12-16T23:56:39.056+01:00"}
+{"index": {"_index" : "users", "_id" : "3b4bf00e0862bbacd72df972f84024a8"}}
+{"id" : "3b4bf00e0862bbacd72df972f84024a8", "name" : "goonie", "email" : "goonie@com", "gender" : "Male", "createdAt" : "2020-12-16T23:56:39.056+01:00"}
+{"index": {"_index" : "users", "_id" : "1101bb1856beece495a68523625373ab"}}
+{"id" : "1101bb1856beece495a68523625373ab", "name" : "highbeam", "email" : "highbeam@com", "gender" : "Male", "createdAt" : "2020-12-16T23:56:39.056+01:00"}
+{"index": {"_index" : "users", "_id" : "eb6b418fb607dee1d1bdaf8a45fb788b"}}
+{"id" : "eb6b418fb607dee1d1bdaf8a45fb788b", "name" : "monalott", "email" : "monalott@com", "gender" : "Female", "createdAt" : "2020-12-16T23:56:39.056+01:00"}
+{"index": {"_index" : "users", "_id" : "bfb7061498e31fb4a5c550fb7f689aac"}}
+{"id" : "bfb7061498e31fb4a5c550fb7f689aac", "name" : "phortent", "email" : "phortent@com", "gender" : "Male", "createdAt" : "2020-12-16T23:56:39.056+01:00"}
+{"index": {"_index" : "users", "_id" : "d860aa6e54d7e5f3d05ca00e27889b48"}}
+{"id" : "d860aa6e54d7e5f3d05ca00e27889b48", "name" : "salarfes", "email" : "salarfes@com", "gender" : "Male", "createdAt" : "2020-12-16T23:56:39.056+01:00"}
+{"index": {"_index" : "users", "_id" : "b6a1086cef18dba186c179901634511c"}}
+{"id" : "b6a1086cef18dba186c179901634511c", "name" : "Huggie", "email" : "huggie@com", "gender" : "Male", "createdAt" : "2020-12-17T12:26:46.244+01:00"}
+{"index": {"_index" : "users", "_id" : "1e487f6f4a2a7fef64e32dba04233b21"}}
+{"id" : "1e487f6f4a2a7fef64e32dba04233b21", "name" : "Queen Bee", "email" : "queenbee@com", "gender" : "Female", "createdAt" : "2020-12-17T12:26:46.244+01:00"}

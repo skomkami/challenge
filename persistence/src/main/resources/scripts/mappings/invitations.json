@@ -1,32 +1,14 @@
 {
   "mappings" : {
     "properties" : {
-      "forUser" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+      "forUserId" : {
+        "type":  "keyword"
       },
-      "fromUser" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+      "fromUserId" : {
+        "type":  "keyword"
       },
       "id" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+        "type":  "keyword"
       },
       "read" : {
         "type" : "boolean"
@@ -34,14 +16,8 @@
       "sendTime" : {
         "type" : "date"
       },
-      "toChallenge" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+      "toChallengeId" : {
+        "type":  "keyword"
       }
     }
   }

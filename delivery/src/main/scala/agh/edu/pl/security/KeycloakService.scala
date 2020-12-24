@@ -18,7 +18,7 @@ case class KeycloakService(
   )(implicit
     keycloakClient: KeycloakClient[Task, Source[ByteString, Any]]
   ) extends AuthService {
-  override def pushUser(user: DomainUser): Future[Either[String, UUID]] = {
+  override def createUser(user: DomainUser): Future[Either[String, UUID]] = {
 
     val users = Keycloak.Users[Task, Source[ByteString, Any]]
     val userToCreate: Create = Create(

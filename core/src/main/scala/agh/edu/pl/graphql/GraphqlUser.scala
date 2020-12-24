@@ -62,7 +62,7 @@ case class GraphqlUser() extends GraphqlEntity[UserId, User] {
             c.ctx
               .repository
               .getAll[Invitation](
-                Some(FilterEq("forUser", c.value.id.value) :: filters),
+                Some(FilterEq("forUserId", c.value.id.value) :: filters),
                 size = c.arg(Size),
                 from = c.arg(Offset)
               )

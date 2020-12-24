@@ -37,7 +37,7 @@ case class CreateUser(
 
     ctx
       .authService
-      .pushUser(entity)
+      .createUser(entity)
       .flatMap {
         case Right(_)    => ctx.repository.create(entity)
         case Left(error) => throw AuthServiceError(error)

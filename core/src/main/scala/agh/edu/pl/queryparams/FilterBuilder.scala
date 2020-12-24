@@ -123,13 +123,11 @@ case object FilterBuilder {
           case (name, StringType | Email.scalarAlias) =>
             InputField(name, OptionInputType(StringType))
           case (name, typeDef @ ScalarType(_, _, _, _, _, _, _, _, _)) =>
-            scribe.info(s"scalar type: $name")
             InputField(
               name,
               OptionInputType(conditionsInput(extendedConditions, typeDef))
             )
           case (name, typeDef @ ScalarAlias(_, _, _)) =>
-            scribe.info(s"scalar alias: $name")
             InputField(
               name,
               OptionInputType(conditionsInput(extendedConditions, typeDef))

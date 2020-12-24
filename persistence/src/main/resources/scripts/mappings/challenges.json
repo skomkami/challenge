@@ -2,37 +2,19 @@
   "mappings" : {
     "properties" : {
       "createdBy" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+        "type":  "keyword"
       },
       "createdOn" : {
         "type" : "date"
       },
       "description" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+        "type":  "keyword"
       },
       "finishesOn" : {
         "type" : "date"
       },
       "id" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+        "type":  "keyword"
       },
       "measure" : {
         "properties" : {
@@ -40,42 +22,18 @@
             "type" : "boolean"
           },
           "unitName" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
+            "type":  "keyword"
           },
           "valueOrder" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
+            "type":  "keyword"
           },
           "valueSummarization" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
-              }
-            }
+            "type":  "keyword"
           }
         }
       },
       "name" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
+          "type" : "keyword"
       }
     }
   }

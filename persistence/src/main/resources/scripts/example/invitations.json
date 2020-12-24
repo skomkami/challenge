@@ -1,0 +1,58 @@
+{"index": {"_index" : "invitations", "_id" : "f0c065bcc143ece23e76ddfa49d78f84"}}
+{ "id" : "f0c065bcc143ece23e76ddfa49d78f84", "forUserId" : "3b4bf00e0862bbacd72df972f84024a8", "fromUserId" : "1101bb1856beece495a68523625373ab", "toChallengeId" : "b2746d2fa77e08a049c75a291e97ef66", "read" : false, "sendTime" : "2020-12-17T14:01:13.502+01:00"}
+{"index": {"_index" : "invitations", "_id" : "da3ab58bcb7a8114bec965d94fd25a9f"}}
+{ "id" : "da3ab58bcb7a8114bec965d94fd25a9f", "forUserId" : "0d9ea771b6a57733dbb9795eafe4b9e3", "fromUserId" : "1101bb1856beece495a68523625373ab", "toChallengeId" : "b2746d2fa77e08a049c75a291e97ef66", "read" : false, "sendTime" : "2020-12-17T14:01:14.011+01:00"}
+{"index": {"_index" : "invitations", "_id" : "8a3a33b52d717296b962434a23d5f133"}}
+{ "id" : "8a3a33b52d717296b962434a23d5f133", "forUserId" : "eb6b418fb607dee1d1bdaf8a45fb788b", "fromUserId" : "3b4bf00e0862bbacd72df972f84024a8", "toChallengeId" : "5e6b54ff0f02beb9c22eea8a4faf0415", "read" : false, "sendTime" : "2020-12-17T00:07:59.714+01:00"}
+{"index": {"_index" : "invitations", "_id" : "f13df6053f8d9690761ebe5f319b4de5"}}
+{ "id" : "f13df6053f8d9690761ebe5f319b4de5", "forUserId" : "1101bb1856beece495a68523625373ab", "fromUserId" : "3b4bf00e0862bbacd72df972f84024a8", "toChallengeId" : "5e6b54ff0f02beb9c22eea8a4faf0415", "read" : false, "sendTime" : "2020-12-17T00:08:00.244+01:00"}
+{"index": {"_index" : "invitations", "_id" : "e9593e4e4576e29ac9e86fcba91eb46c"}}
+{ "id" : "e9593e4e4576e29ac9e86fcba91eb46c", "forUserId" : "0d9ea771b6a57733dbb9795eafe4b9e3", "fromUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "toChallengeId" : "613adaef979cad847504735284088546", "read" : false, "sendTime" : "2020-12-17T13:56:34.114+01:00"}
+{"index": {"_index" : "invitations", "_id" : "06a4e50793a0c1ee90a6187fb48c1374"}}
+{ "id" : "06a4e50793a0c1ee90a6187fb48c1374", "forUserId" : "1101bb1856beece495a68523625373ab", "fromUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "toChallengeId" : "613adaef979cad847504735284088546", "read" : false, "sendTime" : "2020-12-17T13:56:35.137+01:00"}
+{"index": {"_index" : "invitations", "_id" : "697ecf764d7a1d8765cd4d40f5277ed6"}}
+{ "id" : "697ecf764d7a1d8765cd4d40f5277ed6", "forUserId" : "eb6b418fb607dee1d1bdaf8a45fb788b", "fromUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "toChallengeId" : "84ebb24fa5720a776e168ba47e506e91", "read" : false, "sendTime" : "2020-12-17T13:56:53.664+01:00"}
+{"index": {"_index" : "invitations", "_id" : "292f330bc5b32f999e92fb39d93b20e0"}}
+{ "id" : "292f330bc5b32f999e92fb39d93b20e0", "forUserId" : "1101bb1856beece495a68523625373ab", "fromUserId" : "9a95cc8ad653d995d57d54ebdcd838c6", "toChallengeId" : "df07566d4372c23aac7fb3d5b22bd306", "read" : false, "sendTime" : "2020-12-17T14:12:59.435+01:00"}
+{"index": {"_index" : "invitations", "_id" : "982e796fd4d3baf8b11fde9d248bc4da"}}
+{ "id" : "982e796fd4d3baf8b11fde9d248bc4da", "forUserId" : "3b4bf00e0862bbacd72df972f84024a8", "fromUserId" : "9a95cc8ad653d995d57d54ebdcd838c6", "toChallengeId" : "df07566d4372c23aac7fb3d5b22bd306", "read" : false, "sendTime" : "2020-12-17T14:13:00.163+01:00"}
+{"index": {"_index" : "invitations", "_id" : "e4d30d35d4b10e592fb35f574d48d92a"}}
+{ "id" : "e4d30d35d4b10e592fb35f574d48d92a", "forUserId" : "1101bb1856beece495a68523625373ab", "fromUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "toChallengeId" : "84ebb24fa5720a776e168ba47e506e91", "read" : true, "sendTime" : "2020-12-17T13:56:54.051+01:00"}
+{"index": {"_index" : "invitations", "_id" : "00c82c9f0ba5a5349e763ac55fda70db"}}
+{ "id" : "00c82c9f0ba5a5349e763ac55fda70db", "forUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "fromUserId" : "1101bb1856beece495a68523625373ab", "toChallengeId" : "b2746d2fa77e08a049c75a291e97ef66", "read" : false, "sendTime" : "2020-12-17T14:01:14.854+01:00"}
+{"index": {"_index" : "invitations", "_id" : "eed3ed79459777f7fccf153f803cfc82"}}
+{ "id" : "eed3ed79459777f7fccf153f803cfc82", "forUserId" : "1101bb1856beece495a68523625373ab", "fromUserId" : "3b4bf00e0862bbacd72df972f84024a8", "toChallengeId" : "b54ee48ce6c0fe8e81b9fde4cd9c53a0", "read" : false, "sendTime" : "2020-12-17T13:00:55.015+01:00"}
+{"index": {"_index" : "invitations", "_id" : "d1d18474c86c6faccacc3876a4881b1b"}}
+{ "id" : "d1d18474c86c6faccacc3876a4881b1b", "forUserId" : "eb6b418fb607dee1d1bdaf8a45fb788b", "fromUserId" : "3b4bf00e0862bbacd72df972f84024a8", "toChallengeId" : "b54ee48ce6c0fe8e81b9fde4cd9c53a0", "read" : false, "sendTime" : "2020-12-17T13:00:55.531+01:00"}
+{"index": {"_index" : "invitations", "_id" : "12108e78a0b2b8dec33d0b4a1c03bf4a"}}
+{ "id" : "12108e78a0b2b8dec33d0b4a1c03bf4a", "forUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "fromUserId" : "2246e6e3bf8f660136cdf1aa97942151", "toChallengeId" : "5e6b54ff0f02beb9c22eea8a4faf0415", "read" : false, "sendTime" : "2020-12-17T12:41:27.497+01:00"}
+{"index": {"_index" : "invitations", "_id" : "ff245d063b7a8a22cbc12c789114216e"}}
+{ "id" : "ff245d063b7a8a22cbc12c789114216e", "forUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "fromUserId" : "2246e6e3bf8f660136cdf1aa97942151", "toChallengeId" : "b54ee48ce6c0fe8e81b9fde4cd9c53a0", "read" : false, "sendTime" : "2020-12-17T13:02:06.638+01:00"}
+{"index": {"_index" : "invitations", "_id" : "471a94f9ef3b48381f541c3bae88d24a"}}
+{ "id" : "471a94f9ef3b48381f541c3bae88d24a", "forUserId" : "1101bb1856beece495a68523625373ab", "fromUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "toChallengeId" : "8e14e98264eb6b3421d0f6f1410daedf", "read" : false, "sendTime" : "2020-12-17T13:17:05.153+01:00"}
+{"index": {"_index" : "invitations", "_id" : "ccaaca5b689cbe86c5b0f51707fd2b95"}}
+{ "id" : "ccaaca5b689cbe86c5b0f51707fd2b95", "forUserId" : "bfb7061498e31fb4a5c550fb7f689aac", "fromUserId" : "2246e6e3bf8f660136cdf1aa97942151", "toChallengeId" : "b54ee48ce6c0fe8e81b9fde4cd9c53a0", "read" : false, "sendTime" : "2020-12-17T13:02:00.366+01:00"}
+{"index": {"_index" : "invitations", "_id" : "81d6d936cbc007319f51212342c79163"}}
+{ "id" : "81d6d936cbc007319f51212342c79163", "forUserId" : "0d9ea771b6a57733dbb9795eafe4b9e3", "fromUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "toChallengeId" : "5e6b54ff0f02beb9c22eea8a4faf0415", "read" : false, "sendTime" : "2020-12-17T13:04:22.162+01:00"}
+{"index": {"_index" : "invitations", "_id" : "24829ce3aeb4147c1945faf15789ad10"}}
+{ "id" : "24829ce3aeb4147c1945faf15789ad10", "forUserId" : "3b4bf00e0862bbacd72df972f84024a8", "fromUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "toChallengeId" : "8e14e98264eb6b3421d0f6f1410daedf", "read" : false, "sendTime" : "2020-12-17T13:17:05.749+01:00"}
+{"index": {"_index" : "invitations", "_id" : "47500956ebcc73dd5e702ab0b551ff08"}}
+{ "id" : "47500956ebcc73dd5e702ab0b551ff08", "forUserId" : "b6a1086cef18dba186c179901634511c", "fromUserId" : "3b4bf00e0862bbacd72df972f84024a8", "toChallengeId" : "b54ee48ce6c0fe8e81b9fde4cd9c53a0", "read" : false, "sendTime" : "2020-12-17T13:00:58.87+01:00"}
+{"index": {"_index" : "invitations", "_id" : "89f38445ac0e02513cb83b081e998ca1"}}
+{ "id" : "89f38445ac0e02513cb83b081e998ca1", "forUserId" : "2246e6e3bf8f660136cdf1aa97942151", "fromUserId" : "1e487f6f4a2a7fef64e32dba04233b21", "toChallengeId" : "b54ee48ce6c0fe8e81b9fde4cd9c53a0", "read" : true, "sendTime" : "2020-12-17T12:32:46.493+01:00"}
+{"index": {"_index" : "invitations", "_id" : "c879acc43a1aaf6c597f3bdc2b96e791"}}
+{ "id" : "c879acc43a1aaf6c597f3bdc2b96e791", "forUserId" : "1e487f6f4a2a7fef64e32dba04233b21", "fromUserId" : "2246e6e3bf8f660136cdf1aa97942151", "toChallengeId" : "df07566d4372c23aac7fb3d5b22bd306", "read" : false, "sendTime" : "2020-12-17T14:13:30.534+01:00"}
+{"index": {"_index" : "invitations", "_id" : "24b163614eb1f27302a1ed069dbf092c"}}
+{ "id" : "24b163614eb1f27302a1ed069dbf092c", "forUserId" : "b6a1086cef18dba186c179901634511c", "fromUserId" : "1101bb1856beece495a68523625373ab", "toChallengeId" : "8e14e98264eb6b3421d0f6f1410daedf", "read" : true, "sendTime" : "2020-12-17T13:59:33.53+01:00"}
+{"index": {"_index" : "invitations", "_id" : "8f3c2099ac42cb8374a4c900adfb69a1"}}
+{ "id" : "8f3c2099ac42cb8374a4c900adfb69a1", "forUserId" : "3b4bf00e0862bbacd72df972f84024a8", "fromUserId" : "b6a1086cef18dba186c179901634511c", "toChallengeId" : "ca49fa8ac71b1f4e714450cd4febe135", "read" : false, "sendTime" : "2020-12-17T14:18:43.871+01:00"}
+{"index": {"_index" : "invitations", "_id" : "c395d6cae7a3878bc480dfc5408fe229"}}
+{ "id" : "c395d6cae7a3878bc480dfc5408fe229", "forUserId" : "0d9ea771b6a57733dbb9795eafe4b9e3", "fromUserId" : "b6a1086cef18dba186c179901634511c", "toChallengeId" : "ca49fa8ac71b1f4e714450cd4febe135", "read" : false, "sendTime" : "2020-12-17T14:18:44.291+01:00"}
+{"index": {"_index" : "invitations", "_id" : "eac92736aaae0a0dd5854e6850928e24"}}
+{ "id" : "eac92736aaae0a0dd5854e6850928e24", "forUserId" : "bfb7061498e31fb4a5c550fb7f689aac", "fromUserId" : "3b4bf00e0862bbacd72df972f84024a8", "toChallengeId" : "84ebb24fa5720a776e168ba47e506e91", "read" : false, "sendTime" : "2020-12-17T14:25:19.817+01:00"}
+{"index": {"_index" : "invitations", "_id" : "ba053b588aa602a59ee856995d433ca9"}}
+{ "id" : "ba053b588aa602a59ee856995d433ca9", "forUserId" : "1101bb1856beece495a68523625373ab", "fromUserId" : "3b4bf00e0862bbacd72df972f84024a8", "toChallengeId" : "ca49fa8ac71b1f4e714450cd4febe135", "read" : false, "sendTime" : "2020-12-17T14:27:42.025+01:00"}
+{"index": {"_index" : "invitations", "_id" : "7a8de069663e3ca1a35b42a196657e8f"}}
+{ "id" : "7a8de069663e3ca1a35b42a196657e8f", "forUserId" : "eb6b418fb607dee1d1bdaf8a45fb788b", "fromUserId" : "3b4bf00e0862bbacd72df972f84024a8", "toChallengeId" : "ca49fa8ac71b1f4e714450cd4febe135", "read" : false, "sendTime" : "2020-12-17T14:27:42.674+01:00"}
+{"index": {"_index" : "invitations", "_id" : "8e4ed5a25fc7144549baf1df514dcd34"}}
+{ "id" : "8e4ed5a25fc7144549baf1df514dcd34", "forUserId" : "3b4bf00e0862bbacd72df972f84024a8", "fromUserId" : "d860aa6e54d7e5f3d05ca00e27889b48", "toChallengeId" : "613adaef979cad847504735284088546", "read" : true, "sendTime" : "2020-12-17T13:56:32.875+01:00"}

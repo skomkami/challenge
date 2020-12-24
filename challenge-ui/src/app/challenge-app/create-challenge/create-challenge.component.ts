@@ -82,6 +82,9 @@ export class CreateChallengeComponent implements OnInit {
       const date = new Date(finishesOn);
       this.challenge.finishesOn = date.toISOString();
     });
+    this.allowDecimal.valueChanges.subscribe((allowDecimal) => {
+      this.challenge.measure.allowDecimal = allowDecimal;
+    });
     this.valueOrder.valueChanges.subscribe((valueOrder) => {
       this.challenge.measure.valueOrder = valueOrder;
     });
