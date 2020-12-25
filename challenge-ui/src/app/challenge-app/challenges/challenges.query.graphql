@@ -1,5 +1,9 @@
 query allChallenges($size: Int, $offset: Int, $nameFilter: String) {
-  allChallenges(size: $size, offset: $offset, filter: { name: $nameFilter }) {
+  allChallenges(
+    size: $size
+    offset: $offset
+    filter: { name: { regex: $nameFilter } }
+  ) {
     total
     hasNextPage
     results {

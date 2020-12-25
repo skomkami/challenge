@@ -4,7 +4,11 @@ query allUsers(
   $offset: Int
   $nameFilter: String
 ) {
-  allUsers(size: $size, offset: $offset, filter: { name: $nameFilter }) {
+  allUsers(
+    size: $size
+    offset: $offset
+    filter: { name: { regex: $nameFilter } }
+  ) {
     total
     results {
       id

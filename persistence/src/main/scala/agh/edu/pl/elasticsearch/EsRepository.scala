@@ -1,7 +1,7 @@
 package agh.edu.pl.elasticsearch
 
 import agh.edu.pl.error.DomainError
-import agh.edu.pl.filters.{ FieldFilter, Filter, FilterEq, StringQuery }
+import agh.edu.pl.filters.{ FieldFilter, Filter, FilterEq }
 import agh.edu.pl.models.{ plural, Entity, EntityId }
 import agh.edu.pl.repository.{ Repository, SearchResponse }
 import agh.edu.pl.sort.Sort
@@ -69,8 +69,8 @@ case class EsRepository(
     qMusts += matchAllQuery()
 
     queryFilter.getOrElse(Nil).collect {
-      case StringQuery(field, value) =>
-        qMusts += RegexQuery(field, value)
+      case FieldFilter(field, value) if value.regex.isDefined =>
+        qMusts += RegexQuery(field, value.regex.get)
     }
 
     val qFilters = queryFilter.getOrElse(Nil).collect {

@@ -7,9 +7,8 @@ case class FilterConds(
     eq: Option[String] = None,
     neq: Option[String] = None,
     lt: Option[String] = None,
-    gt: Option[String] = None
+    gt: Option[String] = None,
+    regex: Option[String] = None
   )
 
 case class FieldFilter(field: String, value: FilterConds) extends Filter
-
-case class StringQuery(field: String, value: String) extends Filter

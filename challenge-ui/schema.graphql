@@ -20,11 +20,15 @@ type Challenge {
 
 input ChallengeFilter {
   id: ChallengeIdConditions
-  name: String
-  description: String
+  name: StringConditions
+  description: StringConditions
   createdById: UserIdConditions
   createdOn: OffsetDateTimeConditions
   finishesOn: OffsetDateTimeConditions
+  measure_unitName: StringConditions
+  measure_allowDecimal: BooleanConditions
+  measure_valueSummarization: ValueSummarizationConditions
+  measure_valueOrder: ValueOrderConditions
 }
 
 # The `String` scalar type represents textual data, represented as UTF-8 character
@@ -44,6 +48,10 @@ input ChallengeSort {
   createdById: SortOrder
   createdOn: SortOrder
   finishesOn: SortOrder
+  measure_unitName: SortOrder
+  measure_allowDecimal: SortOrder
+  measure_valueSummarization: SortOrder
+  measure_valueOrder: SortOrder
 }
 
 type ChallengesResponse {
@@ -74,6 +82,13 @@ input CreateUser {
 # sequences. The String type is most often used by GraphQL to represent free-form
 # human-readable text.
 scalar Email
+
+input FloatConditions {
+  eq: Float
+  neq: Float
+  gt: Float
+  lt: Float
+}
 
 enum Gender {
   Male
@@ -225,6 +240,12 @@ enum SortOrder {
   Asc
 }
 
+input StringConditions {
+  regex: String
+  eq: String
+  neq: String
+}
+
 type User {
   id: UserId!
   name: String!
@@ -251,6 +272,8 @@ input UserChallengeActivityFilter {
   id: UserChallengeActivityIdConditions
   userId: UserIdConditions
   challengeId: ChallengeIdConditions
+  value_integerValue: IntConditions
+  value_decimalValue: FloatConditions
   date: OffsetDateTimeConditions
 }
 
@@ -268,6 +291,8 @@ input UserChallengeActivitySort {
   id: SortOrder
   userId: SortOrder
   challengeId: SortOrder
+  value_integerValue: SortOrder
+  value_decimalValue: SortOrder
   date: SortOrder
 }
 
@@ -292,6 +317,8 @@ input UserChallengeSummaryFilter {
   id: UserChallengeSummaryIdConditions
   userId: UserIdConditions
   challengeId: ChallengeIdConditions
+  summaryValue_integerValue: IntConditions
+  summaryValue_decimalValue: FloatConditions
   position: IntConditions
   lastActive: OffsetDateTimeConditions
 }
@@ -310,6 +337,8 @@ input UserChallengeSummarySort {
   id: SortOrder
   userId: SortOrder
   challengeId: SortOrder
+  summaryValue_integerValue: SortOrder
+  summaryValue_decimalValue: SortOrder
   position: SortOrder
   lastActive: SortOrder
 }
@@ -322,11 +351,10 @@ type UserChallengeSummarysResponse {
 
 input UserFilter {
   id: UserIdConditions
-  name: String
-  email: String
+  name: StringConditions
+  email: StringConditions
   gender: GenderConditions
   createdAt: OffsetDateTimeConditions
-  participatesInChallenge: BooleanConditions
 }
 
 # The `String` scalar type represents textual data, represented as UTF-8 character
@@ -343,8 +371,8 @@ input UserSort {
   id: SortOrder
   name: SortOrder
   email: SortOrder
+  gender: SortOrder
   createdAt: SortOrder
-  participatesInChallenge: SortOrder
 }
 
 type UsersResponse {
@@ -358,8 +386,18 @@ enum ValueOrder {
   SmallerWins
 }
 
+input ValueOrderConditions {
+  eq: ValueOrder
+  neq: ValueOrder
+}
+
 enum ValueSummarization {
   Best
   Summarize
+}
+
+input ValueSummarizationConditions {
+  eq: ValueSummarization
+  neq: ValueSummarization
 }
 
