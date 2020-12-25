@@ -26,6 +26,7 @@ case object EntityFilter {
         val valuesMap = mapBuilder.asObject.map(_.toMap).getOrElse(Map.empty)
         val filters = valuesMap.map {
           case (fieldName, conditions) =>
+            val esFieldPath = fieldName.replaceAll("_", ".")
             val declaredFields = tag.runtimeClass.getDeclaredFields
             if (
               declaredFields
@@ -37,20 +38,24 @@ case object EntityFilter {
             else {
               val map = conditions.asObject.map(_.toMap).getOrElse(Map.empty)
               val emptyConds = FilterConds()
+
+              def fromJsonToString(value: Json): Option[String] =
+                value.asString.orElse(Some(value.toString))
+
               val filterConds = map.foldLeft(emptyConds) { (condsAcc, entry) =>
                 entry match {
                   case ("eq", value) =>
-                    condsAcc.copy(eq = value.asString)
+                    condsAcc.copy(eq = fromJsonToString(value))
                   case ("neq", value) =>
-                    condsAcc.copy(neq = value.asString)
+                    condsAcc.copy(neq = fromJsonToString(value))
                   case ("lt", value) =>
-                    condsAcc.copy(lt = value.asString)
+                    condsAcc.copy(lt = fromJsonToString(value))
                   case ("gt", value) =>
-                    condsAcc.copy(gt = value.asString)
+                    condsAcc.copy(gt = fromJsonToString(value))
                   case _ => condsAcc
                 }
               }
-              FieldFilter(fieldName, filterConds)
+              FieldFilter(esFieldPath, filterConds)
             }
         }
         EntityFilter[T](filters.toList)
@@ -92,13 +97,12 @@ case object FilterBuilder {
 
   def filterType[T](
       graphqlType: ObjectType[_, T]
+    )(implicit
+      classTag: ClassTag[T]
     ): InputObjectType[EntityFilter[T]] = {
+
     val fields =
-      graphqlType
-        .fields
-        .map { field =>
-          field.name -> extractFromOptionType(field.fieldType)
-        }
+      extractBaseTypes(graphqlType)
         .collect {
           case (name, fieldDef @ ScalarAlias(alias, _, _))
               if DomainRegistry

@@ -9,6 +9,7 @@ import sangria.marshalling.{
 import sangria.schema.{ ObjectType, _ }
 
 import scala.collection.immutable.ListMap
+import scala.reflect.ClassTag
 
 case class EntitySort[T](sorts: List[Sort] = Nil)
 
@@ -21,7 +22,10 @@ case object EntitySort {
       override def fromResult(node: marshaller.Node): EntitySort[T] = {
         val sorts = node.asInstanceOf[ListMap[_, Option[_]]].collect {
           case (name, Some(value)) =>
-            Sort(name.toString, SortOrder.namesToValuesMap(value.toString))
+            Sort(
+              name.toString.replaceAll("_", "."),
+              SortOrder.namesToValuesMap(value.toString)
+            )
         }
         EntitySort[T](sorts.toList)
       }
@@ -31,19 +35,19 @@ case object EntitySort {
 case object SortBuilder {
   def sortType[T](
       graphqlType: ObjectType[_, T]
+    )(implicit
+      tag: ClassTag[T]
     ): InputObjectType[EntitySort[T]] = {
-    val fields = graphqlType
-      .fields
-      .map { field =>
-        field.name -> extractFromOptionType(field.fieldType)
-      }
-      .collect {
-        case (name, ScalarType(_, _, _, _, _, _, _, _, _)) => name
-        case (name, ScalarAlias(_, _, _))                  => name
-      }
-      .map { sortFieldName =>
-        InputField(sortFieldName, OptionInputType(SortOrder.EnumType))
-      }
+    val fields =
+      extractBaseTypes(graphqlType)
+        .collect {
+          case (name, ScalarType(_, _, _, _, _, _, _, _, _)) => name
+          case (name, ScalarAlias(_, _, _))                  => name
+          case (name, EnumType(_, _, _, _, _))               => name
+        }
+        .map { sortFieldName =>
+          InputField(sortFieldName, OptionInputType(SortOrder.EnumType))
+        }
 
     InputObjectType[EntitySort[T]](
       name = s"${graphqlType.name}Sort",

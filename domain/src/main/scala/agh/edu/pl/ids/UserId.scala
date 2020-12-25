@@ -9,4 +9,7 @@ object UserId extends EntityIdSettings[UserId] {
 
   override type PK = DeterministicId
   case class DeterministicId(email: Email)
+
+  def fromEmail(email: String): UserId =
+    generateId(DeterministicId(Email.fromString(email)))
 }

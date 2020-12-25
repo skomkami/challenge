@@ -5,6 +5,7 @@ import agh.edu.pl.exception.Handler
 import agh.edu.pl.repository.Repository
 import agh.edu.pl.GraphQLSchema
 import agh.edu.pl.auth.AuthService
+import agh.edu.pl.ids.UserId
 import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
@@ -75,11 +76,13 @@ case class GraphQLServer(repository: Repository, authService: AuthService) {
       case None => GraphQLSchema.SchemaDefinition
     }
 
+    val userId: Option[UserId] = token.map(_.getEmail).map(UserId.fromEmail)
+
     Executor
       .execute(
         schema = schema,
         queryAst = query,
-        userContext = Context(repository, ec, authService),
+        userContext = Context(repository, ec, authService, userId),
         variables = vars,
         operationName = operation,
         exceptionHandler = Handler.exceptionHandler
