@@ -5,7 +5,7 @@ import agh.edu.pl.entities.{ Challenge, UserChallengeSummary }
 import agh.edu.pl.filters.FilterEq
 import agh.edu.pl.ids.ChallengeId
 import agh.edu.pl.measures.Measure
-import agh.edu.pl.models.EntityId
+import agh.edu.pl.entities.EntityId
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.{ Failure, Success, Try }

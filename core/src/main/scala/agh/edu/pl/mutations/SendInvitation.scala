@@ -6,7 +6,7 @@ import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, Invitation, User }
 import agh.edu.pl.ids.{ ChallengeId, InvitationId, UserId }
-import agh.edu.pl.models.EntityIdSettings
+import agh.edu.pl.entities.EntityIdSettings
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 

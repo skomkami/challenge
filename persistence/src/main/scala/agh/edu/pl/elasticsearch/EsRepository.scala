@@ -2,7 +2,7 @@ package agh.edu.pl.elasticsearch
 
 import agh.edu.pl.error.DomainError
 import agh.edu.pl.filters.{ FieldFilter, Filter, FilterEq }
-import agh.edu.pl.models.{ plural, Entity, EntityId }
+import agh.edu.pl.entities.{ plural, Entity, EntityId }
 import agh.edu.pl.repository.{ Repository, SearchResponse }
 import agh.edu.pl.sort.Sort
 import com.sksamuel.elastic4s.ElasticClient

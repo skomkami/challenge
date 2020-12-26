@@ -1,6 +1,6 @@
 package agh.edu.pl.ids
 
-import agh.edu.pl.models.{ EntityId, EntityIdSettings }
+import agh.edu.pl.entities.{ EntityId, EntityIdSettings }
 
 case class ChallengeId(override val value: String) extends EntityId
 

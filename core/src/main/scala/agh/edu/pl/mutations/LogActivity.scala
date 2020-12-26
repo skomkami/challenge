@@ -18,7 +18,7 @@ import agh.edu.pl.ids.{
   UserId
 }
 import agh.edu.pl.measures.{ Measure, MeasureValue }
-import agh.edu.pl.models.EntityIdSettings
+import agh.edu.pl.entities.EntityIdSettings
 import agh.edu.pl.repository.Repository
 import com.softwaremill.quicklens._
 import sangria.macros.derive.deriveInputObjectType

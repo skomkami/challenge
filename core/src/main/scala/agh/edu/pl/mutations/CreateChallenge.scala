@@ -9,7 +9,7 @@ import agh.edu.pl.ids.{ ChallengeId, UserId }
 import agh.edu.pl.measures.Measure
 import agh.edu.pl.measures.ValueOrder.SmallerWins
 import agh.edu.pl.measures.ValueSummarization.Summarize
-import agh.edu.pl.models.EntityIdSettings
+import agh.edu.pl.entities.EntityIdSettings
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 

@@ -1,7 +1,7 @@
 package agh.edu.pl.repository
 
 import agh.edu.pl.filters.Filter
-import agh.edu.pl.models.{ Entity, EntityId }
+import agh.edu.pl.entities.{ Entity, EntityId }
 import agh.edu.pl.sort.Sort
 import io.circe.{ Decoder, Encoder }
 

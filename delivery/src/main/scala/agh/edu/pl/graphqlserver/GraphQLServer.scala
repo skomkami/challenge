@@ -1,11 +1,11 @@
 package agh.edu.pl.graphqlserver
 
 import agh.edu.pl.context.Context
-import agh.edu.pl.exception.Handler
+import agh.edu.pl.exceptionhandler.Handler
 import agh.edu.pl.repository.Repository
-import agh.edu.pl.GraphQLSchema
-import agh.edu.pl.auth.AuthService
+import agh.edu.pl.authservice.AuthService
 import agh.edu.pl.ids.UserId
+import agh.edu.pl.schema.GraphQLSchema
 import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._

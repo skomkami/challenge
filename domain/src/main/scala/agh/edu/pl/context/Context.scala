@@ -1,6 +1,6 @@
 package agh.edu.pl.context
 
-import agh.edu.pl.auth.AuthService
+import agh.edu.pl.authservice.AuthService
 import agh.edu.pl.ids.UserId
 import agh.edu.pl.repository.Repository
 

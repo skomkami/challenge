@@ -4,7 +4,7 @@ import agh.edu.pl.commands.UpdateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.Invitation
 import agh.edu.pl.ids.InvitationId
-import agh.edu.pl.models.EntityIdSettings
+import agh.edu.pl.entities.EntityIdSettings
 import sangria.schema.{ Argument, InputObjectType }
 import sangria.macros.derive.deriveInputObjectType
 

@@ -1,9 +1,9 @@
 package agh.edu.pl.graphql
 
-import agh.edu.pl.GraphQLSchema.{ Offset, Size }
+import agh.edu.pl.schema.GraphQLSchema.{ Offset, Size }
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
-import agh.edu.pl.models.{ plural, Entity, EntityId }
+import agh.edu.pl.entities.{ plural, Entity, EntityId }
 import agh.edu.pl.mutations.EntityCommandSettings
 import agh.edu.pl.queryparams.{
   EntityFilter,

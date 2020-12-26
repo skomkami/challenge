@@ -1,11 +1,11 @@
 package agh.edu.pl.ids
 
-import agh.edu.pl.models.{ EntityId, EntityIdSettings }
+import agh.edu.pl.entities.{ EntityId, EntityIdSettings }
 
 case class InvitationId(override val value: String) extends EntityId
 
 object InvitationId extends EntityIdSettings[InvitationId] {
-  override implicit def fromString(value: String): InvitationId = InvitationId(
+  override def fromString(value: String): InvitationId = InvitationId(
     value
   )
 

@@ -6,7 +6,6 @@ import java.security.{ KeyFactory, PublicKey }
 import java.util.Base64
 
 import akka.actor.ActorSystem
-import akka.event.LoggingAdapter
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.OAuth2BearerToken
@@ -32,7 +31,6 @@ trait AuthorizationHandler {
   implicit def executionContext: ExecutionContext
   implicit def materializer: Materializer
   implicit def system: ActorSystem
-  lazy val log: LoggingAdapter = system.log
 
   def authorize: Directive1[Option[AccessToken]] =
     extractCredentials.flatMap {
@@ -41,11 +39,11 @@ trait AuthorizationHandler {
           case Success(Some(t)) =>
             provide(Some(t))
           case _ =>
-            log.warning(s"token $token is not valid")
+            scribe.warn(s"token $token is not valid")
             reject(AuthorizationFailedRejection)
         }
       case _ =>
-        log.warning("no token present in request")
+        scribe.warn("no token present in request")
         provide(None)
     }
 
@@ -60,7 +58,7 @@ trait AuthorizationHandler {
         val token = tokenVerifier.publicKey(publicKey).verify().getToken
         Some(token)
       case None =>
-        log.warning(
+        scribe.warn(
           s"no public key found for id ${tokenVerifier.getHeader.getKeyId}"
         )
         None

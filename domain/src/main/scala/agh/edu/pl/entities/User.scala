@@ -3,7 +3,7 @@ package agh.edu.pl.entities
 import java.time.OffsetDateTime
 
 import agh.edu.pl.ids.UserId
-import agh.edu.pl.models.{ Email, Entity, Gender, JsonSerializable }
+import agh.edu.pl.models.{ Email, Gender }
 
 case class User(
     override val id: UserId,

@@ -4,7 +4,6 @@ import java.time.OffsetDateTime
 
 import agh.edu.pl.ids.{ ChallengeId, UserChallengeActivityId, UserId }
 import agh.edu.pl.measures.MeasureValue
-import agh.edu.pl.models.{ Entity, JsonSerializable }
 
 final case class UserChallengeActivity(
     override val id: UserChallengeActivityId,

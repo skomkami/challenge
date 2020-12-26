@@ -1,13 +1,14 @@
 package agh.edu.pl.models
 
+import agh.edu.pl.entities.JsonSerializable
 import agh.edu.pl.error.DomainError
 import eu.timepit.refined._
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.string._
+import io.circe.refined._
 import io.circe.{ Decoder, Encoder }
 import sangria.schema.ScalarAlias
 import sangria.validation.Violation
-import io.circe.refined._
 
 class Email(val address: String) {
   override def toString: String = address

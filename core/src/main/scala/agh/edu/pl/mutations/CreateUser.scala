@@ -2,13 +2,14 @@ package agh.edu.pl.mutations
 
 import java.time.OffsetDateTime
 
-import agh.edu.pl.auth.AuthServiceError
+import agh.edu.pl.authservice.AuthServiceError
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities
 import agh.edu.pl.entities.User
 import agh.edu.pl.ids.UserId
-import agh.edu.pl.models.{ Email, EntityIdSettings, Gender }
+import agh.edu.pl.entities.EntityIdSettings
+import agh.edu.pl.models.{ Email, Gender }
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 

@@ -1,7 +1,7 @@
 package agh.edu.pl.measures
 
 import agh.edu.pl.context.Context
-import agh.edu.pl.models.JsonSerializable
+import agh.edu.pl.entities.JsonSerializable
 import sangria.macros.derive.{
   deriveInputObjectType,
   deriveObjectType,

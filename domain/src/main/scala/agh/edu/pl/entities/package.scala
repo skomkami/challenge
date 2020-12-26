@@ -10,13 +10,7 @@ import shapeless.Lazy
 
 import scala.reflect.ClassTag
 
-package object models {
-
-  abstract class Identifiable[Self](val id: String)
-      extends Product
-         with Serializable {
-    def withId(newId: String): Self
-  }
+package object entities {
 
   abstract class Entity[Id <: EntityId](val id: Id) {
     type IdType <: EntityId
@@ -40,7 +34,7 @@ package object models {
   abstract class EntityIdSettings[Id <: EntityId](implicit tag: ClassTag[Id]) {
     type PK
 
-    implicit def fromString(value: String): Id
+    def fromString(value: String): Id
 
     implicit val decoder: Decoder[Id] =
       Decoder[String].map(fromString)

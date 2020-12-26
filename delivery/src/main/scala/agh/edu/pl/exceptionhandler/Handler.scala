@@ -1,4 +1,4 @@
-package agh.edu.pl.exception
+package agh.edu.pl.exceptionhandler
 
 import agh.edu.pl.error.DomainError
 import sangria.execution.{ ExceptionHandler, HandledException }

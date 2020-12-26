@@ -5,7 +5,6 @@ import java.time.OffsetDateTime
 import agh.edu.pl.error.DomainError
 import agh.edu.pl.ids.{ ChallengeId, UserId }
 import agh.edu.pl.measures.Measure
-import agh.edu.pl.models._
 
 final case class Challenge(
     override val id: ChallengeId,

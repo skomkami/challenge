@@ -4,7 +4,7 @@ import java.time.OffsetDateTime
 
 import agh.edu.pl.commands.Command
 import agh.edu.pl.graphql.GraphQLOffsetDateTime
-import agh.edu.pl.models.{ Entity, EntityId, EntityIdSettings }
+import agh.edu.pl.entities.{ Entity, EntityId, EntityIdSettings }
 import io.circe.Decoder
 import io.circe.generic.decoding.DerivedDecoder
 import io.circe.generic.semiauto.deriveDecoder

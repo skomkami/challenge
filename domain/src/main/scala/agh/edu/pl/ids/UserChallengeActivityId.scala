@@ -2,13 +2,13 @@ package agh.edu.pl.ids
 
 import java.time.OffsetDateTime
 
-import agh.edu.pl.models.{ EntityId, EntityIdSettings }
+import agh.edu.pl.entities.{ EntityId, EntityIdSettings }
 
 case class UserChallengeActivityId(override val value: String) extends EntityId
 
 case object UserChallengeActivityId
     extends EntityIdSettings[UserChallengeActivityId] {
-  override implicit def fromString(value: String): UserChallengeActivityId =
+  override def fromString(value: String): UserChallengeActivityId =
     UserChallengeActivityId(
       value
     )

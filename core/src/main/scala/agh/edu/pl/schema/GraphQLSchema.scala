@@ -1,10 +1,10 @@
-package agh.edu.pl
+package agh.edu.pl.schema
 
-import agh.edu.pl.context.Context
+import sangria.schema._
 import agh.edu.pl.entities._
 import agh.edu.pl.graphql._
+import agh.edu.pl.context.Context
 import com.softwaremill.quicklens._
-import sangria.schema.{ ObjectType, _ }
 
 object GraphQLSchema {
 

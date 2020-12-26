@@ -1,6 +1,6 @@
 package agh.edu.pl.graphql
 
-import agh.edu.pl.GraphQLSchema.{ ChallengeType, UserType }
+import agh.edu.pl.schema.GraphQLSchema.{ ChallengeType, UserType }
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, User, UserChallengeActivity }
 import agh.edu.pl.ids.UserChallengeActivityId

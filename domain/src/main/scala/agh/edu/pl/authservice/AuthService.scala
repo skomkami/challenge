@@ -1,4 +1,4 @@
-package agh.edu.pl.auth
+package agh.edu.pl.authservice
 
 import java.util.UUID
 

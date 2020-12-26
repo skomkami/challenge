@@ -1,6 +1,6 @@
 package agh.edu.pl.graphql
 
-import agh.edu.pl.GraphQLSchema.{
+import agh.edu.pl.schema.GraphQLSchema.{
   GraphQLUserChallengeSummary,
   Offset,
   Size,

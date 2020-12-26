@@ -3,7 +3,7 @@ package agh.edu.pl.measures
 import agh.edu.pl.context.Context
 import agh.edu.pl.measures.ValueOrder.{ BiggerWins, SmallerWins }
 import agh.edu.pl.measures.ValueSummarization.{ Best, Summarize }
-import agh.edu.pl.models.JsonSerializable
+import agh.edu.pl.entities.JsonSerializable
 import cats.implicits._
 import sangria.macros.derive.{
   deriveInputObjectType,

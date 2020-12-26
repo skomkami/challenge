@@ -2,7 +2,7 @@ package agh.edu.pl.security
 
 import java.util.UUID
 
-import agh.edu.pl.auth.AuthService
+import agh.edu.pl.authservice.AuthService
 import agh.edu.pl.entities.{ User => DomainUser }
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
