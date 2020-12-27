@@ -4,9 +4,9 @@ import java.time.OffsetDateTime
 
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
-import agh.edu.pl.entities.{ Challenge, Invitation, User }
+import agh.edu.pl.entities.{ Challenge, EntityIdSettings, Invitation, User }
 import agh.edu.pl.ids.{ ChallengeId, InvitationId, UserId }
-import agh.edu.pl.entities.EntityIdSettings
+import agh.edu.pl.models.Accessibility.Public
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
@@ -38,6 +38,7 @@ case class SendInvitation(
       _ <- ctx.repository.getById[User](forUserId)
       _ <- ctx.repository.getById[User](fromUserId)
       challenge <- ctx.repository.getById[Challenge](toChallengeId)
+      _ <- canSendInvitation(challenge, fromUserId)
       created <- ctx.repository.create(toEntity(newId))
     } yield challenge.checkAvailabilityAndReturn(created)
   }
@@ -55,6 +56,17 @@ case class SendInvitation(
         toChallengeId
       )
     )
+
+  private def canSendInvitation(
+      challenge: Challenge,
+      userId: UserId
+    ): Future[Boolean] =
+    if (challenge.accessibility == Public || challenge.createdById == userId) {
+      Future.successful(true)
+    }
+    else {
+      Future.failed(throw NoRightsToSendInvitation(challenge.name))
+    }
 
   override def id: Option[InvitationId] = None
 }

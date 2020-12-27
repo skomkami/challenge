@@ -38,7 +38,9 @@
   </ng-container>
   <ng-container matColumnDef="Created by">
     <mat-header-cell *matHeaderCellDef>Created by</mat-header-cell>
-    <mat-cell *matCellDef="let challenge">{{ challenge.createdBy }}</mat-cell>
+    <mat-cell *matCellDef="let challenge">{{
+      challenge.createdBy.name
+    }}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="Leader">
     <mat-header-cell *matHeaderCellDef>Leader</mat-header-cell>

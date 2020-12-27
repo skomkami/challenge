@@ -57,4 +57,4 @@
 {"index": {"_index" : "userchallengesummaries", "_id" : "07d1d554d6aa10800a6ca64eb1d9edb1"}}
 {"id" : "07d1d554d6aa10800a6ca64eb1d9edb1", "userId" : "3b4bf00e0862bbacd72df972f84024a8", "challengeId" : "8dfee65f1d97e6efd06f5d86cfe04c0c", "summaryValue" : {"integerValue" : 47, "decimalValue" : null }, "position" : 1, "lastActive" : "2020-12-17T14:31:34.727+01:00"}
 {"index": {"_index" : "userchallengesummaries", "_id" : "09fe3a4296fc8e283178fdb301572fdb"}}
-{"id" : "09fe3a4296fc8e283178fdb301572fdb", "userId" : "3b4bf00e0862bbacd72df972f84024a8", "challengeId" : "84ebb24fa5720a776e168ba47e506e91", "summaryValue" : {"integerValue" : 43, "decimalValue" : null }, "position" : 1, "lastActive" : "2020-12-17T14:32:02.804+01:00
+{"id" : "09fe3a4296fc8e283178fdb301572fdb", "userId" : "3b4bf00e0862bbacd72df972f84024a8", "challengeId" : "84ebb24fa5720a776e168ba47e506e91", "summaryValue" : {"integerValue" : 43, "decimalValue" : null }, "position" : 1, "lastActive" : "2020-12-17T14:32:02.804+01:00"}

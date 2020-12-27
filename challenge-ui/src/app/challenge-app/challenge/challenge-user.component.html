@@ -49,7 +49,7 @@
   </form>
 
   <button
-    *ngIf="!participatesInChallenge"
+    *ngIf="!participatesInChallenge && challenge.userHasAccess"
     type="submit"
     [ngClass]="{ loading: joiningChallenge }"
     class="ui blue button"
@@ -58,9 +58,13 @@
     Join challenge
   </button>
 
+  <div class="ui warning message" *ngIf="!challenge.userHasAccess">
+    <p>This challenge is private - only users with Invitation can join</p>
+  </div>
+
   <div *ngIf="errorMessage">
     <p class="error-span message">
-      Something went wrong while creating account. Error message:
+      Something went wrong while joining challenge. Error message:
     </p>
     <p class="error-span message">{{ errorMessage }}</p>
   </div>

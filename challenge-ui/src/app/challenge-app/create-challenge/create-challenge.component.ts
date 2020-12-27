@@ -1,3 +1,4 @@
+import { Accessibility } from './../activities/activities.query.graphql-gen';
 import {
   ValueOrder,
   ValueSummarization,
@@ -36,10 +37,12 @@ export class CreateChallengeComponent implements OnInit {
   finishesOn: AbstractControl;
   valueOrder: AbstractControl;
   valueSummarization: AbstractControl;
+  accessibility: AbstractControl;
 
   keys = Object.keys;
   valueOrderSymbols = ValueOrder;
   valueSummarizationSymbols = ValueSummarization;
+  accessibilitySymbols = Accessibility;
 
   constructor(
     private userService: UserService,
@@ -60,6 +63,7 @@ export class CreateChallengeComponent implements OnInit {
         this.challenge.measure.valueSummarization,
         Validators.required,
       ],
+      accessibility: [this.challenge.accessibility, Validators.required],
     });
     this.name = this.form.controls['name'];
     this.finishesOn = this.form.controls['finishesOn'];
@@ -68,6 +72,7 @@ export class CreateChallengeComponent implements OnInit {
     this.allowDecimal = this.form.controls['allowDecimal'];
     this.valueOrder = this.form.controls['valueOrder'];
     this.valueSummarization = this.form.controls['valueSummarization'];
+    this.accessibility = this.form.controls['accessibility'];
 
     this.name.valueChanges.subscribe((name) => {
       this.challenge.name = name;
@@ -91,23 +96,27 @@ export class CreateChallengeComponent implements OnInit {
     this.valueSummarization.valueChanges.subscribe((valueSummarization) => {
       this.challenge.measure.valueSummarization = valueSummarization;
     });
+    this.accessibility.valueChanges.subscribe((accessibility) => {
+      this.challenge.accessibility = accessibility;
+    });
   }
 
   ngOnInit(): void {
     this.userService.getCurrentUser().subscribe((user) => {
       this.user = user;
-      this.challenge.createdBy = user.id;
+      this.challenge.createdById = user.id;
     });
   }
 
   reset(): void {
     this.challenge = new Challenge({
       finishesOn: new Date(),
-      createdBy: this.user && this.user.id,
+      createdById: this.user && this.user.id,
       measure: new Measure({
         valueOrder: ValueOrder.BiggerWins,
         valueSummarization: ValueSummarization.Summarize,
       }),
+      accessibility: Accessibility.Public,
     });
   }
 

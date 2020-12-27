@@ -15,7 +15,12 @@ import io.circe.optics.JsonPath._
 import io.circe.{ Json, JsonObject }
 import org.keycloak.representations.AccessToken
 import sangria.ast.Document
-import sangria.execution.{ ErrorWithResolver, Executor, QueryAnalysisError }
+import sangria.execution.{
+  ErrorWithResolver,
+  Executor,
+  QueryAnalysisError,
+  QueryReducer
+}
 import sangria.marshalling.circe.{
   CirceInputUnmarshaller,
   CirceResultMarshaller
@@ -85,7 +90,14 @@ case class GraphQLServer(repository: Repository, authService: AuthService) {
         userContext = Context(repository, ec, authService, userId),
         variables = vars,
         operationName = operation,
-        exceptionHandler = Handler.exceptionHandler
+        exceptionHandler = Handler.exceptionHandler,
+        queryReducers = List(
+          QueryReducer.rejectMaxDepth[Context](GraphQLSchema.maxQueryDepth),
+          QueryReducer.rejectComplexQueries[Context](
+            GraphQLSchema.maxQueryComplexity,
+            (_, _) => TooComplexQuery()
+          )
+        )
       )
       .map(OK -> _)
       .recover {

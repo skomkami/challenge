@@ -10,6 +10,7 @@ import agh.edu.pl.measures.Measure
 import agh.edu.pl.measures.ValueOrder.SmallerWins
 import agh.edu.pl.measures.ValueSummarization.Summarize
 import agh.edu.pl.entities.EntityIdSettings
+import agh.edu.pl.models.Accessibility
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
@@ -19,10 +20,11 @@ case class CreateChallenge(
     override val id: Option[ChallengeId],
     name: String,
     description: String,
-    createdBy: UserId,
+    createdById: UserId,
     createdOn: OffsetDateTime = OffsetDateTime.now,
     finishesOn: OffsetDateTime,
-    measure: Measure
+    measure: Measure,
+    accessibility: Accessibility
   ) extends CreateEntity[Challenge] {
 
   override def toEntity(newId: ChallengeId): Challenge =
@@ -30,10 +32,11 @@ case class CreateChallenge(
       id = newId,
       name = name,
       description = description,
-      createdById = createdBy,
+      createdById = createdById,
       createdOn = createdOn,
       finishesOn = finishesOn,
-      measure = measure
+      measure = measure,
+      accessibility = accessibility
     )
 
   override def createNewEntity(
@@ -47,7 +50,7 @@ case class CreateChallenge(
     ) throw UnsupportedChallengeType
 
     for {
-      _ <- ctx.repository.getById[User](createdBy)
+      _ <- ctx.repository.getById[User](createdById)
       created <- ctx.repository.create[Challenge](toEntity(newId))
     } yield created
   }

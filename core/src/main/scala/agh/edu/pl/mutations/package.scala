@@ -14,4 +14,8 @@ package object mutations {
         "Unsupported challenge type for SmallerWins and Summarization"
       )
 
+  case class NoRightsToSendInvitation(challenge: String)
+      extends DomainError(
+        s"Challenge $challenge is Private, only creatator can send invitations."
+      )
 }

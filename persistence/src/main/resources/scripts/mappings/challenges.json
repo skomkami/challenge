@@ -33,7 +33,10 @@
         }
       },
       "name" : {
-          "type" : "keyword"
+        "type" : "keyword"
+      },
+      "accessibility" : {
+        "type":  "keyword"
       }
     }
   }

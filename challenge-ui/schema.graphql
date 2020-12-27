@@ -1,3 +1,13 @@
+enum Accessibility {
+  Public
+  Private
+}
+
+input AccessibilityConditions {
+  eq: Accessibility
+  neq: Accessibility
+}
+
 input BooleanConditions {
   eq: Boolean
   neq: Boolean
@@ -13,9 +23,11 @@ type Challenge {
   createdOn: OffsetDateTime!
   finishesOn: OffsetDateTime!
   measure: Measure!
+  accessibility: Accessibility!
   createdBy: User!
   summaries(size: Int, offset: Int, orderBy: UserChallengeSummarySort): UserChallengeSummarysResponse!
   leader: User
+  userHasAccess(userId: UserId!): Boolean!
 }
 
 input ChallengeFilter {
@@ -29,6 +41,7 @@ input ChallengeFilter {
   measure_allowDecimal: BooleanConditions
   measure_valueSummarization: ValueSummarizationConditions
   measure_valueOrder: ValueOrderConditions
+  accessibility: AccessibilityConditions
 }
 
 # The `String` scalar type represents textual data, represented as UTF-8 character
@@ -52,6 +65,7 @@ input ChallengeSort {
   measure_allowDecimal: SortOrder
   measure_valueSummarization: SortOrder
   measure_valueOrder: SortOrder
+  accessibility: SortOrder
 }
 
 type ChallengesResponse {
@@ -64,10 +78,11 @@ input CreateChallenge {
   id: ChallengeId
   name: String!
   description: String!
-  createdBy: UserId!
+  createdById: UserId!
   createdOn: OffsetDateTime = false
   finishesOn: OffsetDateTime!
   measure: MeasureInput!
+  accessibility: Accessibility!
 }
 
 input CreateUser {

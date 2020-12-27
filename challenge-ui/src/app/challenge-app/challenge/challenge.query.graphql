@@ -1,4 +1,9 @@
-query challenge($challengeId: ChallengeId!, $size: Int, $offset: Int) {
+query challenge(
+  $challengeId: ChallengeId!
+  $userCheckAccess: UserId!
+  $size: Int
+  $offset: Int
+) {
   challenge(id: $challengeId) {
     id
     name
@@ -6,9 +11,11 @@ query challenge($challengeId: ChallengeId!, $size: Int, $offset: Int) {
     createdOn
     finishesOn
     createdBy {
+      id
       name
       email
     }
+    accessibility
     measure {
       unitName
       allowDecimal
@@ -31,5 +38,6 @@ query challenge($challengeId: ChallengeId!, $size: Int, $offset: Int) {
         }
       }
     }
+    userHasAccess(userId: $userCheckAccess)
   }
 }

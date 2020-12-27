@@ -53,6 +53,7 @@ export class ChallengeComponent extends QueryComponent<
 
     this.vars = {
       challengeId: this.challengeId,
+      userCheckAccess: this.user && this.user.id,
       size: this.pageSize,
       offset: this.offset,
     };
@@ -66,6 +67,7 @@ export class ChallengeComponent extends QueryComponent<
   ngOnInit(): void {
     this.userService.getCurrentUser().subscribe((user) => {
       this.user = user;
+      this.vars.userCheckAccess = user.id;
       super.ngOnInit();
     });
   }

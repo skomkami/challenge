@@ -9,6 +9,60 @@
     "subscriptionType": null,
     "types": [
       {
+        "kind": "ENUM",
+        "name": "Accessibility",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "Public",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "Private",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "AccessibilityConditions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "eq",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Accessibility",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "neq",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Accessibility",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "INPUT_OBJECT",
         "name": "BooleanConditions",
         "description": null,
@@ -187,6 +241,22 @@
             "deprecationReason": null
           },
           {
+            "name": "accessibility",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "Accessibility",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdBy",
             "description": null,
             "args": [],
@@ -257,6 +327,37 @@
               "kind": "OBJECT",
               "name": "User",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userHasAccess",
+            "description": null,
+            "args": [
+              {
+                "name": "userId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UserId",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -389,6 +490,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "ValueOrderConditions",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "accessibility",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "AccessibilityConditions",
               "ofType": null
             },
             "defaultValue": null
@@ -544,6 +655,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "accessibility",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "SortOrder",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -662,7 +783,7 @@
             "defaultValue": null
           },
           {
-            "name": "createdBy",
+            "name": "createdById",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -708,6 +829,20 @@
               "ofType": {
                 "kind": "INPUT_OBJECT",
                 "name": "MeasureInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "accessibility",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "Accessibility",
                 "ofType": null
               }
             },
