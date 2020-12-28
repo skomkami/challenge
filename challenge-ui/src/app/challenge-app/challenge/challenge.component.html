@@ -32,7 +32,10 @@
   </div>
 
   <button
-    *ngIf="!finished()"
+    *ngIf="
+      !finished() &&
+      (challenge.accessibility == 'Public' || user.id == challenge.createdById)
+    "
     (click)="openInviteDialog()"
     class="ui blue button"
   >

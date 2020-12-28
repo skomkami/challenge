@@ -72,4 +72,7 @@ object GraphQLSchema {
       .setTo(() => GraphQLUser.queries.toList)
       .modify(_.mutation.each.fieldsFn)
       .setTo(() => GraphQLUser.createMutation :: Nil)
+
+  val maxQueryDepth: Int = 15
+  val maxQueryComplexity: Int = 1000
 }

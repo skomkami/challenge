@@ -1,23 +1,21 @@
 package agh.edu.pl.graphql
 
-import agh.edu.pl.schema.GraphQLSchema.{
-  GraphQLUserChallengeSummary,
-  Offset,
-  Size,
-  UserChallengeSummaryType,
-  UserType
-}
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{ Challenge, User, UserChallengeSummary }
+import agh.edu.pl.error.DomainError
 import agh.edu.pl.filters.FilterEq
-import agh.edu.pl.ids.ChallengeId
+import agh.edu.pl.ids.{ ChallengeId, UserId }
 import agh.edu.pl.mutations.CreateChallenge
+import agh.edu.pl.schema.GraphQLSchema._
 import cats.implicits._
 import sangria.macros.derive.{ deriveObjectType, AddFields }
-import sangria.schema.{ Field, ObjectType, OptionType }
+import sangria.schema.{ Argument, BooleanType, Field, ObjectType, OptionType }
 
 case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
   override def createEntitySettings: CreateChallenge.type = CreateChallenge
+
+  private val UserIdArg: Argument[UserId] =
+    Argument("userId", UserId.scalarAlias)
 
   override def GraphQLOutputType: ObjectType[Context, Challenge] =
     deriveObjectType[Context, Challenge](
@@ -62,6 +60,22 @@ case class GraphqlChallenge() extends GraphqlEntity[ChallengeId, Challenge] {
               )
               .map(_.results.headOption.map(_.userId))
               .flatMap(_.traverse(repository.getById[User]))
+          }
+        )
+      ),
+      AddFields(
+        Field(
+          name = "userHasAccess",
+          fieldType = BooleanType,
+          arguments = List(UserIdArg),
+          resolve = c => {
+            implicit val ec = c.ctx.ec
+            val repository = c.ctx.repository
+            val userId = c.arg(UserIdArg)
+            val challenge = c.value
+            challenge.userHasAccess(repository, userId).recover {
+              case _: DomainError => false
+            }
           }
         )
       )

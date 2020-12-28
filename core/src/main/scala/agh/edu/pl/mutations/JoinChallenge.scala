@@ -3,10 +3,14 @@ package agh.edu.pl.mutations
 import agh.edu.pl.calculator.ChallengePositionsCalculator
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
-import agh.edu.pl.entities.{ Challenge, User, UserChallengeSummary }
+import agh.edu.pl.entities.{
+  Challenge,
+  EntityIdSettings,
+  User,
+  UserChallengeSummary
+}
 import agh.edu.pl.ids.{ ChallengeId, UserChallengeSummaryId, UserId }
 import agh.edu.pl.measures.MeasureValue
-import agh.edu.pl.entities.EntityIdSettings
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema.{ Argument, InputObjectType }
 
@@ -37,6 +41,7 @@ case class JoinChallenge(
     val newSummary = for {
       _ <- ctx.repository.getById[User](userId)
       challenge <- ctx.repository.getById[Challenge](challengeId)
+      _ <- challenge.userHasAccess(ctx.repository, userId)
       created <- ctx
         .repository
         .create[UserChallengeSummary](toEntity(newId))

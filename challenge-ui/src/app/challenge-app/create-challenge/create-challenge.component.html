@@ -87,6 +87,18 @@
         </option>
       </select>
     </div>
+    <div class="field">
+      <label for="accessibility">Accessibility:</label>
+      <select class="ui dropdown menu" [formControl]="accessibility">
+        <option
+          *ngFor="let symbol of keys(accessibilitySymbols)"
+          [ngValue]="accessibilitySymbols[symbol]"
+          class="item"
+        >
+          {{ symbol }}
+        </option>
+      </select>
+    </div>
 
     <div
       [className]="
