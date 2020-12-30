@@ -1,6 +1,8 @@
 package agh.edu.pl
 
 import com.fullfacing.keycloak4s.core.models._
+import org.keycloak.representations.adapters.config.AdapterConfig
+import scala.jdk.CollectionConverters._
 
 package object config {
   case class ServiceConfig(
@@ -28,7 +30,7 @@ package object config {
       clientSecret: String
     ) {
 
-    def toConfingWithAuth: ConfigWithAuth =
+    def toConfigWithAuth: ConfigWithAuth =
       ConfigWithAuth(
         scheme = scheme,
         host = host,
@@ -40,5 +42,18 @@ package object config {
           clientSecret = clientSecret
         )
       )
+
+    def buildAdapterConfig: AdapterConfig = {
+      val adapterConfig = new AdapterConfig
+      val credentials: Map[String, AnyRef] = Map("secret" -> clientSecret)
+
+      adapterConfig.setRealm(realm)
+      adapterConfig.setResource(clientId)
+      adapterConfig.setAuthServerUrl(s"http://$host:$port/auth")
+      adapterConfig.setSslRequired("external")
+      adapterConfig.setCredentials(credentials.asJava)
+
+      adapterConfig
+    }
   }
 }

@@ -16,17 +16,15 @@ import akka.stream.Materializer
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.circe.generic.semiauto._
 import org.keycloak.TokenVerifier
-import org.keycloak.adapters.{ KeycloakDeployment, KeycloakDeploymentBuilder }
+import org.keycloak.adapters.KeycloakDeployment
 import org.keycloak.jose.jws.AlgorithmType
 import org.keycloak.representations.AccessToken
+
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.Success
 
 trait AuthorizationHandler {
-  val keycloakDeployment: KeycloakDeployment =
-    KeycloakDeploymentBuilder.build(
-      getClass.getResourceAsStream("/keycloak.json")
-    )
+  def keycloakDeployment: KeycloakDeployment
 
   implicit def executionContext: ExecutionContext
   implicit def materializer: Materializer

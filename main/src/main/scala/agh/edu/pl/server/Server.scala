@@ -24,6 +24,7 @@ import com.sksamuel.elastic4s.{ ElasticClient, ElasticProperties }
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.circe.Json
 import monix.eval.Task
+import org.keycloak.adapters.KeycloakDeploymentBuilder
 import pureconfig.ConfigSource
 import pureconfig.generic.auto._
 import sttp.client.akkahttp.AkkaHttpBackend
@@ -36,6 +37,9 @@ object Server extends App with CorsSupport with AuthorizationHandler {
     case Right(value)   => value
     case Left(failures) => throw new Exception(failures.toString)
   }
+
+  override lazy val keycloakDeployment =
+    KeycloakDeploymentBuilder.build(config.keycloak.buildAdapterConfig)
 
   implicit val system: ActorSystem = ActorSystem()
   implicit val materializer: Materializer = Materializer(system)
@@ -54,7 +58,7 @@ object Server extends App with CorsSupport with AuthorizationHandler {
         AkkaHttpBackend()
       )
     new KeycloakClient[Task, Source[ByteString, Any]](
-      config.keycloak.toConfingWithAuth
+      config.keycloak.toConfigWithAuth
     )
   }
 
