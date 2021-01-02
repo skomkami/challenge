@@ -3,7 +3,7 @@ import Util._
 
 ThisBuild / organization := "agh.edu.pl"
 ThisBuild / scalaVersion := "2.13.3"
-ThisBuild / version := "1.0"
+ThisBuild / version := "1.1"
 
 ThisBuild / scalacOptions ++= Seq(
   "-deprecation",
@@ -107,9 +107,7 @@ lazy val main =
         com.github.pureconfig.pureconfig
       )
     )
-
-    //    .settings(dockerBaseImage := "openjdk:8-jre-alpine")
-//    .settings(dockerExecCommand := Seq("apk", "add", "--no-cache", "bash"))
+    .settings(dockerBaseImage := "robsonoduarte/8-jre-alpine-bash:latest")
     .settings(dockerExposedPorts := Seq(8080))
     .settings(dockerUsername := Some("kamilskomro"))
     .settings(packageName := "challenge-backend")

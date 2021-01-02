@@ -25,13 +25,7 @@ case class KeycloakService(
       username = user.email.address,
       enabled = true,
       email = Some(user.email.address),
-      firstName = Some(user.name),
-      credentials = List(
-        Credential(
-          temporary = Some(true),
-          value = Some("test")
-        )
-      )
+      firstName = Some(user.name)
     )
 
     users.create(userToCreate).map(_.left.map(_.getMessage)).runToFuture

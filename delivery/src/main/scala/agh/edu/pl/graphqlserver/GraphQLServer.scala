@@ -78,7 +78,7 @@ case class GraphQLServer(repository: Repository, authService: AuthService) {
     val schema = token match {
       case Some(_) =>
         GraphQLSchema.SchemaDefinition
-      case None => GraphQLSchema.SchemaDefinition
+      case None => GraphQLSchema.PublicSchemaDefinition
     }
 
     val userId: Option[UserId] = token.map(_.getEmail).map(UserId.fromEmail)
