@@ -2,11 +2,12 @@ package agh.edu.pl.mutations
 
 import java.time.OffsetDateTime
 
-import agh.edu.pl.calculator.ChallengePositionsCalculator
+import agh.edu.pl.calculator.RunPositionCalculation
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{
   Challenge,
+  EntityIdSettings,
   UserChallengeActivity,
   UserChallengeSummary
 }
@@ -18,7 +19,6 @@ import agh.edu.pl.ids.{
   UserId
 }
 import agh.edu.pl.measures.{ Measure, MeasureValue }
-import agh.edu.pl.entities.EntityIdSettings
 import agh.edu.pl.repository.Repository
 import com.softwaremill.quicklens._
 import sangria.macros.derive.deriveInputObjectType
@@ -52,20 +52,29 @@ case class LogActivity(
       UserChallengeSummaryId.DataToGenerateId(challengeId, userId)
     )
 
-    val createActivity =
+    val newActivityAndUpdatedSummary =
       for {
         challenge <- ctx.repository.getById[Challenge](challengeId)
         summary <- ctx.repository.getById[UserChallengeSummary](summaryId)
-        _ <- updateSummary(summary, challenge.measure, ctx.repository)
+        updatedSummary <- calcSummaryUpdate(
+          summary,
+          challenge.measure,
+          ctx.repository
+        )
         created <- ctx
           .repository
           .create[UserChallengeActivity](toEntity(newId))
-      } yield challenge.checkAvailabilityAndReturn(created, Some(created.date))
+      } yield (
+        challenge.checkAvailabilityAndReturn(created, Some(created.date)),
+        updatedSummary
+      )
 
-    createActivity.onComplete(
-      ChallengePositionsCalculator(challengeId).processWhenSuccess(ctx)
+    ctx.system ! RunPositionCalculation(
+      ctx,
+      newActivityAndUpdatedSummary.map(_._2)
     )
-    createActivity
+
+    newActivityAndUpdatedSummary.map(_._1)
   }
 
   case class MeasureMismatch(missingValue: String)
@@ -73,7 +82,7 @@ case class LogActivity(
         s"Cannot log activity without $missingValue parameter"
       )
 
-  private def updateSummary(
+  private def calcSummaryUpdate(
       existingSummary: UserChallengeSummary,
       measure: Measure,
       repository: Repository

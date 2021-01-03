@@ -1,50 +1,52 @@
 package agh.edu.pl.calculator
 
 import agh.edu.pl.context.Context
-import agh.edu.pl.entities.{ Challenge, UserChallengeSummary }
+import agh.edu.pl.entities.{ Challenge, EntityId, UserChallengeSummary }
 import agh.edu.pl.filters.FilterEq
 import agh.edu.pl.ids.ChallengeId
 import agh.edu.pl.measures.Measure
-import agh.edu.pl.entities.EntityId
+import akka.actor.typed.Behavior
+import akka.actor.typed.scaladsl.Behaviors
 
 import scala.concurrent.{ ExecutionContext, Future }
-import scala.util.{ Failure, Success, Try }
+import scala.util.{ Failure, Success }
 
-case class ChallengePositionsCalculator(challengeId: ChallengeId) {
-
-  def processWhenSuccess[E](ctx: Context)(prevCommand: Try[E]): Unit =
-    prevCommand match {
-      case Success(_) =>
-        process(ctx)
-      case Failure(exception) =>
-        scribe.error(
-          s"Sorting skipped because of error: ${exception.getMessage}"
-        )
-    }
-
-  protected def process(ctx: Context): Unit = {
-    implicit val ec = ctx.ec
-    val _ = ctx
-      .repository
-      //force refresh before position calculator
-      //TODO check refresh wait_for in documentation
-      .forceRefresh[UserChallengeSummary]
-      .andThen { _ =>
-        sortSummaries(ctx)
-          .onComplete {
-            case Success(_) =>
-              scribe.info(
-                s"Successfully updated positions for challenge: $challengeId"
-              )
+case object PositionsCalculator {
+  val behavior: Behavior[UpdatePositionsProtocol] = Behaviors.receive {
+    (context, message) =>
+      message match {
+        case RunPositionCalculation(ctx, updatedSummary) =>
+          context.pipeToSelf(updatedSummary) {
+            case Success(summary) =>
+              RefreshSummariesIndex(ctx, summary.challengeId)
             case Failure(exception) =>
-              scribe.error(
-                s"There was an error updating positions for challenge: $challengeId. Msg: ${exception.getMessage}"
-              )
+              LogFailure(exception)
           }
+          Behaviors.same
+        case RefreshSummariesIndex(ctx, challengeId) =>
+          val refreshResult = ctx
+            .repository
+            //force refresh before position calculator
+            .forceRefresh[UserChallengeSummary]
+
+          context.pipeToSelf(refreshResult) {
+            case Success(_) =>
+              CalculatePositions(ctx, challengeId)
+            case Failure(exception) =>
+              LogFailure(exception)
+          }
+          Behaviors.same
+        case CalculatePositions(ctx, challengeId) =>
+          sortSummaries(challengeId, ctx)(ctx.ec)
+          Behaviors.same
+        case LogFailure(ex) =>
+          scribe.warn(ex.getMessage)
+          Behaviors.same
       }
   }
 
   private def sortSummaries(
+      challengeId: ChallengeId,
       ctx: Context
     )(implicit
       ec: ExecutionContext
@@ -78,4 +80,5 @@ case class ChallengePositionsCalculator(challengeId: ChallengeId) {
       .map {
         case (summary, position) => summary.copy(position = Some(position + 1))
       }
+
 }

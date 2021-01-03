@@ -1,6 +1,6 @@
 package agh.edu.pl.mutations
 
-import agh.edu.pl.calculator.ChallengePositionsCalculator
+import agh.edu.pl.calculator.RunPositionCalculation
 import agh.edu.pl.commands.CreateEntity
 import agh.edu.pl.context.Context
 import agh.edu.pl.entities.{
@@ -47,9 +47,8 @@ case class JoinChallenge(
         .create[UserChallengeSummary](toEntity(newId))
     } yield challenge.checkAvailabilityAndReturn(created)
 
-    newSummary.onComplete(
-      ChallengePositionsCalculator(challengeId).processWhenSuccess(ctx)
-    )
+    ctx.system ! RunPositionCalculation(ctx, newSummary)
+
     newSummary
   }
 
