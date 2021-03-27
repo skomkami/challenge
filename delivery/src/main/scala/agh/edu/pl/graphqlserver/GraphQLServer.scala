@@ -4,8 +4,10 @@ import agh.edu.pl.context.Context
 import agh.edu.pl.exceptionhandler.Handler
 import agh.edu.pl.repository.Repository
 import agh.edu.pl.authservice.AuthService
+import agh.edu.pl.calculator.UpdatePositionsProtocol
 import agh.edu.pl.ids.UserId
 import agh.edu.pl.schema.GraphQLSchema
+import akka.actor.typed.ActorSystem
 import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
@@ -30,7 +32,11 @@ import sangria.parser.QueryParser
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.{ Failure, Success }
 
-case class GraphQLServer(repository: Repository, authService: AuthService) {
+case class GraphQLServer(
+    repository: Repository,
+    authService: AuthService,
+    actorSystem: ActorSystem[UpdatePositionsProtocol]
+  ) {
   def endpoint(
       requestJson: Json,
       token: Option[AccessToken]
@@ -87,7 +93,7 @@ case class GraphQLServer(repository: Repository, authService: AuthService) {
       .execute(
         schema = schema,
         queryAst = query,
-        userContext = Context(repository, ec, authService, userId),
+        userContext = Context(repository, ec, authService, userId, actorSystem),
         variables = vars,
         operationName = operation,
         exceptionHandler = Handler.exceptionHandler,

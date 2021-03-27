@@ -74,6 +74,8 @@ object Dependencies {
       case object akka {
         val `akka-actor` =
           "com.typesafe.akka" %% "akka-actor" % Versions.akkaCore
+        val `akka-actor-typed` =
+          "com.typesafe.akka" %% "akka-actor-typed" % Versions.akkaCore
         val `akka-http` =
           "com.typesafe.akka" %% "akka-http" % Versions.akkaHttp
         val `akka-stream` =

@@ -1,6 +1,5 @@
 package agh.edu.pl.measures
 
-import agh.edu.pl.context.Context
 import agh.edu.pl.measures.ValueOrder.{ BiggerWins, SmallerWins }
 import agh.edu.pl.measures.ValueSummarization.{ Best, Summarize }
 import agh.edu.pl.entities.JsonSerializable
@@ -58,8 +57,8 @@ case class Measure(
 
 case object Measure extends JsonSerializable[Measure] {
 
-  implicit lazy val MeasureType: ObjectType[Context, Measure] =
-    deriveObjectType[Context, Measure]()
+  implicit lazy val MeasureType: ObjectType[Unit, Measure] =
+    deriveObjectType[Unit, Measure]()
 
   implicit lazy val MeasureInputType: InputObjectType[Measure] =
     deriveInputObjectType[Measure](InputObjectTypeName("MeasureInput"))

@@ -1,6 +1,5 @@
 package agh.edu.pl.measures
 
-import agh.edu.pl.context.Context
 import agh.edu.pl.entities.JsonSerializable
 import sangria.macros.derive.{
   deriveInputObjectType,
@@ -16,8 +15,8 @@ case class MeasureValue(
 case object MeasureValue extends JsonSerializable[MeasureValue] {
   def empty: MeasureValue = MeasureValue(None, None)
 
-  implicit lazy val MeasureValueType: ObjectType[Context, MeasureValue] =
-    deriveObjectType[Context, MeasureValue]()
+  implicit lazy val MeasureValueType: ObjectType[Unit, MeasureValue] =
+    deriveObjectType[Unit, MeasureValue]()
 
   implicit lazy val MeasureValueInputType: InputObjectType[MeasureValue] =
     deriveInputObjectType[MeasureValue](

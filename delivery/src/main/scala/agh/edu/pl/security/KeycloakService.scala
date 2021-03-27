@@ -7,7 +7,6 @@ import agh.edu.pl.entities.{ User => DomainUser }
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
 import com.fullfacing.keycloak4s.admin.client.{ Keycloak, KeycloakClient }
-import com.fullfacing.keycloak4s.core.models.Credential
 import monix.eval.Task
 import monix.execution.Scheduler.Implicits.global
 import com.fullfacing.keycloak4s.core.models.User._

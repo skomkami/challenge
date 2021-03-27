@@ -2,11 +2,13 @@ package agh.edu.pl.server
 
 import agh.edu.pl.authorization.AuthorizationHandler
 import agh.edu.pl.backends.AkkaHttpBackendL
+import agh.edu.pl.calculator.{ PositionsCalculator, UpdatePositionsProtocol }
 import agh.edu.pl.config.ServiceConfig
 import agh.edu.pl.elasticsearch.EsRepository
 import agh.edu.pl.graphqlserver.GraphQLServer
 import agh.edu.pl.security.KeycloakService
 import akka.actor.ActorSystem
+import akka.actor.typed.{ ActorSystem => TypedSystem }
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
@@ -41,7 +43,9 @@ object Server extends App with CorsSupport with AuthorizationHandler {
   override lazy val keycloakDeployment =
     KeycloakDeploymentBuilder.build(config.keycloak.buildAdapterConfig)
 
-  implicit val system: ActorSystem = ActorSystem()
+  val challengeActorSystem: TypedSystem[UpdatePositionsProtocol] =
+    TypedSystem(PositionsCalculator.behavior, "challengeActorSystem")
+  implicit val system: ActorSystem = challengeActorSystem.classicSystem
   implicit val materializer: Materializer = Materializer(system)
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
@@ -73,7 +77,7 @@ object Server extends App with CorsSupport with AuthorizationHandler {
     .result()
     .mapRejectionResponse(addCORSHeaders)
 
-  val server = GraphQLServer(esRepository, kcService)
+  val server = GraphQLServer(esRepository, kcService, challengeActorSystem)
 
   val route: Route =
     (post & path("graphql")) {
